@@ -73,3 +73,98 @@ test('porcentajes con coma, líderes y parciales de prórroga', () => {
   assert.equal(slides.find(s=>s.key==='leader-pts').home.detail,'B');
   assert.equal(slides.find(s=>s.key==='quarters').quarters.at(-1).n,5);
 });
+
+function start(quarter, num=1) {
+  return {num:String(num),action:'period',quarter:String(quarter),logParam2:'0',text:'Comienzo del Cuarto '+quarter};
+}
+function foul(num, quarter, team='1008400', extra={}) {
+  return {num:String(num),action:'foul',quarter:String(quarter),idTeam:team,idPlayer:'23',logParam10:'1',...extra};
+}
+function withPlays(lines, quarter=1) {
+  const raw=response('64','59');raw.HEADER.quarter=quarter;
+  raw.PLAYBYPLAY={LINES:lines};
+  // Estos totales del partido no son las faltas del cuarto.
+  raw.TEAMSTATS={TEAM:[{id:'1008400',pf:'18'},{id:'1009837',pf:'17'}]};
+  return raw;
+}
+
+test('las luces cuentan solo las faltas del cuarto y se reinician al empezar el siguiente', () => {
+  const lines=[start(1),foul(2,1),foul(3,1),start(2,4),foul(5,2),foul(6,2,'1009837')];
+  let state=core.normalize(withPlays(lines,2),game);
+  assert.equal(state.home.fouls,1);assert.equal(state.away.fouls,1);
+  lines.push(start(3,7));
+  state=core.normalize(withPlays(lines,3),game);
+  assert.equal(state.home.fouls,0);assert.equal(state.away.fouls,0);
+});
+test('no cuenta dos veces una jugada, ni faltas borradas o técnicas del entrenador', () => {
+  const one=foul(2,1);
+  const raw=withPlays([start(1),one,one,foul(3,1,'1008400',{deleted:'true'}),
+    foul(4,1,'1008400',{idPlayer:null,logParam10:'0'}),foul(5,1,'1008400',{logParam10:'0'})]);
+  assert.equal(core.normalize(raw,game).home.fouls,1);
+  raw.PLAYBYPLAY.LINES=raw.PLAYBYPLAY.LINES.filter(l=>l.num!=='2');
+  assert.equal(core.normalize(raw,game).home.fouls,0);
+});
+test('el recuento incompleto no se presenta como cero, pero cinco faltas sí confirman el bonus', () => {
+  const raw=withPlays([foul(2,1)]);
+  assert.equal(core.normalize(raw,game).home.fouls,null);
+  raw.PLAYBYPLAY.LINES=Array.from({length:5},(_,i)=>foul(i+2,1));
+  assert.equal(core.normalize(raw,game).home.fouls,5);
+  assert.equal(core.normalize(raw,game).away.fouls,null);
+});
+test('cuarta luz naranja, quinta y posteriores todas rojas', () => {
+  assert.deepEqual(core.foulLights(0),['off','off','off','off','off']);
+  assert.deepEqual(core.foulLights(3),['lit','lit','lit','off','off']);
+  assert.deepEqual(core.foulLights(4),['lit','lit','lit','orange','off']);
+  assert.deepEqual(core.foulLights(5),['red','red','red','red','red']);
+  assert.deepEqual(core.foulLights(8),['red','red','red','red','red']);
+  assert.deepEqual(core.foulLights(null),Array(5).fill('unknown'));
+});
+test('la prórroga mantiene las faltas del cuarto periodo', () => {
+  const raw=withPlays([start(4),foul(2,4),foul(3,4),start(5,4),foul(5,5)],5);
+  assert.equal(core.normalize(raw,game).home.fouls,3);
+});
+
+const eventAt=Date.parse('2026-10-16T19:12:00Z');
+function play(num, action, extra={}) {
+  return {num:String(num),action,idPlayer:'23',idTeam:'1008400',quarter:'2',time:'04:21',
+    LogTimeUtc:'2026-10-16 19:12:00',text:'(TIZONA) NOMBRE OFICIAL: ACCIÓN',...extra};
+}
+function events(lines) {
+  const raw=withPlays(lines,2), state=core.normalize(raw,game);
+  return core.playerEvents(raw,state);
+}
+test('un triple muestra al jugador real con los puntos y el triple añadidos', () => {
+  const result=events([play(10,'shoot',{logParam4:'1',logParam6:'3'})]);
+  assert.equal(result[0].name,'NOMBRE OFICIAL');
+  assert.equal(result[0].at,eventAt);
+  assert.deepEqual(result[0].metrics,[{key:'pts',amount:3},{key:'p3m',amount:1}]);
+  assert.deepEqual(result[0].metrics.map(core.metricLabel),['+3 PUNTOS','+1 TRIPLE']);
+});
+test('se anuncian rebotes, asistencias, faltas y tiros fallados; nunca se asigna un rebote de equipo a un jugador', () => {
+  const result=events([play(10,'rebound'),play(11,'assist'),play(12,'foul'),
+    play(13,'shoot',{logParam4:'0',logParam6:'2'}),play(14,'rebound',{idPlayer:null}),play(15,'assist',{deleted:true})]);
+  assert.deepEqual(result.map(e=>e.metrics[0].key),['reb','assist','pf','p2miss']);
+});
+test('no reproduce el historial inicial y solo entrega una vez cada acción nueva', () => {
+  const tracker=core.createEventTracker();
+  const first=events([play(10,'assist')]);
+  assert.deepEqual(tracker.take(first,eventAt),[]);
+  const all=events([play(10,'assist'),play(11,'rebound')]);
+  assert.deepEqual(tracker.take(all,eventAt+15000).map(e=>e.id),['11']);
+  assert.deepEqual(tracker.take(all,eventAt+30000),[]);
+  const reloaded=core.createEventTracker(tracker.save());
+  assert.deepEqual(reloaded.take(all,eventAt+45000),[]);
+});
+test('la previa permite detectar la primera jugada y una reconexión descarta los avisos antiguos', () => {
+  const tracker=core.createEventTracker();tracker.take([],eventAt-30000);
+  assert.equal(tracker.take(events([play(1,'assist')]),eventAt+15000).length,1);
+  const all=events([play(1,'assist'),play(2,'rebound'),play(3,'assist',{LogTimeUtc:'2026-10-16 19:14:50'})]);
+  assert.deepEqual(tracker.take(all,eventAt+180000).map(e=>e.id),['3']);
+});
+test('agrupa los incrementos del mismo jugador sin mezclar equipos o inventar estadísticas', () => {
+  const grouped=core.groupEvents(events([play(10,'rebound'),play(11,'rebound'),play(12,'assist'),
+    play(13,'shoot',{logParam4:'1',logParam6:'2'}),play(14,'rebound',{idPlayer:'24',text:'(TIZONA) OTRO: REBOTE'})]));
+  assert.equal(grouped.length,2);
+  assert.deepEqual(grouped[0].metrics.map(core.metricLabel),['+2 REBOTES','+1 ASISTENCIA','+2 PUNTOS','+1 CANASTA DE 2']);
+  assert.equal(grouped[1].name,'OTRO');
+});

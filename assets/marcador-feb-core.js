@@ -17,6 +17,45 @@
   const text = value => value == null ? "" : String(value).trim();
   const display = value => number(value) === null ? "—" : String(number(value));
   const byId = (items, id) => items.find(item => String(item.id) === String(id));
+  const deleted = value => value === true || value === 1 || /^(true|1)$/i.test(text(value));
+
+  function timeline(raw) {
+    const seen = new Set();
+    return list(raw && raw.PLAYBYPLAY && raw.PLAYBYPLAY.LINES).filter(line => {
+      const key = text(line.num) || [line.LogTimeUtc, line.action, line.idPlayer, line.text].join("|");
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return !deleted(line.deleted);
+    });
+  }
+
+  function countsAsTeamFoul(line) {
+    return line.action === "foul" && !!text(line.idPlayer) &&
+      (text(line.logParam10) === "" || String(line.logParam10) === "1");
+  }
+
+  function quarterFouls(raw, game, currentPhase) {
+    if (currentPhase === "pregame") return {home: 0, away: 0};
+    const quarter = number(raw.HEADER.quarter), lines = timeline(raw);
+    // En las prórrogas se mantienen las faltas del cuarto periodo (regla FIBA 41.1.3).
+    const firstQuarter = quarter > 4 ? 4 : quarter;
+    if (!(firstQuarter > 0)) return {home: null, away: null};
+    const complete = lines.some(line => number(line.quarter) === firstQuarter && line.action === "period" &&
+      (String(line.logParam2) === "0" || /comienzo|inicio|start/i.test(text(line.text))));
+    const eligible = lines.filter(line => number(line.quarter) >= firstQuarter && number(line.quarter) <= quarter && countsAsTeamFoul(line));
+    const count = id => {
+      const n = eligible.filter(line => String(line.idTeam) === String(id)).length;
+      // Cinco faltas observadas bastan para confirmar el bonus aunque falte el comienzo.
+      return complete || n >= 5 ? n : null;
+    };
+    return {home: count(game.local.id), away: count(game.visitante.id)};
+  }
+
+  function foulLights(count) {
+    const n = number(count);
+    return Array.from({length: 5}, (_, i) => n === null ? "unknown" : n >= 5 ? "red" :
+      i >= n ? "off" : i === 3 ? "orange" : "lit");
+  }
 
   function phase(header) {
     const status = text(header.statusText).toUpperCase();
@@ -55,11 +94,14 @@
       n: number(q.n), home: score(teams.indexOf(home) === 0 ? q.scoreA : q.scoreB), away: score(teams.indexOf(away) === 1 ? q.scoreB : q.scoreA)
     })).filter(q => q.n > 0);
     const clockText = text(header.time);
+    const currentPhase = phase(header), fouls = quarterFouls(raw, game, currentPhase);
+    const homeTeam = team(home, game.local, scores[0]), awayTeam = team(away, game.visitante, scores[1]);
+    homeTeam.fouls = fouls.home; awayTeam.fouls = fouls.away;
     return {
-      phase: phase(header), quarter: number(header.quarter),
+      phase: currentPhase, quarter: number(header.quarter),
       clock: /^\d{1,2}:\d{2}(?:[.,]\d+)?$/.test(clockText) ? clockText : "—",
       statusText: text(header.statusText), quarters,
-      home: team(home, game.local, scores[0]), away: team(away, game.visitante, scores[1])
+      home: homeTeam, away: awayTeam
     };
   }
 
@@ -77,9 +119,88 @@
     if (a !== 0 || b !== 0) return null;
     return {
       phase: "pregame", quarter: null, clock: "—", quarters: [], snapshot: true,
-      home: {id: String(s.local.id), name: s.local.nombre, short: game.local.corto, code: game.local.siglas, score: a, stats: null, players: []},
-      away: {id: String(s.visitante.id), name: s.visitante.nombre, short: game.visitante.corto, code: game.visitante.siglas, score: b, stats: null, players: []}
+      home: {id: String(s.local.id), name: s.local.nombre, short: game.local.corto, code: game.local.siglas, score: a, fouls: 0, stats: null, players: []},
+      away: {id: String(s.visitante.id), name: s.visitante.nombre, short: game.visitante.corto, code: game.visitante.siglas, score: b, fouls: 0, stats: null, players: []}
     };
+  }
+
+  function playerEvents(raw, state) {
+    const teams = [state.home, state.away];
+    return timeline(raw).flatMap(line => {
+      if (!text(line.idPlayer)) return [];
+      const team = byId(teams, line.idTeam);
+      if (!team) return [];
+      const player = byId(team.players, line.idPlayer);
+      const parsed = text(line.text).match(/^\([^)]*\)\s*(.+?):\s*/);
+      const name = text(player && player.name) || (parsed && parsed[1]);
+      if (!name) return [];
+      const action = text(line.action), metrics = [];
+      if (action === "shoot" || action === "fthrow") {
+        const points = number(line.logParam6), made = String(line.logParam4) === "1";
+        if (![1, 2, 3].includes(points) || !["0", "1"].includes(String(line.logParam4))) return [];
+        if (made) metrics.push({key: "pts", amount: points}, {key: "p" + points + "m", amount: 1});
+        else metrics.push({key: "p" + points + "miss", amount: 1});
+      } else {
+        const key = {rebound: "reb", assist: "assist", recovery: "st", lose: "to", blockshot: "bs", foul: "pf"}[action];
+        if (!key) return [];
+        metrics.push({key, amount: 1});
+      }
+      const utc = text(line.LogTimeUtc);
+      const at = utc ? Date.parse(utc.replace(" ", "T") + (/Z$|[+-]\d{2}:\d{2}$/.test(utc) ? "" : "Z")) : NaN;
+      const sequence = number(line.num);
+      return [{id: text(line.num) || [utc, action, line.idPlayer, line.text].join("|"), sequence,
+        playerId: text(line.idPlayer), teamId: team.id, name, metrics,
+        quarter: number(line.quarter), clock: text(line.time), at: Number.isFinite(at) ? at : null}];
+    }).sort((a, b) => (a.sequence || 0) - (b.sequence || 0));
+  }
+
+  function createEventTracker(saved) {
+    let initialized = !!(saved && saved.initialized);
+    let cursor = number(saved && saved.cursor) || 0;
+    const seen = new Set(saved && Array.isArray(saved.seen) ? saved.seen : []);
+    return {
+      take(events, now) {
+        const fresh = [], ready = initialized, previousCursor = cursor;
+        for (const event of events) {
+          const known = seen.has(event.id) || (event.sequence !== null && event.sequence <= previousCursor);
+          seen.add(event.id);
+          cursor = Math.max(cursor, event.sequence || 0);
+          // El primer acceso establece una base: no reproduce acciones históricas.
+          // Tras una reconexión solo se anuncian acciones fechadas en el último minuto.
+          if (ready && !known && event.at !== null && now - event.at <= 60000 && event.at <= now + 5000) fresh.push(event);
+        }
+        initialized = true;
+        while (seen.size > 1500) seen.delete(seen.values().next().value);
+        return fresh;
+      },
+      save() { return {initialized, cursor, seen: [...seen]}; }
+    };
+  }
+
+  function groupEvents(events) {
+    const groups = new Map();
+    for (const event of events) {
+      const id = event.teamId + ":" + event.playerId;
+      if (!groups.has(id)) groups.set(id, {...event, metrics: []});
+      const group = groups.get(id);
+      group.at = Math.max(group.at || 0, event.at || 0);
+      group.clock = event.clock; group.quarter = event.quarter;
+      for (const metric of event.metrics) {
+        const existing = group.metrics.find(m => m.key === metric.key);
+        if (existing) existing.amount += metric.amount;
+        else group.metrics.push({...metric});
+      }
+    }
+    return [...groups.values()];
+  }
+
+  function metricLabel(metric) {
+    const labels = {pts: ["PUNTO", "PUNTOS"], p3m: ["TRIPLE", "TRIPLES"], p2m: ["CANASTA DE 2", "CANASTAS DE 2"],
+      p1m: ["TIRO LIBRE", "TIROS LIBRES"], p3miss: ["T3 FALLADO", "T3 FALLADOS"], p2miss: ["T2 FALLADO", "T2 FALLADOS"],
+      p1miss: ["TL FALLADO", "TL FALLADOS"], reb: ["REBOTE", "REBOTES"], assist: ["ASISTENCIA", "ASISTENCIAS"],
+      st: ["RECUPERACIÓN", "RECUPERACIONES"], to: ["PÉRDIDA", "PÉRDIDAS"], bs: ["TAPÓN", "TAPONES"], pf: ["FALTA PERSONAL", "FALTAS PERSONALES"]};
+    const label = labels[metric.key];
+    return label ? "+" + metric.amount + " " + label[metric.amount === 1 ? 0 : 1] : "";
   }
 
   function shot(team, prefix) {
@@ -129,5 +250,6 @@
     return result;
   }
 
-  return {number, score, phase, normalize, snapshotState, slides};
+  return {number, score, phase, normalize, snapshotState, slides, quarterFouls, foulLights,
+    playerEvents, createEventTracker, groupEvents, metricLabel};
 });

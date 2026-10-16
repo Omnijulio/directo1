@@ -44,12 +44,16 @@ Previsualizar otro momento del programa: añadir `?ahora=2026-10-16T22:40:00%2B0
 URL del layout: https://omnijulio.github.io/directo1/baloncesto.html
 
 - Widget Web en PRISM: lienzo **1920 × 1080**, fondo transparente.
-- Resultado, escudos, periodo y reloj de la FEB en la esquina superior derecha.
-- Datos oficiales de `BoxScore` consultados cada **15 s**, sin simular la cuenta atrás del reloj.
-- Franja de estadísticas cada **8 s**: rebotes, asistencias, tiros, recuperaciones, pérdidas, tapones, líderes y parciales. Los datos aún no publicados se omiten o aparecen como `—`.
-- La ficha previa oficial permite mostrar **0–0** antes del inicio. Al llegar la hora del partido, ese dato estático deja de utilizarse. Un fallo de red nunca se convierte en cero: se conserva el último resultado recibido, con un aviso y su hora.
-- `?solo=marcador` deja el marcador y las estadísticas; `?estadisticas=0` oculta la franja. El configurador está en `?config=1`.
-- `?demo=1` añade un fondo de encuadre sin inventar el resultado. Para comprobar diseños con datos ficticios, usar `?demo=1&prueba=vivo` (o `previa`, `descanso`, `final`, `conexion`); estas vistas llevan una etiqueta explícita de prueba.
+- Marcador compacto: escudos, tanteo, reloj oficial y cinco luces de faltas por equipo. La ubicación queda discretamente abajo a la izquierda. Sin ventana de narración, faldones permanentes ni marca de gran tamaño.
+- Datos oficiales de `KeyFacts` consultados cada **15 s**, sin simular la cuenta atrás del reloj.
+- Las faltas se reconstruyen desde las jugadas del **cuarto actual**, excluyendo las técnicas del banquillo que no suman al equipo y las jugadas borradas. La cuarta luz es **naranja**; con cinco o más, **las cinco luces son rojas**. Se reinician con el siguiente cuarto; las prórrogas conservan las del cuarto periodo conforme a FIBA. Si falta el inicio del periodo y no se puede confirmar el recuento, las luces aparecen sin dato en vez de inventar cero.
+- Comparativas de rebotes, asistencias, tiros, recuperaciones, pérdidas y tapones: una tarjeta durante **7 s cada 60 s**. Se omiten mientras no haya datos o la conexión esté desactualizada.
+- Cada nueva estadística de jugador provoca un aviso breve con su nombre y el incremento: puntos, triples, canastas, tiros libres, tiros fallados, rebotes, asistencias, recuperaciones, pérdidas, tapones y faltas. Se agrupan las acciones del mismo jugador recibidas en una consulta. Los avisos tienen prioridad sobre las comparativas.
+- El historial inicial no se anuncia. Se evitan duplicados entre consultas y recargas en la misma sesión; al reconectar se descartan jugadas de más de un minuto. Las correcciones del acta se reflejan en tanteo y faltas sin presentarse como una jugada nueva.
+- Narradores: **Iraquí García** y **Pancho "Panchoneta"**. Un crédito de 6 s aparece una sola vez por sesión y partido, sin marco de cámara.
+- La ficha previa oficial permite mostrar **0–0** antes del inicio, identificado expresamente como previa. Al llegar la hora del partido, ese dato estático deja de utilizarse. Un fallo de red nunca se convierte en cero: se conserva el último resultado recibido, con un aviso y su hora.
+- `?estadisticas=0` oculta las comparativas; `?avisos=0`, los avisos de jugador; `?narradores=0`, el crédito inicial. El configurador está en `?config=1`. Los enlaces antiguos con `?solo=marcador` siguen mostrando esta composición mínima.
+- `?demo=1` añade una pista de muestra sin inventar el resultado. Para comprobar diseños con datos ficticios, usar `?demo=1&prueba=faltas` (cuarta naranja/cinco rojas), `prueba=accion` o `prueba=comparativa`. También se admiten `previa`, `vivo`, `descanso`, `final` y `conexion`. Todas las simulaciones llevan una etiqueta visible de prueba.
 
 La sección `feb` de `config-baloncesto.json` define el partido, los IDs de ambos equipos, inicio con zona horaria y apariencia. No modifica el programa de ruedas de prensa de `index.html`.
 

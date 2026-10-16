@@ -1,11 +1,10 @@
 {
-  "version": 2,
-  "titulo": "GRUPO URETA TIZONA · ALIMERKA OVIEDO",
-  "subtitulo": "También en el 104.1 FM y en radioevolucion.es",
-  "etiqueta": "BALONCESTO",
-  "camara2": "NARRACIÓN",
-  "faldon": "fijo",
-  "marco": true,
+  "version": 3,
+  "narradores": [
+    "Iraquí García",
+    "Pancho \"Panchoneta\""
+  ],
+  "credito_narradores": true,
   "feb": {
     "partido": 2535753,
     "fuente": "https://baloncestoenvivo.feb.es/Partido.aspx?p=2535753",
@@ -14,7 +13,6 @@
     "jornada": "Jornada 4",
     "pabellon": "El Plantío · Burgos",
     "actualizar_segundos": 15,
-    "rotar_segundos": 8,
     "estadisticas": true,
     "local": {
       "id": "1008400",
@@ -31,6 +29,10 @@
       "siglas": "OVI",
       "color": "#F6C65D",
       "escudo": "https://imagenes.feb.es/Imagen.aspx?i=1009837&ti=1"
-    }
+    },
+    "comparar_cada_segundos": 60,
+    "comparar_durante_segundos": 7,
+    "aviso_jugador_segundos": 4,
+    "avisos_jugadores": true
   }
 }
