@@ -12,19 +12,18 @@ function response(home='0',away='0') {
 }
 
 test('el partido de prueba se selecciona por URL sin sustituir la emisión del Tizona', () => {
-  const afterPractice=Date.parse('2026-10-16T20:35:00+02:00');
-  assert.equal(core.selectGame(config,null,afterPractice).partido,2535753);
+  assert.equal(core.selectGame(config,null).partido,2535753);
   const practice=core.selectGame(config,'2538980');
   assert.equal(practice.partido,2538980);
   assert.equal(practice.local.id,'1009930');assert.equal(practice.visitante.id,'1009924');
   assert.equal(practice.prueba,true);
-  assert.equal(core.selectGame(config,null,afterPractice).partido,2535753);
+  assert.equal(core.selectGame(config,null).partido,2535753);
   assert.equal(core.selectGame(config,'9999999'),null);
   assert.equal(core.selectGame(config,'https://example.org'),null);
 });
-test('el enlace general usa la prueba ahora y regresa al Tizona a las 20:35 sin alterar enlaces explícitos', () => {
-  assert.equal(core.selectGame(config,null,Date.parse('2026-10-16T17:15:00+02:00')).partido,2538980);
-  assert.equal(core.selectGame(config,null,Date.parse('2026-10-16T20:34:59+02:00')).partido,2538980);
+test('el enlace general queda fijado al Tizona sin depender de la hora ni alterar enlaces explícitos', () => {
+  assert.equal(core.selectGame(config,null,Date.parse('2026-10-16T17:15:00+02:00')).partido,2535753);
+  assert.equal(core.selectGame(config,null,Date.parse('2026-10-16T20:27:00+02:00')).partido,2535753);
   assert.equal(core.selectGame(config,null,Date.parse('2026-10-16T20:35:00+02:00')).partido,2535753);
   assert.equal(core.selectGame(config,'2535753',Date.parse('2026-10-16T17:15:00+02:00')).partido,2535753);
   assert.equal(core.selectGame(config,'2538980',Date.parse('2026-10-16T21:00:00+02:00')).partido,2538980);

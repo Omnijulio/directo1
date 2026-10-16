@@ -2,11 +2,11 @@
   "version": 10,
   "narradores": [
     "Iñaqui García",
-    "Pancho \"Panchoneta\""
+    "Pancho"
   ],
   "feb": {
     "partido": 2535753,
-    "fuente": "https://baloncestoenvivo.feb.es/Partido.aspx?p=2535753",
+    "fuente": "https://www.feb.es/competiciones/partido/2535753",
     "inicio": "2026-10-16T20:45:00+02:00",
     "competicion": "Primera FEB",
     "jornada": "Jornada 4",
@@ -79,9 +79,5 @@
       }
     }
   ],
-  "narracion_fija": true,
-  "prueba_activa": {
-    "partido": 2538980,
-    "hasta": "2026-10-16T20:35:00+02:00"
-  }
+  "narracion_fija": true
 }
