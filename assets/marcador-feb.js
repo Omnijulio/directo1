@@ -275,7 +275,8 @@
     flash.style.setProperty("--flash-team", color || "#6d8cac");
     void flash.offsetWidth;
     flash.dataset.motion = "in"; flash.hidden = false;
-    activeFlash = {kind, until: Date.now() + FLASH_ENTER_MS + duration, exiting:false};
+    const enteredAt = Date.now() + FLASH_ENTER_MS;
+    activeFlash = {kind, enteredAt, until: enteredAt + duration, exiting:false};
   }
   function showNarrators(config) {
     const names = Array.isArray(config.narradores) ? config.narradores : [];
@@ -367,6 +368,9 @@
   function tick() {
     if (!game) return;
     const now = Date.now();
+    if (activeFlash && !activeFlash.exiting && now >= activeFlash.enteredAt && $("flash").dataset.motion === "in") {
+      $("flash").dataset.motion = "hold";
+    }
     if (activeFlash && now >= activeFlash.until) hideFlash();
     queue = queue.filter(event => now - event.at < 60000);
     if (activeFlash) return;
