@@ -1,0 +1,25 @@
+name: sonda-feb
+on:
+  push:
+    branches: [sonda]
+permissions:
+  contents: write
+jobs:
+  sonda:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Descargar paginas FEB
+        run: |
+          mkdir -p sonda
+          UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
+          for p in 2535753 2535745 2535737; do
+            curl -sSL -A "$UA" "https://baloncestoenvivo.feb.es/Partido.aspx?p=$p" -o sonda/partido_$p.html || true
+          done
+          curl -sSL -A "$UA" "https://baloncestoenvivo.feb.es/resultados.aspx?g=1&t=2026&nm=primerafeb" -o sonda/resultados.html || true
+          curl -sSI "https://ntfy.sh/" > sonda/ntfy_headers.txt || true
+          ls -la sonda
+      - name: Guardar
+        run: |
+          git config user.name "sonda"; git config user.email "sonda@users.noreply.github.com"
+          git add sonda && git commit -m "sonda feb" && git push origin sonda
