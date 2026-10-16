@@ -1,10 +1,9 @@
 {
-  "version": 4,
+  "version": 5,
   "narradores": [
     "Iraquí García",
     "Pancho \"Panchoneta\""
   ],
-  "credito_narradores": true,
   "feb": {
     "partido": 2535753,
     "fuente": "https://baloncestoenvivo.feb.es/Partido.aspx?p=2535753",
@@ -12,7 +11,7 @@
     "competicion": "Primera FEB",
     "jornada": "Jornada 4",
     "pabellon": "El Plantío · Burgos",
-    "actualizar_segundos": 15,
+    "actualizar_segundos": 10,
     "estadisticas": true,
     "local": {
       "id": "1008400",
@@ -56,7 +55,7 @@
       "competicion": "Liga U",
       "jornada": "Grupo B",
       "pabellon": "Palacio de los Deportes · Los Alcázares",
-      "actualizar_segundos": 15,
+      "actualizar_segundos": 10,
       "estadisticas": true,
       "comparar_cada_segundos": 60,
       "comparar_durante_segundos": 7,
@@ -79,5 +78,10 @@
         "escudo": "https://imagenes.feb.es/Imagen.aspx?i=1009924&ti=1"
       }
     }
-  ]
+  ],
+  "narracion_fija": true,
+  "prueba_activa": {
+    "partido": 2538980,
+    "hasta": "2026-10-16T20:35:00+02:00"
+  }
 }

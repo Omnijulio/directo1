@@ -11,6 +11,7 @@
   let game, configVersion, bootstrap, state, lastGood = 0, failed = false, pending = false, configPending = false;
   let nextPoll, bootChecked = 0, generation = 0, tracker, slideIndex = 0;
   let queue = [], activeFlash = null, nextComparisonAt = Date.now() + 60000;
+  let tickerItems = [], tickerCopies = [];
   const write = (id, value) => { $(id).textContent = value; };
   const stale = () => !!(state && !state.snapshot && (failed || (!previewMode && Date.now() - lastGood > 60000)));
   const statsEnabled = () => params.get("estadisticas") !== "0" && game.estadisticas !== false;
@@ -44,9 +45,12 @@
     $("cfg-game").addEventListener("change", build);
     getJSON("config-baloncesto.json?t=" + Date.now()).then(config => {
       const selected = $("cfg-game").value;
-      $("cfg-game").replaceChildren(...[config.feb, ...(config.pruebas || [])].map((entry, i) => {
-        const option = element("option", "", (i ? "Prueba FEB · " : "Emisión · ") + entry.local.corto + " – " + entry.visitante.corto);
-        option.value = i ? String(entry.partido) : ""; return option;
+      const choices = [{game:core.selectGame(config,null),value:"",label:"Activo · "},
+        {game:config.feb,value:String(config.feb.partido),label:"Tizona · "},
+        ...(config.pruebas || []).map(game => ({game,value:String(game.partido),label:"Prueba FEB · "}))];
+      $("cfg-game").replaceChildren(...choices.map(({game:entry,value,label}) => {
+        const option = element("option", "", label + entry.local.corto + " – " + entry.visitante.corto);
+        option.value = value; return option;
       }));
       $("cfg-game").value = selected; build();
     }).catch(() => {});
@@ -130,12 +134,14 @@
     }
     write("venue", params.get("ubicacion") || game.pabellon);
     $("scorebug").hidden = params.get("marcador") === "0";
+    $("scorebug").dataset.partido = String(game.partido);
+    showNarrators(config);
     if (!statsEnabled() && activeFlash && activeFlash.kind === "comparison") hideFlash();
     if (changed) {
       generation++; state = null; bootstrap = null; lastGood = 0; failed = false; bootChecked = 0;
       queue = []; slideIndex = 0; nextComparisonAt = Date.now() + seconds(game.comparar_cada_segundos, 60, 30, 600) * 1000;
       hideFlash(); clearTimeout(nextPoll); restoreSession(); render();
-      if (previewMode) showPreview(); else { showNarrators(config); poll(); }
+      if (previewMode) showPreview(); else poll();
     }
   }
 
@@ -184,7 +190,7 @@
       pending = false;
       if (requestGeneration === generation) render();
       clearTimeout(nextPoll);
-      nextPoll = setTimeout(poll, Math.max(1000, seconds(game.actualizar_segundos, 15, 15, 120) * 1000 - (Date.now() - startedAt)));
+      nextPoll = setTimeout(poll, Math.max(1000, seconds(game.actualizar_segundos, 10, 10, 120) * 1000 - (Date.now() - startedAt)));
     }
   }
 
@@ -206,12 +212,15 @@
     if (state && state.snapshot && !previewMode && Date.now() >= Date.parse(game.inicio)) state = null;
     const phase = state ? state.phase : "unknown", isStale = stale();
     $("scorebug").dataset.phase = phase; $("scorebug").dataset.stale = String(isStale);
+    $("scorebug").dataset.source = previewMode ? "simulation" : state ? state.snapshot ? "feb-ficha" : "feb-api" : "pending";
+    $("scorebug").dataset.received = lastGood ? new Date(lastGood).toISOString() : "";
     setScore("score-home", state && state.home.score); setScore("score-away", state && state.away.score);
     renderFouls("home", state && state.home); renderFouls("away", state && state.away);
     let clock = state && state.clock || "—", period = state ? periodText(state.quarter) : "FEB", status = "";
     if (phase === "pregame") {
       clock = Number.isFinite(Date.parse(game.inicio)) ? hourFormat.format(new Date(game.inicio)) : "—";
-      period = "PREVIA"; status = state.home.score === 0 && state.away.score === 0 ? "PREVIA · 0–0 CONFIRMADO POR FEB" : "PREVIA FEB";
+      period = "";
+      if (Date.now() >= Date.parse(game.inicio)) status = "ESPERANDO ACTUALIZACIÓN";
     } else if (phase === "final") { clock = "FINAL"; period = ""; }
     else if (phase === "break") { clock = "PAUSA"; period = "DESCANSO"; }
     else if (phase === "paused") status = "PARTIDO INTERRUMPIDO";
@@ -224,6 +233,7 @@
     $("scorebug").setAttribute("aria-label", [game.local.nombre, state ? state.home.score : "sin dato", game.visitante.nombre,
       state ? state.away.score : "sin dato", phase, status].join(" · "));
     if (isStale && activeFlash && activeFlash.kind === "comparison") hideFlash();
+    renderTicker();
   }
   function periodText(n) { return n > 4 ? "PR " + (n - 4) : n > 0 ? "C" + n : "FEB"; }
 
@@ -235,11 +245,48 @@
     activeFlash = {kind, until: Date.now() + duration};
   }
   function showNarrators(config) {
-    if (params.get("narradores") === "0" || config.credito_narradores === false || !Array.isArray(config.narradores) || !config.narradores.length) return;
-    const key = "feb-narradores-" + game.partido;
-    try { if (sessionStorage.getItem(key)) return; sessionStorage.setItem(key, "1"); } catch (_) {}
-    showFlash("narrators", [element("div", "flash-eyebrow", "NARRACIÓN"),
-      element("div", "narrator-names", config.narradores.join(" · "))], 6000);
+    const names = Array.isArray(config.narradores) ? config.narradores : [];
+    const hidden = params.get("narradores") === "0" || config.narracion_fija === false || !names.length;
+    $("commentators").hidden = hidden;
+    document.body.classList.toggle("without-commentators",hidden);
+    const list = $("commentator-list");
+    if (list.dataset.names === names.join("|")) return;
+    list.dataset.names = names.join("|");
+    list.replaceChildren(...names.map(name => {
+      const card = element("div", "commentator-card");
+      card.append(element("span", "commentator-role", "NARRACIÓN"),element("strong", "commentator-name", name));
+      return card;
+    }));
+    fitNarrators();
+  }
+  function fitNarrators() {
+    $("commentator-list").querySelectorAll(".commentator-name").forEach(el => {
+      let size = 43; el.style.fontSize = size + "px";
+      while (el.scrollWidth > el.clientWidth && size > 33) el.style.fontSize = --size + "px";
+    });
+  }
+  function fitTicker() {
+    const copy = tickerCopies[0];
+    if (copy) $("ticker-track").style.setProperty("--ticker-duration", Math.max(40,Math.round(copy.scrollWidth / 95)) + "s");
+  }
+  function renderTicker() {
+    $("ticker").hidden = !statsEnabled();
+    if (!statsEnabled()) return;
+    write("ticker-source",previewMode ? "DATOS DE PRUEBA" : lastGood ? "FEB · " + timeFormat.format(new Date(lastGood)) : "FEB");
+    let lines = stale() ? ["Reconectando con la FEB · Último dato recibido a las " + timeFormat.format(new Date(lastGood))] : core.tickerLines(state);
+    if (!lines.length) lines = ["Estadísticas disponibles cuando la FEB publique los datos del partido"];
+    if (lines.length !== tickerItems.length) {
+      tickerCopies = [0,1].map(i => {
+        const copy = element("div", "ticker-copy");
+        if (i) copy.setAttribute("aria-hidden","true");
+        lines.forEach(line => copy.append(element("span", "ticker-item", line)));
+        return copy;
+      });
+      $("ticker-track").replaceChildren(...tickerCopies); fitTicker();
+    } else {
+      lines.forEach((line,i) => { if (line !== tickerItems[i]) tickerCopies.forEach(copy => {copy.children[i].textContent = line;}); });
+    }
+    tickerItems = lines;
   }
   function enqueue(events) {
     for (const event of events) {
@@ -307,5 +354,6 @@
   }
   window.addEventListener("online", () => { if (game && !previewMode) { clearTimeout(nextPoll); poll(); } });
   document.addEventListener("visibilitychange", () => { if (!document.hidden && game && !previewMode) { clearTimeout(nextPoll); poll(); } });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => {fitNarrators();fitTicker();});
   setInterval(render, 1000); setInterval(tick, 250); setInterval(loadConfig, 5000); loadConfig();
 })();

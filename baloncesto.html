@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Baloncesto · Radio Evolución Burgos</title>
-<link rel="stylesheet" href="assets/directos-fonts.css?v=4">
-<link rel="stylesheet" href="assets/marcador-feb.css?v=4">
-<script defer src="assets/marcador-feb-core.js?v=4"></script>
-<script defer src="assets/marcador-feb.js?v=4"></script>
+<link rel="stylesheet" href="assets/directos-fonts.css?v=5">
+<link rel="stylesheet" href="assets/marcador-feb.css?v=5">
+<script defer src="assets/marcador-feb-core.js?v=5"></script>
+<script defer src="assets/marcador-feb.js?v=5"></script>
 </head>
 <body>
 <main id="stage">
@@ -31,17 +31,22 @@
     </div>
     <div id="score-status" class="score-status" role="status">CONECTANDO CON FEB</div>
   </section>
+  <section id="commentators" aria-label="Comentaristas del partido"><div id="commentator-list"></div></section>
   <aside id="flash" hidden aria-live="polite" aria-atomic="true"></aside>
   <div id="location"><svg width="12" height="15" viewBox="0 0 12 15" aria-hidden="true"><path d="M6 14s5-5.5 5-8A5 5 0 0 0 1 6c0 2.5 5 8 5 8Z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="6" cy="6" r="1.5" fill="currentColor"/></svg><span id="venue">El Plantío · Burgos</span></div>
+  <section id="ticker" aria-label="Estadísticas del partido">
+    <div class="ticker-heading"><strong>ESTADÍSTICAS</strong><span id="ticker-source">FEB</span></div>
+    <div class="ticker-viewport"><div id="ticker-track"></div></div>
+  </section>
   <span id="test-label" hidden>PRUEBA · DATOS FICTICIOS</span>
 </main>
 <form id="cfg" hidden>
   <h1>Marcador de baloncesto para PRISM</h1>
   <p>Usa este enlace en un widget Web de 1920 × 1080. El fondo de emisión es transparente.</p>
-  <label for="cfg-game">Partido</label><select id="cfg-game"><option value="">Emisión · Tizona – Oviedo</option><option value="2538980">Prueba FEB · UCAM Murcia CAR – Obradoiro</option></select>
-  <label><input id="cfg-stats" type="checkbox" checked> Comparativas ocasionales</label>
+  <label for="cfg-game">Partido</label><select id="cfg-game"><option value="">Partido activo</option><option value="2538980">Prueba FEB · UCAM Murcia CAR – Obradoiro</option></select>
+  <label><input id="cfg-stats" type="checkbox" checked> Banda de estadísticas y comparativas</label>
   <label><input id="cfg-events" type="checkbox" checked> Avisos de nuevas estadísticas de jugadores</label>
-  <label><input id="cfg-credits" type="checkbox" checked> Crédito breve de los narradores al abrir</label>
+  <label><input id="cfg-credits" type="checkbox" checked> Faldones fijos de los comentaristas</label>
   <label for="cfg-url">Enlace para PRISM</label><textarea id="cfg-url" readonly></textarea>
   <div class="config-actions"><button id="cfg-copy" type="button">Copiar enlace</button><a id="cfg-preview" target="_blank" rel="noopener">Vista de encuadre</a></div>
   <p id="cfg-result" role="status"></p>

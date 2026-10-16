@@ -12,14 +12,22 @@ function response(home='0',away='0') {
 }
 
 test('el partido de prueba se selecciona por URL sin sustituir la emisión del Tizona', () => {
-  assert.equal(core.selectGame(config,null).partido,2535753);
+  const afterPractice=Date.parse('2026-10-16T20:35:00+02:00');
+  assert.equal(core.selectGame(config,null,afterPractice).partido,2535753);
   const practice=core.selectGame(config,'2538980');
   assert.equal(practice.partido,2538980);
   assert.equal(practice.local.id,'1009930');assert.equal(practice.visitante.id,'1009924');
   assert.equal(practice.prueba,true);
-  assert.equal(core.selectGame(config,null).partido,2535753);
+  assert.equal(core.selectGame(config,null,afterPractice).partido,2535753);
   assert.equal(core.selectGame(config,'9999999'),null);
   assert.equal(core.selectGame(config,'https://example.org'),null);
+});
+test('el enlace general usa la prueba ahora y regresa al Tizona a las 20:35 sin alterar enlaces explícitos', () => {
+  assert.equal(core.selectGame(config,null,Date.parse('2026-10-16T17:15:00+02:00')).partido,2538980);
+  assert.equal(core.selectGame(config,null,Date.parse('2026-10-16T20:34:59+02:00')).partido,2538980);
+  assert.equal(core.selectGame(config,null,Date.parse('2026-10-16T20:35:00+02:00')).partido,2535753);
+  assert.equal(core.selectGame(config,'2535753',Date.parse('2026-10-16T17:15:00+02:00')).partido,2535753);
+  assert.equal(core.selectGame(config,'2538980',Date.parse('2026-10-16T21:00:00+02:00')).partido,2538980);
 });
 test('el 0–0 de UCAM Murcia CAR–Obradoiro pertenece solo a esa ficha FEB', () => {
   const practice=core.selectGame(config,'2538980');
@@ -188,4 +196,18 @@ test('agrupa los incrementos del mismo jugador sin mezclar equipos o inventar es
   assert.equal(grouped.length,2);
   assert.deepEqual(grouped[0].metrics.map(core.metricLabel),['+2 REBOTES','+1 ASISTENCIA','+2 PUNTOS','+1 CANASTA DE 2']);
   assert.equal(grouped[1].name,'OTRO');
+});
+
+test('la banda corrida usa estadísticas oficiales y nunca inventa datos pendientes', () => {
+  const raw=response('13','5');raw.HEADER.quarter=1;
+  raw.BOXSCORE={TEAM:[{id:'1008400',TOTAL:{rt:'7',assist:'1',p3m:'1',p3a:'4'},PLAYER:[{id:'1',name:'JUGADOR FEB',pts:'6'}]},
+    {id:'1009837',TOTAL:{rt:'1',assist:'2',p3m:'1',p3a:'1'},PLAYER:[{id:'2',name:'OTRO FEB',pts:'3'}]}]};
+  const lines=core.tickerLines(core.normalize(raw,game));
+  assert.ok(lines.includes('REBOTES · Tizona 7 – 1 Oviedo'));
+  assert.ok(lines.includes('ASISTENCIAS · Tizona 1 – 2 Oviedo'));
+  assert.ok(lines.some(x=>x.includes('JUGADOR FEB 6 PTS')));
+  assert.ok(!lines.some(x=>x.includes('PÉRDIDAS')));
+  assert.deepEqual(core.tickerLines(null),[]);
+  raw.HEADER.status='1';raw.HEADER.statusText='SCHEDULED';
+  assert.deepEqual(core.tickerLines(core.normalize(raw,game)),[]);
 });

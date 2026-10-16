@@ -19,7 +19,9 @@
   const byId = (items, id) => items.find(item => String(item.id) === String(id));
   const deleted = value => value === true || value === 1 || /^(true|1)$/i.test(text(value));
 
-  function selectGame(config, requested) {
+  function selectGame(config, requested, now) {
+    const practice = config.prueba_activa;
+    if (!requested && practice && (now === undefined ? Date.now() : now) < Date.parse(practice.hasta)) requested = practice.partido;
     if (!requested) return config.feb || null;
     if (!/^\d{1,10}$/.test(String(requested))) return null;
     return [config.feb, ...list(config.pruebas)].find(game => game && String(game.partido) === String(requested)) || null;
@@ -256,6 +258,19 @@
     return result;
   }
 
-  return {number, score, phase, selectGame, normalize, snapshotState, slides, quarterFouls, foulLights,
+  function tickerLines(state) {
+    return slides(state).flatMap(slide => {
+      if (slide.kind === "quarters") return ["PARCIALES · " + slide.quarters.map(q =>
+        (q.n > 4 ? "PR " + (q.n - 4) : "C" + q.n) + " " + q.home + "–" + q.away).join(" · ")];
+      const a = slide.home, b = slide.away;
+      if (slide.kind === "leader") return [slide.title + " · " + state.home.code + ": " + a.detail + " " + a.value +
+        " · " + state.away.code + ": " + b.detail + " " + b.value];
+      if (slide.kind === "comparison") return [slide.title + " · " + state.home.short + " " + a.value +
+        " – " + b.value + " " + state.away.short];
+      return [];
+    });
+  }
+
+  return {number, score, phase, selectGame, normalize, snapshotState, slides, tickerLines, quarterFouls, foulLights,
     playerEvents, createEventTracker, groupEvents, metricLabel};
 });
