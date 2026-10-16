@@ -1,9 +1,40 @@
 {
-  "version": 1,
-  "titulo": "RETRANSMISIÓN EN DIRECTO",
-  "subtitulo": "También en el 104.1 FM y en radioevolucion.es",
-  "etiqueta": "BALONCESTO",
-  "camara2": "NARRACIÓN",
-  "faldon": "fijo",
-  "marco": true
+  "version": 2,
+  "evento": "Rueda de prensa DOMUND 2026 · Archidiócesis de Burgos",
+  "escena": "auto",
+  "inicio": "2026-10-16T10:30:00+02:00",
+  "hablando": 0,
+  "rotulo": true,
+  "etiqueta": "RUEDA DE PRENSA",
+  "antetitulo": "ARCHIDIÓCESIS DE BURGOS",
+  "titulo": "EL DOMUND CUMPLE 100 AÑOS",
+  "subtitulo": "Presentación de la Jornada Mundial de las Misiones · Casa de la Iglesia, Burgos",
+  "ponentes": [
+    {"nombre": "Maite Domínguez", "cargo": "Delegada diocesana para las Misiones · Archidiócesis de Burgos"},
+    {"nombre": "María Ángeles Martínez García", "cargo": "Misionera carmelita en el Congo"},
+    {"nombre": "José Septién", "cargo": "Misionero carmelita · 30 años en Ecuador"}
+  ],
+  "ticker_visible": true,
+  "ticker_titulo": "CLAVES",
+  "ticker": [
+    "El **DOMUND** se celebra el domingo **18 de octubre** en todo el mundo",
+    "La Jornada Mundial de las Misiones cumple este año **100 años**",
+    "El DOMUND fue creado en **1926** por el papa **Pío XI**",
+    "Se celebra cada año el penúltimo domingo de octubre",
+    "Lema: **«Uno en Cristo, unidos en la misión»**",
+    "**418 misioneros de Burgos** han sido enviados por el mundo desde la Iglesia diocesana",
+    "Escúchanos en el **104.1 FM** y en **radioevolucion.es**"
+  ],
+  "sello": true,
+  "tarjetas": ["mapa", "intervienen", "lema"],
+  "tarjeta": "",
+  "ciclo_cada": 75,
+  "ciclo_dura": 20,
+  "mapa_cifra": 418,
+  "mapa_texto": "misioneros de Burgos enviados por el mundo",
+  "mapa_pie": "Desde la Iglesia diocesana. En el mapa, los destinos de los misioneros invitados.",
+  "lema": "Uno en Cristo, unidos en la misión",
+  "lema_datos": ["Domingo **18 de octubre**", "Creado en **1926** por Pío XI", "**100** años"],
+  "espera_titulo": "El DOMUND cumple **100 años**",
+  "espera_lugar": "Casa de la Iglesia · C/ Eduardo Martínez del Campo, 7 · Burgos"
 }
