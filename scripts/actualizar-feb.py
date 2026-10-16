@@ -91,8 +91,7 @@ def build_bootstrap(html, game, now=None):
     }
 
 
-def main():
-    game = json.loads((ROOT / "config-baloncesto.json").read_text())["feb"]
+def refresh_game(game):
     # Se construye la URL desde el ID: no se admiten destinos arbitrarios.
     game_id = str(game["partido"])
     if not re.fullmatch(r"\d{1,10}", game_id):
@@ -104,12 +103,26 @@ def main():
     data = build_bootstrap(html, game)
     folder = ROOT / "datos"
     folder.mkdir(exist_ok=True)
-    target = folder / "feb-bootstrap.json"
+    filename = game.get("bootstrap", "datos/feb-bootstrap.json")
+    if not re.fullmatch(r"datos/feb-(?:bootstrap|\d{1,10})\.json", filename):
+        raise ValueError("Archivo de acceso FEB no válido")
+    target = ROOT / filename
     temp = target.with_suffix(".tmp")
     temp.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n")
     temp.replace(target)
     print("Ficha FEB verificada. Partido", game_id, "·", data["ficha"]["local"]["puntos"],
           "–", data["ficha"]["visitante"]["puntos"], "· acceso público actualizado.")
+
+
+def main():
+    config = json.loads((ROOT / "config-baloncesto.json").read_text())
+    refresh_game(config["feb"])
+    for game in config.get("pruebas", []):
+        try:
+            refresh_game(game)
+        except Exception as error:
+            # Un partido de prueba no impide renovar el acceso de la emisión.
+            print("No se ha renovado la prueba", game.get("partido"), "·", type(error).__name__)
 
 
 if __name__ == "__main__":

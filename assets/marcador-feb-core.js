@@ -19,6 +19,12 @@
   const byId = (items, id) => items.find(item => String(item.id) === String(id));
   const deleted = value => value === true || value === 1 || /^(true|1)$/i.test(text(value));
 
+  function selectGame(config, requested) {
+    if (!requested) return config.feb || null;
+    if (!/^\d{1,10}$/.test(String(requested))) return null;
+    return [config.feb, ...list(config.pruebas)].find(game => game && String(game.partido) === String(requested)) || null;
+  }
+
   function timeline(raw) {
     const seen = new Set();
     return list(raw && raw.PLAYBYPLAY && raw.PLAYBYPLAY.LINES).filter(line => {
@@ -250,6 +256,6 @@
     return result;
   }
 
-  return {number, score, phase, normalize, snapshotState, slides, quarterFouls, foulLights,
+  return {number, score, phase, selectGame, normalize, snapshotState, slides, quarterFouls, foulLights,
     playerEvents, createEventTracker, groupEvents, metricLabel};
 });

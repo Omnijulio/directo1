@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "narradores": [
     "Iraquí García",
     "Pancho \"Panchoneta\""
@@ -33,6 +33,51 @@
     "comparar_cada_segundos": 60,
     "comparar_durante_segundos": 7,
     "aviso_jugador_segundos": 4,
-    "avisos_jugadores": true
-  }
+    "avisos_jugadores": true,
+    "bootstrap": "datos/feb-bootstrap.json"
+  },
+  "tema": {
+    "acento": "#F07A2A"
+  },
+  "marca": {
+    "visible": true,
+    "nombre": "Radio Evolución",
+    "localidad": "Burgos",
+    "frecuencia": "104.1 FM",
+    "logo": "assets/radio-evolucion.png"
+  },
+  "pruebas": [
+    {
+      "partido": 2538980,
+      "fuente": "https://www.feb.es/competiciones/partido/2538980",
+      "bootstrap": "datos/feb-2538980.json",
+      "prueba": true,
+      "inicio": "2026-10-16T17:00:00+02:00",
+      "competicion": "Liga U",
+      "jornada": "Grupo B",
+      "pabellon": "Palacio de los Deportes · Los Alcázares",
+      "actualizar_segundos": 15,
+      "estadisticas": true,
+      "comparar_cada_segundos": 60,
+      "comparar_durante_segundos": 7,
+      "aviso_jugador_segundos": 4,
+      "avisos_jugadores": true,
+      "local": {
+        "id": "1009930",
+        "nombre": "UCAM Murcia CAR",
+        "corto": "UCAM Murcia CAR",
+        "siglas": "UCM",
+        "color": "#D9302B",
+        "escudo": "https://imagenes.feb.es/Imagen.aspx?i=1009930&ti=1"
+      },
+      "visitante": {
+        "id": "1009924",
+        "nombre": "Obradoiro",
+        "corto": "Obradoiro",
+        "siglas": "OBR",
+        "color": "#3B89EA",
+        "escudo": "https://imagenes.feb.es/Imagen.aspx?i=1009924&ti=1"
+      }
+    }
+  ]
 }

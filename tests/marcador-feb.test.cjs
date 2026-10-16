@@ -1,6 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const core = require('../assets/marcador-feb-core.js');
+const config = require('../config-baloncesto.json');
 
 const game = {partido:2535753,inicio:'2026-10-16T20:45:00+02:00',
   local:{id:'1008400',corto:'Tizona',siglas:'TIZ'},visitante:{id:'1009837',corto:'Oviedo',siglas:'OVI'}};
@@ -9,6 +10,26 @@ function response(home='0',away='0') {
     TEAM:[{id:'1008400',pts:home,name:'Tizona'},{id:'1009837',pts:away,name:'Oviedo'}],
     QUARTERS:{QUARTER:[{n:'1',scoreA:home,scoreB:away}]}}};
 }
+
+test('el partido de prueba se selecciona por URL sin sustituir la emisión del Tizona', () => {
+  assert.equal(core.selectGame(config,null).partido,2535753);
+  const practice=core.selectGame(config,'2538980');
+  assert.equal(practice.partido,2538980);
+  assert.equal(practice.local.id,'1009930');assert.equal(practice.visitante.id,'1009924');
+  assert.equal(practice.prueba,true);
+  assert.equal(core.selectGame(config,null).partido,2535753);
+  assert.equal(core.selectGame(config,'9999999'),null);
+  assert.equal(core.selectGame(config,'https://example.org'),null);
+});
+test('el 0–0 de UCAM Murcia CAR–Obradoiro pertenece solo a esa ficha FEB', () => {
+  const practice=core.selectGame(config,'2538980');
+  const data={HEADER:{status:'1',statusText:'SCHEDULED',quarter:0,time:'00:00',
+    TEAM:[{id:'1009930',name:'UCAM MURCIA CAR',pts:'0'},{id:'1009924',name:'OBRADOIRO',pts:'0'}],QUARTERS:{QUARTER:[]}}};
+  const state=core.normalize(data,practice);
+  assert.equal(state.phase,'pregame');assert.equal(state.home.score,0);assert.equal(state.away.score,0);
+  assert.equal(state.home.fouls,0);assert.deepEqual(core.slides(state),[]);
+  assert.throws(()=>core.normalize(data,config.feb),/equipos/);
+});
 
 test('el 0–0 y el 0 de un solo equipo son resultados válidos', () => {
   const zero = core.normalize(response(),game);

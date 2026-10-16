@@ -43,8 +43,18 @@ Previsualizar otro momento del programa: añadir `?ahora=2026-10-16T22:40:00%2B0
 
 URL del layout: https://omnijulio.github.io/directo1/baloncesto.html
 
+También disponible en https://omnijulio.github.io/directo1/marcador.html. Ambas páginas usan el mismo controlador real FEB; el antiguo simulador aleatorio de `marcador.html` se ha sustituido.
+
+La composición comparte la identidad ya presente en las plantillas del repositorio: azul noche `#0F1726`, marfil `#F5EFE4`, acento naranja `#F07A2A`, Inter, Playfair Display, logo de Radio Evolución y silueta vectorial de Burgos. Las fuentes están incluidas en `assets/directos-fonts.css`, sin depender de Google Fonts. No hay marco de cámara de narración ni faldón permanente.
+
+### Prueba con el partido solicitado
+
+Abrir https://omnijulio.github.io/directo1/marcador.html?partido=2538980 para consultar **UCAM Murcia CAR–Obradoiro** mediante su API oficial FEB. La ficha de origen es https://www.feb.es/competiciones/partido/2538980, Liga U · Grupo B · 16/10/2026, 17:00 (Madrid). Esta vista está identificada como **PRUEBA · DATOS REALES FEB**, empieza con el 0–0 previo que publique la federación y continúa automáticamente cuando la FEB pase a estado de juego. No contiene una simulación ni altera la emisión por defecto del Tizona.
+
+Añadir `&demo=1` permite comprobar el encuadre sobre una pista de muestra. El enlace sin `demo` mantiene todo el fondo transparente. El configurador `?config=1` permite elegir entre la emisión y el partido de prueba.
+
 - Widget Web en PRISM: lienzo **1920 × 1080**, fondo transparente.
-- Marcador compacto: escudos, tanteo, reloj oficial y cinco luces de faltas por equipo. La ubicación queda discretamente abajo a la izquierda. Sin ventana de narración, faldones permanentes ni marca de gran tamaño.
+- Marcador compacto: escudos, tanteo, reloj oficial y cinco luces de faltas por equipo. La ubicación queda discretamente abajo a la izquierda y la marca de la radio ocupa una cabecera pequeña. Sin ventana de narración ni faldones permanentes.
 - Datos oficiales de `KeyFacts` consultados cada **15 s**, sin simular la cuenta atrás del reloj.
 - Las faltas se reconstruyen desde las jugadas del **cuarto actual**, excluyendo las técnicas del banquillo que no suman al equipo y las jugadas borradas. La cuarta luz es **naranja**; con cinco o más, **las cinco luces son rojas**. Se reinician con el siguiente cuarto; las prórrogas conservan las del cuarto periodo conforme a FIBA. Si falta el inicio del periodo y no se puede confirmar el recuento, las luces aparecen sin dato en vez de inventar cero.
 - Comparativas de rebotes, asistencias, tiros, recuperaciones, pérdidas y tapones: una tarjeta durante **7 s cada 60 s**. Se omiten mientras no haya datos o la conexión esté desactualizada.
@@ -57,7 +67,7 @@ URL del layout: https://omnijulio.github.io/directo1/baloncesto.html
 
 La sección `feb` de `config-baloncesto.json` define el partido, los IDs de ambos equipos, inicio con zona horaria y apariencia. No modifica el programa de ruedas de prensa de `index.html`.
 
-La FEB entrega en su HTML público un token de lectura de unas 24 h, necesario para su API. `scripts/actualizar-feb.py` lo extrae sin escribirlo en los logs, verifica los equipos y guarda la ficha previa en `datos/feb-bootstrap.json`. El workflow **Actualizar acceso público FEB** lo renueva cada cuatro horas y al cambiar el partido. El widget también consulta la copia actualizada en GitHub Raw cuando necesita renovar el acceso; no depende de una reconstrucción de Pages para recibir esa renovación. No se usan credenciales de la cuenta del usuario ni proxies de terceros.
+La FEB entrega en su HTML público un token de lectura de unas 24 h, necesario para su API. `scripts/actualizar-feb.py` lo extrae sin escribirlo en los logs, verifica los equipos y guarda las fichas previas en `datos/feb-bootstrap.json` (emisión) y `datos/feb-2538980.json` (prueba). El workflow **Actualizar acceso público FEB** los renueva cada cuatro horas y al cambiar la configuración. Un fallo en la ficha de prueba no impide renovar la emisión. El widget también consulta la copia actualizada en GitHub Raw cuando necesita renovar el acceso; no depende de una reconstrucción de Pages para recibir esa renovación. No se usan credenciales de la cuenta del usuario ni proxies de terceros.
 
 Comprobaciones locales:
 ```

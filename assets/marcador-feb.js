@@ -2,9 +2,8 @@
   "use strict";
   const core = window.FEBScore, $ = id => document.getElementById(id);
   const params = new URLSearchParams(location.search);
-  const RAW_BOOTSTRAP = "https://raw.githubusercontent.com/Omnijulio/directo1/main/datos/feb-bootstrap.json";
+  const RAW_ROOT = "https://raw.githubusercontent.com/Omnijulio/directo1/main/";
   const API = "https://intrafeb.feb.es/LiveStats.API/api/v1/KeyFacts/";
-  const bootSources = ["datos/feb-bootstrap.json", RAW_BOOTSTRAP];
   const preview = params.get("prueba") || "";
   const previewMode = ["previa", "vivo", "descanso", "final", "conexion", "faltas", "accion", "comparativa"].includes(preview);
   const timeFormat = new Intl.DateTimeFormat("es-ES", {timeZone: "Europe/Madrid", hour: "2-digit", minute: "2-digit", second: "2-digit"});
@@ -34,12 +33,23 @@
     const controls = [["cfg-stats", "estadisticas"], ["cfg-events", "avisos"], ["cfg-credits", "narradores"]];
     const build = () => {
       const url = new URL(location.origin + location.pathname);
+      if ($("cfg-game").value) url.searchParams.set("partido", $("cfg-game").value);
       controls.forEach(([id, key]) => { if (!$(id).checked) url.searchParams.set(key, "0"); });
       $("cfg-url").value = url.href;
       url.searchParams.set("demo", "1"); $("cfg-preview").href = url.href;
       write("cfg-result", "");
     };
     controls.forEach(([id, key]) => { $(id).checked = params.get(key) !== "0"; $(id).addEventListener("change", build); });
+    $("cfg-game").value = params.get("partido") || "";
+    $("cfg-game").addEventListener("change", build);
+    getJSON("config-baloncesto.json?t=" + Date.now()).then(config => {
+      const selected = $("cfg-game").value;
+      $("cfg-game").replaceChildren(...[config.feb, ...(config.pruebas || [])].map((entry, i) => {
+        const option = element("option", "", (i ? "Prueba FEB · " : "Emisión · ") + entry.local.corto + " – " + entry.visitante.corto);
+        option.value = i ? String(entry.partido) : ""; return option;
+      }));
+      $("cfg-game").value = selected; build();
+    }).catch(() => {});
     $("cfg").addEventListener("submit", event => event.preventDefault());
     $("cfg-copy").addEventListener("click", async () => {
       try { await navigator.clipboard.writeText($("cfg-url").value); write("cfg-result", "Enlace copiado."); }
@@ -63,7 +73,10 @@
 
   async function loadBootstrap(force) {
     if (!force && bootstrap && Date.parse(bootstrap.caduca) > Date.now() + 120000 && Date.now() - bootChecked < 3600000) return bootstrap;
-    for (const source of force ? [...bootSources].reverse() : bootSources) {
+    const filename = game.bootstrap || "datos/feb-bootstrap.json";
+    if (!/^datos\/feb-(?:bootstrap|\d{1,10})\.json$/.test(filename)) throw new Error("Archivo de acceso FEB no válido");
+    const sources = [filename, RAW_ROOT + filename];
+    for (const source of force ? sources.reverse() : sources) {
       try {
         const data = await getJSON(source + "?t=" + Math.floor(Date.now() / 30000));
         const expiry = Date.parse(data.caduca);
@@ -95,10 +108,21 @@
   }
 
   function configure(config) {
-    const next = config.feb;
+    const next = core.selectGame(config, params.get("partido"));
+    if (!next) { write("score-status", "PARTIDO NO CONFIGURADO"); return; }
     if (!next || !/^\d{1,10}$/.test(String(next.partido)) || !next.local || !next.visitante) return;
     const changed = !game || String(game.partido) !== String(next.partido);
     game = next;
+    const accent = config.tema && config.tema.acento;
+    if (/^#[\da-f]{6}$/i.test(accent)) document.documentElement.style.setProperty("--acc", accent);
+    const brand = config.marca || {};
+    $("brand").hidden = brand.visible === false || params.get("solo") === "marcador";
+    write("brand-name", brand.nombre || "Radio Evolución");
+    write("brand-place", brand.localidad || "Burgos");
+    write("brand-frequency", brand.frecuencia || "104.1 FM");
+    setImage("brand-logo", brand.logo || "assets/radio-evolucion.png", brand.nombre || "Radio Evolución Burgos");
+    $("feed-label").hidden = previewMode || !game.prueba;
+    document.title = game.local.corto + " – " + game.visitante.corto + " · Radio Evolución";
     for (const [side, team] of [["home", game.local], ["away", game.visitante]]) {
       document.documentElement.style.setProperty("--team-" + side, /^#[\da-f]{6}$/i.test(team.color) ? team.color : side === "home" ? "#3b89ea" : "#f6c65d");
       write("score-" + side + "-fallback", team.siglas);
