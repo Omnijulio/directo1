@@ -49,7 +49,7 @@
       const selected = $("cfg-game").value;
       const choices = [{game:core.selectGame(config,null),value:"",label:"Activo · "},
         {game:config.feb,value:String(config.feb.partido),label:"Tizona · "},
-        ...(config.pruebas || []).map(game => ({game,value:String(game.partido),label:"Prueba FEB · "}))];
+        ...(config.pruebas || []).map(game => ({game,value:String(game.partido),label:"Partido · "}))];
       $("cfg-game").replaceChildren(...choices.map(({game:entry,value,label}) => {
         const option = element("option", "", label + entry.local.corto + " – " + entry.visitante.corto);
         option.value = value; return option;
@@ -132,14 +132,9 @@
     const accent = config.tema && config.tema.acento;
     if (/^#[\da-f]{6}$/i.test(accent)) document.documentElement.style.setProperty("--acc", accent);
     const brand = config.marca || {};
-    $("brand").hidden = brand.visible === false || params.get("solo") === "marcador";
-    document.body.classList.toggle("no-top-brand", $("brand").hidden);
-    write("brand-name", brand.nombre || "Radio Evolución");
-    write("brand-place", brand.localidad || "Burgos");
-    write("brand-frequency", brand.frecuencia || "104.1 FM");
+    $("brand").hidden = brand.visible === false;
     setImage("brand-logo", brand.logo || "assets/radio-evolucion.png", brand.nombre || "Radio Evolución Burgos", true);
     setImage("commentator-logo", brand.logo || "assets/radio-evolucion.png", brand.nombre || "Radio Evolución Burgos", true);
-    $("feed-label").hidden = previewMode || !game.prueba;
     document.title = game.local.corto + " – " + game.visitante.corto + " · Radio Evolución";
     for (const [side, team] of [["home", game.local], ["away", game.visitante]]) {
       document.documentElement.style.setProperty("--team-" + side, /^#[\da-f]{6}$/i.test(team.color) ? team.color : side === "home" ? "#3b89ea" : "#f6c65d");
@@ -218,7 +213,7 @@
   function renderFouls(side, team) {
     const row = $(side + "-fouls"), count = team ? core.number(team.fouls) : null;
     const label = (side === "home" ? game.local.corto : game.visitante.corto) + ": " +
-      (count === null ? "faltas del cuarto sin dato FEB" : count + " faltas del cuarto" + (count >= 5 ? ", bonus" : ""));
+      (count === null ? "faltas del cuarto sin dato" : count + " faltas del cuarto" + (count >= 5 ? ", bonus" : ""));
     row.setAttribute("aria-label", label); row.title = label;
     core.foulLights(count).forEach((light, i) => { row.children[i].dataset.light = light; });
   }
@@ -234,7 +229,7 @@
     $("scorebug").dataset.received = lastGood ? new Date(lastGood).toISOString() : "";
     setScore("score-home", state && state.home.score); setScore("score-away", state && state.away.score);
     renderFouls("home", state && state.home); renderFouls("away", state && state.away);
-    let clock = state && state.clock || "—", period = state ? periodText(state.quarter) : "FEB", status = "";
+    let clock = state && state.clock || "—", period = state ? periodText(state.quarter) : "", status = "";
     if (phase === "pregame") {
       clock = Number.isFinite(Date.parse(game.inicio)) ? hourFormat.format(new Date(game.inicio)) : "—";
       period = "";
@@ -242,7 +237,7 @@
     } else if (phase === "final") { clock = "FINAL"; period = ""; }
     else if (phase === "break" && clock === "—") clock = "PAUSA";
     else if (phase === "paused") status = "PARTIDO INTERRUMPIDO";
-    else if (phase !== "live") status = "ESPERANDO DATOS FEB";
+    else if (phase !== "live") status = "ESPERANDO DATOS";
     else if (state.home.score === 0 && state.away.score === 0) status = "0–0 · EN JUEGO";
     if (isStale) status = "ÚLTIMO DATO " + timeFormat.format(new Date(lastGood)) + " · RECONECTANDO";
     if (previewMode) status = "PRUEBA · DATOS FICTICIOS";
@@ -253,7 +248,7 @@
     if (isStale && activeFlash && activeFlash.kind === "comparison") hideFlash();
     renderTicker();
   }
-  function periodText(n) { return n > 4 ? "PR " + (n - 4) : n > 0 ? "C" + n : "FEB"; }
+  function periodText(n) { return n > 4 ? "PR " + (n - 4) : n > 0 ? "C" + n : ""; }
 
   function clearFlash() {
     clearTimeout(flashExitTimer);
@@ -306,9 +301,9 @@
   function renderTicker() {
     $("ticker").hidden = !statsEnabled();
     if (!statsEnabled()) return;
-    write("ticker-source",previewMode ? "DATOS DE PRUEBA" : lastGood ? "FEB · " + timeFormat.format(new Date(lastGood)) : "FEB");
-    let lines = stale() ? ["Reconectando con la FEB · Último dato recibido a las " + timeFormat.format(new Date(lastGood))] : core.tickerLines(state);
-    if (!lines.length) lines = ["Estadísticas disponibles cuando la FEB publique los datos del partido"];
+    write("ticker-source",previewMode ? "DATOS DE PRUEBA" : lastGood ? timeFormat.format(new Date(lastGood)) : "ACTUALIZANDO");
+    let lines = stale() ? ["Reconectando · Último dato recibido a las " + timeFormat.format(new Date(lastGood))] : core.tickerLines(state);
+    if (!lines.length) lines = ["Estadísticas disponibles cuando se reciban los datos del partido"];
     if (lines.length !== tickerItems.length) {
       tickerCopies = [0,1].map(i => {
         const copy = element("div", "ticker-copy");

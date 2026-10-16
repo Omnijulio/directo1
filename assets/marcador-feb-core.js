@@ -264,8 +264,8 @@
     metric("assist", "ASISTENCIAS");
     [["p3", "TRIPLES"], ["p2", "TIROS DE DOS"], ["p1", "TIROS LIBRES"]].forEach(([key, label]) => {
       const av = shot(a, key), bv = shot(b, key);
-      if (av || bv) result.push({key, title: label, kind: "comparison", home: av || {value: "—", numeric: null, detail: "Sin dato FEB"},
-        away: bv || {value: "—", numeric: null, detail: "Sin dato FEB"}, note: "CONVERTIDOS / INTENTADOS"});
+      if (av || bv) result.push({key, title: label, kind: "comparison", home: av || {value: "—", numeric: null, detail: "Sin dato"},
+        away: bv || {value: "—", numeric: null, detail: "Sin dato"}, note: "CONVERTIDOS / INTENTADOS"});
     });
     metric("st", "RECUPERACIONES");
     metric("to", "PÉRDIDAS", "BALONES PERDIDOS", true);

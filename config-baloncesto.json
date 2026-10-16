@@ -1,5 +1,5 @@
 {
-  "version": 8,
+  "version": 9,
   "narradores": [
     "Iñaqui García",
     "Pancho \"Panchoneta\""
@@ -39,7 +39,7 @@
     "acento": "#F07A2A"
   },
   "marca": {
-    "visible": false,
+    "visible": true,
     "nombre": "Radio Evolución",
     "localidad": "Burgos",
     "frecuencia": "104.1 FM",
