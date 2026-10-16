@@ -1,0 +1,15 @@
+HTTP/2 404 
+date: Fri, 16 Oct 2026 02:37:15 GMT
+content-type: application/problem+json; charset=utf-8
+cache-control: public,max-age=15
+access-control-allow-credentials: true
+access-control-allow-origin: https://baloncestoenvivo.feb.es
+x-ua-device: pc
+age: 0
+vary: Authorization, Origin, User-Agent
+x-cache: MISS
+x-cache-hits: 0
+content-length: 133
+x-xss-protection: 1;mode=block
+x-content-type-options: nosniff
+
