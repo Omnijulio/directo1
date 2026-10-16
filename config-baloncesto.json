@@ -1,9 +1,36 @@
 {
-  "version": 1,
-  "titulo": "RETRANSMISIÓN EN DIRECTO",
+  "version": 2,
+  "titulo": "GRUPO URETA TIZONA · ALIMERKA OVIEDO",
   "subtitulo": "También en el 104.1 FM y en radioevolucion.es",
   "etiqueta": "BALONCESTO",
   "camara2": "NARRACIÓN",
   "faldon": "fijo",
-  "marco": true
+  "marco": true,
+  "feb": {
+    "partido": 2535753,
+    "fuente": "https://baloncestoenvivo.feb.es/Partido.aspx?p=2535753",
+    "inicio": "2026-10-16T20:45:00+02:00",
+    "competicion": "Primera FEB",
+    "jornada": "Jornada 4",
+    "pabellon": "El Plantío · Burgos",
+    "actualizar_segundos": 15,
+    "rotar_segundos": 8,
+    "estadisticas": true,
+    "local": {
+      "id": "1008400",
+      "nombre": "Grupo Ureta Tizona Burgos",
+      "corto": "Tizona Burgos",
+      "siglas": "TIZ",
+      "color": "#3B89EA",
+      "escudo": "https://imagenes.feb.es/Imagen.aspx?i=1008400&ti=1"
+    },
+    "visitante": {
+      "id": "1009837",
+      "nombre": "Alimerka Oviedo Baloncesto",
+      "corto": "Alimerka Oviedo",
+      "siglas": "OVI",
+      "color": "#F6C65D",
+      "escudo": "https://imagenes.feb.es/Imagen.aspx?i=1009837&ti=1"
+    }
+  }
 }

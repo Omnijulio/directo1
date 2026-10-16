@@ -38,3 +38,25 @@ Previsualizar otro momento del programa: añadir `?ahora=2026-10-16T22:40:00%2B0
 - `plantillas/rueda-entrenador-baloncesto.json`: declaraciones de entrenadores de baloncesto de Burgos (escudos, marcador final y rótulo con escudo).
 
 `baloncesto.html` es el marcador de baloncesto (usa `config-baloncesto.json`).
+
+## Marcador FEB para PRISM
+
+URL del layout: https://omnijulio.github.io/directo1/baloncesto.html
+
+- Widget Web en PRISM: lienzo **1920 × 1080**, fondo transparente.
+- Resultado, escudos, periodo y reloj de la FEB en la esquina superior derecha.
+- Datos oficiales de `BoxScore` consultados cada **15 s**, sin simular la cuenta atrás del reloj.
+- Franja de estadísticas cada **8 s**: rebotes, asistencias, tiros, recuperaciones, pérdidas, tapones, líderes y parciales. Los datos aún no publicados se omiten o aparecen como `—`.
+- La ficha previa oficial permite mostrar **0–0** antes del inicio. Al llegar la hora del partido, ese dato estático deja de utilizarse. Un fallo de red nunca se convierte en cero: se conserva el último resultado recibido, con un aviso y su hora.
+- `?solo=marcador` deja el marcador y las estadísticas; `?estadisticas=0` oculta la franja. El configurador está en `?config=1`.
+- `?demo=1` añade un fondo de encuadre sin inventar el resultado. Para comprobar diseños con datos ficticios, usar `?demo=1&prueba=vivo` (o `previa`, `descanso`, `final`, `conexion`); estas vistas llevan una etiqueta explícita de prueba.
+
+La sección `feb` de `config-baloncesto.json` define el partido, los IDs de ambos equipos, inicio con zona horaria y apariencia. No modifica el programa de ruedas de prensa de `index.html`.
+
+La FEB entrega en su HTML público un token de lectura de unas 24 h, necesario para su API. `scripts/actualizar-feb.py` lo extrae sin escribirlo en los logs, verifica los equipos y guarda la ficha previa en `datos/feb-bootstrap.json`. El workflow **Actualizar acceso público FEB** lo renueva cada cuatro horas y al cambiar el partido. El widget también consulta la copia actualizada en GitHub Raw cuando necesita renovar el acceso; no depende de una reconstrucción de Pages para recibir esa renovación. No se usan credenciales de la cuenta del usuario ni proxies de terceros.
+
+Comprobaciones locales:
+```
+node --test tests/marcador-feb.test.cjs
+python -m unittest discover -s tests -p 'test_*.py'
+```

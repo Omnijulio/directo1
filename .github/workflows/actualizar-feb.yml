@@ -1,0 +1,41 @@
+name: Actualizar acceso público FEB
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '7 */4 * * *'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/actualizar-feb.yml'
+      - 'scripts/actualizar-feb.py'
+      - 'config-baloncesto.json'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: renovar-feb
+  cancel-in-progress: false
+
+jobs:
+  renovar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Comprobar el marcador
+        run: node --test tests/marcador-feb.test.cjs
+      - name: Comprobar el lector de la ficha
+        run: python -m unittest discover -s tests -p 'test_*.py'
+      - name: Consultar la ficha pública de la FEB
+        run: python scripts/actualizar-feb.py
+      - name: Guardar acceso renovado
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add datos/feb-bootstrap.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Actualizar ficha y acceso público FEB'
+          git pull --rebase origin main
+          git push origin HEAD:main
