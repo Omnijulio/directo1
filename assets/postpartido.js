@@ -12,7 +12,7 @@
   document.body.appendChild(stage);
   if (params.get("demo") === "1") document.body.classList.add("demo");
   const $ = id => document.getElementById(id);
-  let key = "", timer, pending = false;
+  let key = "", timer, enterTimer, initialVersion, pending = false;
   function fitStage() {
     const k = Math.min(innerWidth / 1920, innerHeight / 1080);
     stage.style.transform = "translate(" + ((innerWidth - 1920 * k) / 2) + "px," + ((innerHeight - 1080 * k) / 2) + "px) scale(" + k + ")";
@@ -29,7 +29,7 @@
     if (!model) return;
     const nextKey = JSON.stringify(model);
     if (nextKey === key) return;
-    key = nextKey; clearTimeout(timer);
+    key = nextKey; clearTimeout(timer); clearTimeout(enterTimer);
     const panel = $("pg-panel"), wasVisible = !panel.hidden;
     panel.dataset.changing = "true";
     delete panel.dataset.entering;
@@ -43,6 +43,7 @@
       panel.hidden = false; panel.dataset.changing = "false"; panel.dataset.entering = "true";
       stage.dataset.turno = model.mode; document.title = model.title + " · Radio Evolución";
       fitText();
+      enterTimer = setTimeout(() => { delete panel.dataset.entering; },450);
     };
     if (wasVisible && !immediate) timer = setTimeout(paint,180); else paint();
   }
@@ -65,6 +66,10 @@
           const raw = await getConfig(url + "?t=" + Date.now());
           const now = params.has("ahora") ? Date.parse(params.get("ahora")) : Date.now();
           if (legacyRoot && core.currentEvent(raw,now)?.id !== "postpartido") { location.reload(); return; }
+          if (Number(raw.version) > initialVersion) {
+            const published = await getConfig("config.json?t=" + Date.now());
+            if (Number(published.version) > initialVersion) { location.reload(); return; }
+          }
           render(raw,false); stage.dataset.configSource = url; stage.dataset.received = new Date().toISOString();
           break;
         } catch (_) { /* Se conserva el último rótulo y se prueba la copia publicada. */ }
@@ -73,7 +78,10 @@
   }
   window.addEventListener("resize",fitStage); fitStage();
   $("pg-panel").addEventListener("animationend",event => { if (event.target === $("pg-panel")) delete $("pg-panel").dataset.entering; });
-  try { render(JSON.parse($("pg-bootstrap").textContent),true); } catch (_) {}
+  try {
+    const initial = JSON.parse($("pg-bootstrap").textContent);
+    initialVersion = Number(initial.version); render(initial,true);
+  } catch (_) {}
   if (document.fonts?.ready) document.fonts.ready.then(fitText);
   document.addEventListener("visibilitychange",() => { if (!document.hidden) poll(); });
   window.addEventListener("online",poll);
