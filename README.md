@@ -76,3 +76,27 @@ Comprobaciones locales:
 node --test tests/marcador-feb.test.cjs
 python -m unittest discover -s tests -p 'test_*.py'
 ```
+
+## Comparecencias postpartido · Tizona–Oviedo
+
+La página principal https://omnijulio.github.io/directo1/ queda en espera con el rótulo «Declaraciones de los entrenadores · En breve · Tras el partido». El programa anterior del DOMUND sigue disponible para su horario y previsualización. La vista de baloncesto `baloncesto.html` mantiene el marcador de la retransmisión.
+
+Tres fuentes Web independientes para escenas de PRISM, todas a **1920 × 1080 y con fondo transparente**:
+
+| Escena | URL | Rótulo |
+|---|---|---|
+| Espera / control desde el chat | https://omnijulio.github.io/directo1/postpartido.html | Sigue el turno de la página principal; inicialmente, «Declaraciones de los entrenadores» |
+| 1. Visitante | https://omnijulio.github.io/directo1/entrenador-visitante.html | Javi Rodríguez · Entrenador visitante · Alimerka Oviedo |
+| 2. Local | https://omnijulio.github.io/directo1/entrenador-local.html | Denís Pombar · Entrenador local · Grupo Ureta Tizona |
+
+En PRISM, duplicar la escena que contiene la señal de vídeo y sustituir la fuente Web por la URL correspondiente. Colocar el grafismo por encima del vídeo. Las páginas de visitante y local mantienen fijo al entrenador elegido; cambiar de escena realiza el cambio sin esperar una publicación de la web. No contienen vídeo ni audio: se superponen a la cámara o a la entrada RTMP de la escena.
+
+El bloque `programa` con `id: "postpartido"` en `config.json` conserva el orden de `ponentes`: **1 visitante, 2 local**. `hablando: 0` muestra la espera; `1`, Javi Rodríguez; `2`, Denís Pombar. La página principal y `postpartido.html` siguen ese valor. Para cambiar solo el turno, mantener `version` y editar `hablando`; el controlador consulta la configuración cada cinco segundos, primero en GitHub Raw y después en la copia publicada si hace falta. Las escenas fijas leen las correcciones de nombres y escudos, sin cambiar de entrenador. No hay alternancia automática.
+
+`?turno=espera` fuerza el rótulo de espera y `?demo=1` añade un fondo de muestra para revisar el encuadre. Las páginas de emisión conservan el fondo transparente.
+
+Nombres verificados en las fuentes de ambos clubes el 16/10/2026:
+- Alimerka Oviedo: https://oviedobaloncesto.com/un-grupo-de-trabajo-consolidado-para-javi-rodriguez/
+- Tizona: https://www.cbtizona.es/actualidad/denis-pombar-continuara-al-frente-del-club-baloncesto-tizona/
+
+Pruebas de selección de turnos: `node --test tests/postpartido.test.cjs`.
