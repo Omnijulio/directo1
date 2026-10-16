@@ -5,12 +5,14 @@
   const RAW_ROOT = "https://raw.githubusercontent.com/Omnijulio/directo1/main/";
   const API = "https://intrafeb.feb.es/LiveStats.API/api/v1/KeyFacts/";
   const preview = params.get("prueba") || "";
-  const previewMode = ["previa", "vivo", "tiempo-muerto", "fin-cuarto", "descanso", "final", "conexion", "faltas", "accion", "comparativa"].includes(preview);
+  const previewMode = ["previa", "vivo", "tiempo-muerto", "fin-cuarto", "descanso", "final", "conexion", "faltas", "accion", "comparativa", "animacion"].includes(preview);
+  const FLASH_ENTER_MS = 420, FLASH_EXIT_MS = 300;
   const timeFormat = new Intl.DateTimeFormat("es-ES", {timeZone: "Europe/Madrid", hour: "2-digit", minute: "2-digit", second: "2-digit"});
   const hourFormat = new Intl.DateTimeFormat("es-ES", {timeZone: "Europe/Madrid", hour: "2-digit", minute: "2-digit"});
   let game, configVersion, bootstrap, state, lastGood = 0, failed = false, pending = false, configPending = false;
   let nextPoll, bootChecked = 0, generation = 0, tracker, slideIndex = 0;
   let queue = [], activeFlash = null, nextComparisonAt = Date.now() + 60000;
+  let flashExitTimer, previewStep = 0, nextPreviewAt = 0;
   let tickerItems = [], tickerCopies = [];
   const write = (id, value) => { $(id).textContent = value; };
   const stale = () => !!(state && !state.snapshot && (failed || (!previewMode && Date.now() - lastGood > 60000)));
@@ -153,7 +155,7 @@
       generation++; state = null; bootstrap = null; lastGood = 0; failed = false; bootChecked = 0;
       tickerItems = []; tickerCopies = [];
       queue = []; slideIndex = 0; nextComparisonAt = Date.now() + seconds(game.comparar_cada_segundos, 60, 30, 600) * 1000;
-      hideFlash(); clearTimeout(nextPoll); restoreSession(); render();
+      hideFlash(true); clearTimeout(nextPoll); restoreSession(); render();
       if (previewMode) showPreview(); else poll();
     }
   }
@@ -253,12 +255,27 @@
   }
   function periodText(n) { return n > 4 ? "PR " + (n - 4) : n > 0 ? "C" + n : "FEB"; }
 
-  function hideFlash() { $("flash").hidden = true; $("flash").replaceChildren(); activeFlash = null; }
+  function clearFlash() {
+    clearTimeout(flashExitTimer);
+    const flash = $("flash"); flash.hidden = true; flash.replaceChildren(); delete flash.dataset.motion;
+    activeFlash = null;
+  }
+  function finishFlashExit() { clearFlash(); tick(); }
+  function hideFlash(immediate) {
+    if (immediate || !activeFlash) { clearFlash(); return; }
+    if (activeFlash.exiting) return;
+    activeFlash.exiting = true;
+    $("flash").dataset.motion = "out";
+    // Respaldo si el navegador no entrega animationend al ocultar la pestaña.
+    flashExitTimer = setTimeout(finishFlashExit, FLASH_EXIT_MS + 80);
+  }
   function showFlash(kind, nodes, duration, color) {
+    clearFlash();
     const flash = $("flash"); flash.replaceChildren(...nodes); flash.dataset.kind = kind;
     flash.style.setProperty("--flash-team", color || "#6d8cac");
-    flash.hidden = false; flash.style.animation = "none"; void flash.offsetWidth; flash.style.animation = "";
-    activeFlash = {kind, until: Date.now() + duration};
+    void flash.offsetWidth;
+    flash.dataset.motion = "in"; flash.hidden = false;
+    activeFlash = {kind, until: Date.now() + FLASH_ENTER_MS + duration, exiting:false};
   }
   function showNarrators(config) {
     const names = Array.isArray(config.narradores) ? config.narradores : [];
@@ -353,6 +370,14 @@
     if (activeFlash && now >= activeFlash.until) hideFlash();
     queue = queue.filter(event => now - event.at < 60000);
     if (activeFlash) return;
+    if (preview === "animacion") {
+      if (now < nextPreviewAt) return;
+      const step = previewStep++ % 3, team = step === 2 ? game.visitante : game.local;
+      if (step === 1) showComparison(core.slides(state)[0], 2200);
+      else showPlayer({teamId:String(team.id),name:"JUGADOR DE PRUEBA",quarter:3,clock:"06:24",
+        metrics:[{key:"pts",amount:3},{key:"p3m",amount:1}]},2200);
+      nextPreviewAt = now + 4500; return;
+    }
     if (queue.length && eventsEnabled()) {
       showPlayer(queue.shift(), seconds(game.aviso_jugador_segundos, 4, 3, 8) * 1000); return;
     }
@@ -384,6 +409,13 @@
   }
   window.addEventListener("online", () => { if (game && !previewMode) { clearTimeout(nextPoll); poll(); } });
   document.addEventListener("visibilitychange", () => { if (!document.hidden && game && !previewMode) { clearTimeout(nextPoll); poll(); } });
+  $("flash").style.setProperty("--flash-in-duration", FLASH_ENTER_MS + "ms");
+  $("flash").style.setProperty("--flash-out-duration", FLASH_EXIT_MS + "ms");
+  $("flash").addEventListener("animationend", event => {
+    if (event.target !== $("flash") || !activeFlash || !/^flash-/.test(event.animationName)) return;
+    if (activeFlash.exiting && /^(flash-out|flash-fade-out)$/.test(event.animationName)) finishFlashExit();
+    else if (!activeFlash.exiting && /^(flash-in|flash-fade-in)$/.test(event.animationName)) $("flash").dataset.motion = "hold";
+  });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => {fitNarrators();fitTicker();});
   setInterval(render, 1000); setInterval(tick, 250); setInterval(loadConfig, 5000); loadConfig();
 })();
