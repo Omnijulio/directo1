@@ -289,10 +289,10 @@
   }
   function fitNarrators() {
     const list = $("commentator-list"), names = list.querySelectorAll(".commentator-name");
-    let size = 43;
+    let size = 36;
     const apply = () => names.forEach(el => { el.style.fontSize = size + "px"; });
     apply();
-    while (list.scrollWidth > list.clientWidth && size > 33) { size--; apply(); }
+    while (list.scrollWidth > list.clientWidth && size > 28) { size--; apply(); }
   }
   function fitTicker() {
     const copy = tickerCopies[0];

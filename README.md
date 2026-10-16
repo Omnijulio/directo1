@@ -45,7 +45,7 @@ URL del layout: https://omnijulio.github.io/directo1/baloncesto.html
 
 También disponible en https://omnijulio.github.io/directo1/marcador.html. Ambas páginas usan el mismo controlador real FEB; el antiguo simulador aleatorio de `marcador.html` se ha sustituido.
 
-La composición comparte la identidad ya presente en las plantillas del repositorio: azul noche `#0F1726`, marfil `#F5EFE4`, acento naranja `#F07A2A`, tipografía moderna Inter en marcador, estadísticas y nombres, logo de Radio Evolución y silueta vectorial de Burgos. Las fuentes están incluidas en `assets/directos-fonts.css`, sin depender de Google Fonts. Los dos comentaristas comparten un único faldón permanente ajustado al ancho de los nombres y el logo, sin espacio sobrante. Conserva los nombres a 43 px y usa un logo de 72 px; la ubicación aparece sobre él, sin otra caja. Una mosca circular de 88 px con el logo de Radio Evolución ocupa la esquina superior izquierda. No hay marco de cámara de narración.
+La composición comparte la identidad ya presente en las plantillas del repositorio: azul noche `#0F1726`, marfil `#F5EFE4`, acento naranja `#F07A2A`, tipografía moderna Inter en marcador, estadísticas y nombres, logo de Radio Evolución y silueta vectorial de Burgos. Las fuentes están incluidas en `assets/directos-fonts.css`, sin depender de Google Fonts. Los dos comentaristas comparten un único faldón permanente ajustado al ancho de los nombres y el logo, sin espacio sobrante. Conserva los nombres a 36 px y usa un logo de 60 px, con una altura de faldón de 84 px; la ubicación aparece sobre él, sin otra caja. Una mosca circular de 88 px con el logo de Radio Evolución ocupa la esquina superior izquierda. No hay marco de cámara de narración.
 
 ### Prueba con el partido solicitado
 
