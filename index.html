@@ -70,9 +70,14 @@ body{font-family:"Sans",system-ui,sans-serif;color:var(--ivory);-webkit-font-smo
 #lt{left:40px;top:856px;height:120px;display:flex;align-items:stretch;transition:opacity .4s}
 #lt .bar{width:16px;background:var(--ink);border-radius:10px 0 0 10px;position:relative}
 #lt .bar:after{content:"";position:absolute;right:0;top:0;bottom:0;width:4px;background:var(--acc)}
-#lt .card{position:relative;background:var(--ivory);color:var(--ink);padding:0 48px 0 30px;display:flex;flex-direction:column;justify-content:center;border-radius:0 10px 10px 0;
+#lt .card{position:relative;background:var(--ivory);color:var(--ink);padding:0 48px 0 30px;display:flex;flex-direction:row;align-items:center;border-radius:0 10px 10px 0;
   min-width:640px;max-width:1300px;clip-path:inset(-120px 100% 0 0);transition:clip-path .8s cubic-bezier(.7,0,.2,1)}
 #lt.on .card{clip-path:inset(-120px 0 0 0)}
+#lt .txt{display:flex;flex-direction:column;justify-content:center;min-width:0}
+#lt .lcrest{margin-right:26px;opacity:0;transform:scale(.8);transition:opacity .45s .35s,transform .45s .35s}
+#lt.on .lcrest{opacity:1;transform:none}
+#lt .lcrest:empty{display:none}
+#lt .lcrest .crest{box-shadow:0 0 0 2px rgba(15,23,38,.12),0 4px 12px rgba(15,23,38,.18)}
 #lt .chip{font-size:13px;color:var(--acc);margin-bottom:5px}
 #lt .ti{font-family:"Serif";font-weight:900;font-size:46px;line-height:1.04;white-space:nowrap}
 #lt .su{font-weight:600;font-size:21px;color:var(--slate);margin-top:6px;white-space:nowrap}
@@ -106,6 +111,41 @@ body{font-family:"Sans",system-ui,sans-serif;color:var(--ivory);-webkit-font-smo
 .side .hd{display:flex;align-items:center;gap:12px;padding:24px 26px 0;font-size:12.5px;color:var(--acc)}
 .side .hd:after{content:"";flex:1;height:1px;background:rgba(245,239,228,.14)}
 .s-espera .side,.s-fin .side{opacity:0!important}
+
+/* ---------- escudos ---------- */
+.crest{position:relative;flex-shrink:0;border-radius:50%;background:#fff;display:inline-flex;align-items:center;justify-content:center;overflow:hidden;
+  box-shadow:0 0 0 2px rgba(245,239,228,.85),0 6px 16px rgba(0,0,0,.28)}
+.crest img{width:84%;height:84%;object-fit:contain;display:block}
+.crest.txt{background:var(--tc,#3A4659);color:#fff;font-family:"Serif";font-weight:900;letter-spacing:.02em}
+
+/* ---------- marcador del partido (sustituye al medallón) ---------- */
+#score{right:40px;top:114px;width:520px;border-radius:14px;background:rgba(15,23,38,.94);overflow:hidden;display:none;
+  box-shadow:inset 0 0 0 1px rgba(245,239,228,.10),0 14px 36px rgba(5,9,18,.45)}
+#score:before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--acc)}
+#score .row{display:flex;align-items:center;gap:10px;padding:22px 20px 14px}
+#score .tm{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
+#score .tm.v{flex-direction:row-reverse}
+#score .nm{font-weight:900;font-size:15px;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#score .pts{font-family:"Serif";font-weight:900;font-size:50px;line-height:1;min-width:64px;text-align:center}
+#score .pts.win{color:var(--acc)}
+#score .mid{font-weight:900;font-size:12px;letter-spacing:.2em;color:var(--muted);min-width:28px;text-align:center;text-transform:uppercase}
+#score.pre .mid{font-family:"Serif";font-style:italic;font-weight:500;letter-spacing:0;font-size:30px;color:var(--ivory);text-transform:none}
+#score.pre .pts{display:none}
+#score .ft{border-top:1px solid rgba(245,239,228,.10);padding:9px 20px 11px;font-size:11.5px;color:var(--muted);text-align:center}
+.s-espera #score,.s-fin #score{opacity:0}
+
+/* ---------- tarjeta: el partido ---------- */
+#cMatch .mrow{display:flex;align-items:flex-start;justify-content:space-between;padding:22px 22px 4px}
+#cMatch .mt{width:140px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;font-family:"Serif";font-weight:700;font-size:18px;line-height:1.2}
+#cMatch .mc{align-self:center;margin-top:-26px;display:flex;align-items:center;gap:10px;font-family:"Serif";font-weight:900;font-size:58px;line-height:1}
+#cMatch .mc i{font-style:italic;font-weight:500;font-size:34px;color:var(--muted)}
+#cMatch .mc b.win{color:var(--acc)}
+#cMatch .meta{padding:16px 26px 0;display:flex;flex-direction:column;gap:9px}
+#cMatch .meta div{display:flex;gap:12px;font-weight:600;font-size:15.5px;color:#D5DCE6}
+#cMatch .meta span{flex-shrink:0;width:118px;font-weight:700;font-size:11.5px;letter-spacing:.2em;color:var(--acc);text-transform:uppercase;padding-top:3px}
+#cMatch .next{margin:18px 26px 24px;padding:12px 15px;border:1px solid rgba(245,239,228,.16);border-radius:10px;font-weight:600;font-size:14.5px;line-height:1.45;color:#D5DCE6}
+#cMatch .next b{display:block;font-weight:700;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--acc);margin-bottom:3px}
+#cMatch .next:empty{display:none}
 
 #cCifra .big{display:flex;align-items:center;gap:16px;padding:6px 26px 0}
 #cCifra .big b{font-family:"Serif";font-weight:900;font-size:92px;line-height:1;letter-spacing:-1px}
@@ -246,6 +286,15 @@ body{font-family:"Sans",system-ui,sans-serif;color:var(--ivory);-webkit-font-smo
     <div class="foot" id="cfFoot"></div>
   </div>
 
+  <!-- marcador del partido -->
+  <div id="score" class="abs"><div class="row"><div class="tm l" id="sL"></div><div class="pts" id="sPL"></div><div class="mid" id="sMid"></div><div class="pts" id="sPV"></div><div class="tm v" id="sV"></div></div><div class="ft caps" id="sFt"></div></div>
+
+  <!-- tarjeta: el partido -->
+  <div id="cMatch" class="side abs"><div class="hd caps" id="mTitle"></div>
+    <div class="mrow"><div class="mt" id="mL"></div><div class="mc" id="mC"></div><div class="mt" id="mV"></div></div>
+    <div class="meta" id="mMeta"></div><div class="next" id="mNext"></div>
+  </div>
+
   <!-- tarjeta: intervienen -->
   <div id="cWho" class="side abs"><div class="hd caps" id="whoTitle"></div><div class="list" id="whoList"></div></div>
 
@@ -258,7 +307,8 @@ body{font-family:"Sans",system-ui,sans-serif;color:var(--ivory);-webkit-font-smo
     <div class="bar"></div>
     <div class="card sh">
       <svg class="sky skyline" width="196" height="75"><use href="#skyline"/></svg>
-      <div class="chip caps" id="ltChip"></div><div class="ti" id="ltTi"></div><div class="su" id="ltSu"></div>
+      <div class="lcrest" id="ltCrest"></div>
+      <div class="txt"><div class="chip caps" id="ltChip"></div><div class="ti" id="ltTi"></div><div class="su" id="ltSu"></div></div>
     </div>
   </div>
 
@@ -273,7 +323,17 @@ var $ = function(id){ return document.getElementById(id); };
 var qs = new URLSearchParams(location.search);
 if(qs.get("demo") === "1") document.body.classList.add("demo");
 
-var C = {"version": 3, "evento": "Rueda de prensa DOMUND 2026 · Archidiócesis de Burgos", "escena": "auto", "inicio": "2026-10-16T10:30:00+02:00", "tema": {"acento": "#E2672B"}, "sello": {"visible": true, "grande": "100", "pequeno": "AÑOS", "anillo": "DOMUND · JORNADA MUNDIAL DE LAS MISIONES · 1926 – 2026"}, "etiqueta": "Rueda de prensa", "antetitulo": "Archidiócesis de Burgos", "titulo": "El DOMUND cumple 100 años", "subtitulo": "Presentación de la Jornada Mundial de las Misiones · Casa de la Iglesia, Burgos", "rotulo": true, "hablando": 0, "ponentes": [{"nombre": "Maite Domínguez", "cargo": "Delegada diocesana para las Misiones · Archidiócesis de Burgos"}, {"nombre": "María Ángeles Martínez García", "cargo": "Misionera carmelita en el Congo"}, {"nombre": "José Septién", "cargo": "Misionero carmelita · 30 años en Ecuador"}], "ticker": {"visible": true, "titulo": "Claves", "items": ["El **DOMUND** se celebra el domingo **18 de octubre** en todo el mundo", "La Jornada Mundial de las Misiones cumple este año **100 años**", "El DOMUND fue creado en **1926** por el papa **Pío XI**", "Se celebra cada año el penúltimo domingo de octubre", "Lema: **«Uno en Cristo, unidos en la misión»**", "**418 misioneros de Burgos** han sido enviados por el mundo desde la Iglesia diocesana", "Escúchanos en el **104.1 FM** y en **radioevolucion.es**"]}, "tarjetas": {"ciclo": ["cifra", "intervienen", "cita"], "fija": "", "cada": 75, "dura": 20, "cifra": {"titulo": "De Burgos al mundo", "numero": 418, "texto": "misioneros de Burgos enviados por el mundo", "pie": "Desde la Iglesia diocesana. En el mapa, los destinos de los misioneros invitados.", "mapa": {"destinos": [{"nombre": "ECUADOR", "lon": -78.5, "lat": -1.5}, {"nombre": "CONGO", "lon": 17.0, "lat": -1.5}]}}, "intervienen": {"titulo": "Intervienen"}, "cita": {"titulo": "El lema", "texto": "Uno en Cristo, unidos en la misión", "datos": ["Domingo **18 de octubre**", "Creado en **1926** por Pío XI", "**100** años"]}}, "espera": {"antetitulo": "Rueda de prensa · Archidiócesis de Burgos", "titulo": "El DOMUND cumple **100 años**", "lugar": "Casa de la Iglesia · C/ Eduardo Martínez del Campo, 7 · Burgos"}, "fin": {"titulo": "Gracias por acompañarnos", "texto": "Más información en radioevolucion.es y en el 104.1 FM"}};
+var RAW = {"version": 4, "equipos": {"tizona": {"nombre": "Grupo Ureta Tizona", "corto": "Tizona", "siglas": "TIZ", "color": "#1C4F9C", "escudo": "https://www.cbtizona.es/wp-content/uploads/2024/08/15-TIZONA.png"}, "oviedo": {"nombre": "Alimerka Oviedo", "corto": "Oviedo", "siglas": "OVI", "color": "#1B2A4A", "escudo": "https://oviedobaloncesto.com/wp-content/uploads/2024/10/logo-OCB-scaled.png"}}, "programa": [{"desde": "2026-10-16T00:00:00+02:00", "evento": "Rueda de prensa DOMUND 2026 · Archidiócesis de Burgos", "escena": "auto", "inicio": "2026-10-16T10:30:00+02:00", "tema": {"acento": "#E2672B"}, "sello": {"visible": true, "grande": "100", "pequeno": "AÑOS", "anillo": "DOMUND · JORNADA MUNDIAL DE LAS MISIONES · 1926 – 2026"}, "etiqueta": "Rueda de prensa", "antetitulo": "Archidiócesis de Burgos", "titulo": "El DOMUND cumple 100 años", "subtitulo": "Presentación de la Jornada Mundial de las Misiones · Casa de la Iglesia, Burgos", "rotulo": true, "hablando": 0, "ponentes": [{"nombre": "Maite Domínguez", "cargo": "Delegada diocesana para las Misiones · Archidiócesis de Burgos"}, {"nombre": "María Ángeles Martínez García", "cargo": "Misionera carmelita en el Congo"}, {"nombre": "José Septién", "cargo": "Misionero carmelita · 30 años en Ecuador"}], "ticker": {"visible": true, "titulo": "Claves", "items": ["El **DOMUND** se celebra el domingo **18 de octubre** en todo el mundo", "La Jornada Mundial de las Misiones cumple este año **100 años**", "El DOMUND fue creado en **1926** por el papa **Pío XI**", "Se celebra cada año el penúltimo domingo de octubre", "Lema: **«Uno en Cristo, unidos en la misión»**", "**418 misioneros de Burgos** han sido enviados por el mundo desde la Iglesia diocesana", "Escúchanos en el **104.1 FM** y en **radioevolucion.es**"]}, "tarjetas": {"ciclo": ["cifra", "intervienen", "cita"], "fija": "", "cada": 75, "dura": 20, "cifra": {"titulo": "De Burgos al mundo", "numero": 418, "texto": "misioneros de Burgos enviados por el mundo", "pie": "Desde la Iglesia diocesana. En el mapa, los destinos de los misioneros invitados.", "mapa": {"destinos": [{"nombre": "ECUADOR", "lon": -78.5, "lat": -1.5}, {"nombre": "CONGO", "lon": 17.0, "lat": -1.5}]}}, "intervienen": {"titulo": "Intervienen"}, "cita": {"titulo": "El lema", "texto": "Uno en Cristo, unidos en la misión", "datos": ["Domingo **18 de octubre**", "Creado en **1926** por Pío XI", "**100** años"]}}, "espera": {"antetitulo": "Rueda de prensa · Archidiócesis de Burgos", "titulo": "El DOMUND cumple **100 años**", "lugar": "Casa de la Iglesia · C/ Eduardo Martínez del Campo, 7 · Burgos"}, "fin": {"titulo": "Gracias por acompañarnos", "texto": "Más información en radioevolucion.es y en el 104.1 FM"}}, {"desde": "2026-10-16T14:00:00+02:00", "evento": "Declaraciones post partido · Grupo Ureta Tizona – Alimerka Oviedo", "escena": "directo", "tema": {"acento": "#F07A2A"}, "sello": {"visible": false}, "partido": {"local": "tizona", "visitante": "oviedo", "puntos_local": null, "puntos_visitante": null, "estado": "Final", "competicion": "Primera FEB", "jornada": "Jornada 4", "estado_previo": "Post partido", "titulo_tarjeta": "El partido", "datos": [["Competición", "Primera FEB · Jornada 4"], ["Pabellón", "El Plantío · Burgos"], ["Fecha", "Viernes 16 de octubre · 20.45 h"]], "proximo": "Copa España FEB · Miércoles 21 de octubre, 20.30 h · Cajasol Coto Córdoba – Grupo Ureta Tizona"}, "etiqueta": "Rueda de prensa", "antetitulo": "Primera FEB · Jornada 4", "titulo": "Declaraciones post partido", "subtitulo": "Grupo Ureta Tizona – Alimerka Oviedo · Pabellón El Plantío", "equipo_rotulo": "tizona", "rotulo": true, "hablando": 1, "rotulo_alterna": 25, "ponentes": [{"nombre": "Denís Pombar", "cargo": "Entrenador · Grupo Ureta Tizona", "equipo": "tizona"}], "ticker": {"visible": true, "titulo": "Baloncesto", "items": ["**Primera FEB** · Jornada 4: **Grupo Ureta Tizona – Alimerka Oviedo**", "Pabellón **El Plantío** · Viernes 16 de octubre, 20.45 horas", "**Denís Pombar** dirige al primer equipo del Tizona desde enero de 2026", "Pombar fue elegido **Mejor Entrenador del Mes** de mayo por la AEEB", "Próximo partido: **Copa España FEB** · Miércoles 21 de octubre, 20.30 h · Cajasol Coto Córdoba – Grupo Ureta Tizona", "Escúchanos en el **104.1 FM** y en **radioevolucion.es**"]}, "tarjetas": {"ciclo": ["partido"], "fija": "", "cada": 60, "dura": 22}, "fin": {"titulo": "Gracias por acompañarnos", "texto": "Más baloncesto en radioevolucion.es y en el 104.1 FM"}}]};
+/* "programa": varios eventos en el mismo config; se activa el último cuyo "desde" ya ha pasado */
+function pick(raw){
+  if(!raw || !raw.programa || !raw.programa.length) return raw;
+  var now = qs.has("ahora") ? Date.parse(qs.get("ahora")) : Date.now(), cur = raw.programa[0];  /* ?ahora= para previsualizar */
+  raw.programa.forEach(function(e){ var t = Date.parse(e.desde); if(!isNaN(t) && t <= now) cur = e; });
+  var o = JSON.parse(JSON.stringify(cur));
+  o.equipos = Object.assign({}, raw.equipos || {}, cur.equipos || {});
+  o.version = raw.version; return o;
+}
+var C = pick(RAW);
 function g(path, def){ var o = C; for(var i=0;i<path.length;i++){ if(o == null) return def; o = o[path[i]]; } return o == null ? def : o; }
 
 /* ---------- escala ---------- */
@@ -307,6 +367,40 @@ function tick(){
   }
 }
 
+/* ---------- equipos y escudos ---------- */
+function team(id){ var t = (C.equipos || {})[id]; return t || {nombre:id || "", corto:id || ""}; }
+function crest(id, size){
+  var t = team(id), sig = esc(t.siglas || String(t.corto || t.nombre || "").slice(0,3).toUpperCase());
+  var st = "width:" + size + "px;height:" + size + "px;--tc:" + esc(t.color || "#3A4659") + ";font-size:" + Math.round(size*.32) + "px";
+  if(t.escudo) return "<span class='crest' style='" + st + "' data-sig='" + sig + "'><img src='" + esc(t.escudo) + "' alt='" + esc(t.nombre) + "' onerror=\"var s=this.parentNode;s.classList.add('txt');s.textContent=s.dataset.sig\"></span>";
+  return "<span class='crest txt' style='" + st + "'>" + sig + "</span>";
+}
+function hasScore(p){ return p && typeof p.puntos_local === "number" && typeof p.puntos_visitante === "number"; }
+var matchKey = null;
+function renderMatch(){
+  var p = C.partido, sc = $("score");
+  var show = !!p && C.marcador !== false;
+  sc.style.display = show ? "block" : "none";
+  if(show) $("seal").style.display = "none";
+  var key = JSON.stringify([p, C.equipos]); if(key === matchKey) return; matchKey = key;
+  if(!p) return;
+  var known = hasScore(p), L = team(p.local), V = team(p.visitante);
+  sc.classList.toggle("pre", !known);
+  $("sL").innerHTML = crest(p.local, 50) + "<span class='nm'>" + esc(L.corto || L.nombre) + "</span>";
+  $("sV").innerHTML = crest(p.visitante, 50) + "<span class='nm'>" + esc(V.corto || V.nombre) + "</span>";
+  $("sPL").textContent = known ? p.puntos_local : ""; $("sPV").textContent = known ? p.puntos_visitante : "";
+  $("sPL").classList.toggle("win", known && p.puntos_local > p.puntos_visitante);
+  $("sPV").classList.toggle("win", known && p.puntos_visitante > p.puntos_local);
+  $("sMid").textContent = known ? (p.estado || "Final") : "vs";
+  $("sFt").textContent = [p.competicion, p.jornada, known ? "" : (p.estado_previo || "")].filter(Boolean).join(" · ");
+  $("mTitle").textContent = p.titulo_tarjeta || "El partido";
+  $("mL").innerHTML = crest(p.local, 96) + "<span>" + esc(L.nombre) + "</span>";
+  $("mV").innerHTML = crest(p.visitante, 96) + "<span>" + esc(V.nombre) + "</span>";
+  $("mC").innerHTML = known ? "<b class='" + (p.puntos_local > p.puntos_visitante ? "win" : "") + "'>" + p.puntos_local + "</b><i>–</i><b class='" + (p.puntos_visitante > p.puntos_local ? "win" : "") + "'>" + p.puntos_visitante + "</b>" : "<i>vs</i>";
+  $("mMeta").innerHTML = (p.datos || []).map(function(d){ return "<div><span>" + esc(d[0]) + "</span>" + esc(d[1]) + "</div>"; }).join("");
+  $("mNext").innerHTML = p.proximo ? "<b>Próximo partido</b>" + esc(p.proximo) : "";
+}
+
 /* ---------- tema ---------- */
 function applyTheme(){
   document.documentElement.style.setProperty("--acc", g(["tema","acento"], "#EE6A2A"));
@@ -324,24 +418,36 @@ function applyTheme(){
 }
 
 /* ---------- rótulo inferior ---------- */
-var ltKey = null;
+var ltKey = null, ltSeq = 0;
 function showLT(force){
   var lt = $("lt");
   if(C.rotulo === false){ lt.classList.remove("on"); ltKey = null; return; }
   var i = C.hablando|0, p = (C.ponentes || [])[i-1];
-  var c = p ? {tag:"Interviene", chip:p.etiqueta || "", ti:p.nombre, su:p.cargo}
-            : {tag:C.etiqueta || "", chip:C.antetitulo || "", ti:C.titulo || "", su:C.subtitulo || ""};
+  if(p && altGeneral) p = null;
+  var c = p ? {tag:"Interviene", chip:p.etiqueta || "", ti:p.nombre, su:p.cargo, eq:p.equipo || ""}
+            : {tag:C.etiqueta || "", chip:C.antetitulo || "", ti:C.titulo || "", su:C.subtitulo || "", eq:C.equipo_rotulo || ""};
   var key = JSON.stringify(c); if(key === ltKey && !force) return;
   var wasOn = lt.classList.contains("on"); ltKey = key;
+  var my = ++ltSeq;
   var paint = function(){
+    if(my !== ltSeq) return;   /* evita que un repintado antiguo pise al último */
     $("ltTag").textContent = c.tag; lt.querySelector(".tag").style.display = c.tag ? "" : "none";
     $("ltChip").textContent = c.chip; $("ltChip").style.display = c.chip ? "" : "none";
     $("ltTi").textContent = c.ti; $("ltSu").textContent = c.su; $("ltSu").style.display = c.su ? "" : "none";
+    $("ltCrest").innerHTML = c.eq ? crest(c.eq, 82) : "";
     fit($("ltTi"), c.chip ? 46 : 50, 28); fit($("ltSu"), 21, 15);
     void lt.offsetWidth; lt.classList.add("on");
   };
   if(wasOn){ lt.classList.remove("on"); setTimeout(paint, 800); } else paint();
 }
+
+/* alterna el rótulo del ponente con el rótulo general cada "rotulo_alterna" segundos */
+var altGeneral = false, altT = 0;
+setInterval(function(){
+  var n = C.rotulo_alterna|0;
+  if(scene === "directo" && n > 0 && (C.hablando|0) > 0){ if(++altT >= n){ altT = 0; altGeneral = !altGeneral; showLT(false); } }
+  else if(altGeneral){ altGeneral = false; altT = 0; showLT(false); }
+}, 1000);
 
 /* ---------- ticker ---------- */
 var tkKey = null, tkX = 0, tkW = 0, last = 0;
@@ -403,7 +509,7 @@ function buildCards(){
   $("fTitle").textContent = g(["fin","titulo"], "Gracias por acompañarnos");
   $("fText").textContent = g(["fin","texto"], "Más información en radioevolucion.es y en el 104.1 FM");
 }
-var cards = {cifra:"cCifra", intervienen:"cWho", cita:"cCita"}, shown = null, cycleIdx = 0, cycleT = 0;
+var cards = {cifra:"cCifra", intervienen:"cWho", cita:"cCita", partido:"cMatch"}, shown = null, cycleIdx = 0, cycleT = 0;
 function countUp(){
   var el = $("cnt"), raw = g(["tarjetas","cifra","numero"], ""), target = parseFloat(raw);
   if(isNaN(target)){ el.textContent = raw; return; }
@@ -431,7 +537,8 @@ setInterval(function(){
 }, 1000);
 
 /* ---------- aplicar ---------- */
-function applyAll(){ applyTheme(); buildTicker(); buildCards(); tick(); if(scene === "directo") showLT(false); }
+function applyAll(){ applyTheme(); buildTicker(); buildCards(); renderMatch(); tick(); if(scene === "directo") showLT(false); }
+setInterval(function(){ var n = pick(RAW); if(JSON.stringify(n) !== JSON.stringify(C)){ C = n; applyAll(); } }, 15000);
 
 /* ---------- config.json en vivo (cada 5 s; si cambia "version", recarga) ---------- */
 var loadedVer = null;
@@ -440,8 +547,8 @@ function poll(){
   fetch("config.json?t=" + Date.now(), {cache:"no-store"}).then(function(r){ return r.ok ? r.json() : null; }).then(function(c){
     if(!c) return;
     if(loadedVer === null) loadedVer = c.version; else if(c.version !== loadedVer){ location.reload(); return; }
-    C = c; applyAll();
-  }).catch(function(){});
+    RAW = c; C = pick(RAW); applyAll();
+  }).catch(function(e){ if(window.console) console.warn("config", e); });
 }
 setInterval(tick, 500);
 applyAll();

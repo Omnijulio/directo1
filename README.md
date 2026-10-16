@@ -26,5 +26,15 @@ y medallón con tracería de rosetón.
 | `ticker` | Franja inferior (`items`, `**negrita**` para resaltar) |
 | `tarjetas` | Tarjetas laterales `cifra` (con mapa opcional), `intervienen` y `cita`; `ciclo`, `cada`, `dura`, `fija` |
 | `espera`, `fin` | Textos de las pantallas de espera y cierre |
+| `programa` | Varios eventos en el mismo `config.json`: se activa el último cuyo `desde` ya ha pasado |
+| `equipos` | Biblioteca de equipos (nombre, siglas, color, `escudo`) reutilizable por clave |
+| `partido` | Marcador con escudos arriba a la derecha y tarjeta «El partido». Sin `puntos_*` muestra «vs» |
+| `ponentes[].equipo`, `equipo_rotulo` | Escudo dentro del rótulo inferior |
+| `rotulo_alterna` | Alterna cada N segundos el rótulo del ponente con el rótulo general |
+
+Previsualizar otro momento del programa: añadir `?ahora=2026-10-16T22:40:00%2B02:00&demo=1` a la URL.
+
+## Plantillas guardadas
+- `plantillas/rueda-entrenador-baloncesto.json`: declaraciones de entrenadores de baloncesto de Burgos (escudos, marcador final y rótulo con escudo).
 
 `baloncesto.html` es el marcador de baloncesto (usa `config-baloncesto.json`).

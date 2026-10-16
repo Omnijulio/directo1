@@ -1,0 +1,90 @@
+{
+  "_como_usar": "Copiar este bloque dentro de 'programa' en config.json, cambiar 'desde', equipos, partido y ponente. Los escudos se definen una vez en 'equipos' (raíz de config.json) y se reutilizan por su clave. Verificar siempre nombres y patrocinadores de la temporada antes de emitir.",
+  "desde": "AAAA-MM-DDTHH:MM:00+02:00",
+  "evento": "Declaraciones post partido · LOCAL – VISITANTE",
+  "escena": "directo",
+  "tema": {
+    "acento": "#F07A2A"
+  },
+  "sello": {
+    "visible": false
+  },
+  "partido": {
+    "local": "clave_equipo_local",
+    "visitante": "clave_equipo_visitante",
+    "puntos_local": null,
+    "puntos_visitante": null,
+    "estado": "Final",
+    "competicion": "COMPETICIÓN",
+    "jornada": "Jornada X",
+    "estado_previo": "Post partido",
+    "titulo_tarjeta": "El partido",
+    "datos": [
+      [
+        "Competición",
+        "COMPETICIÓN · Jornada X"
+      ],
+      [
+        "Pabellón",
+        "PABELLÓN · Burgos"
+      ],
+      [
+        "Fecha",
+        "Día DD de mes · HH.MM h"
+      ]
+    ],
+    "proximo": ""
+  },
+  "etiqueta": "Rueda de prensa",
+  "antetitulo": "COMPETICIÓN · Jornada X",
+  "titulo": "Declaraciones post partido",
+  "subtitulo": "LOCAL – VISITANTE · PABELLÓN",
+  "equipo_rotulo": "clave_equipo_local",
+  "rotulo": true,
+  "hablando": 1,
+  "rotulo_alterna": 25,
+  "ponentes": [
+    {
+      "nombre": "NOMBRE APELLIDO",
+      "cargo": "Entrenador · EQUIPO",
+      "equipo": "clave_equipo"
+    }
+  ],
+  "ticker": {
+    "visible": true,
+    "titulo": "Baloncesto",
+    "items": [
+      "Escúchanos en el **104.1 FM** y en **radioevolucion.es**"
+    ]
+  },
+  "tarjetas": {
+    "ciclo": [
+      "partido"
+    ],
+    "fija": "",
+    "cada": 60,
+    "dura": 22
+  },
+  "fin": {
+    "titulo": "Gracias por acompañarnos",
+    "texto": "Más baloncesto en radioevolucion.es y en el 104.1 FM"
+  },
+  "_equipos_de_la_ciudad": {
+    "tizona": {
+      "nombre": "Grupo Ureta Tizona",
+      "corto": "Tizona",
+      "siglas": "TIZ",
+      "color": "#1C4F9C",
+      "escudo": "https://www.cbtizona.es/wp-content/uploads/2024/08/15-TIZONA.png",
+      "_nota": "Primera FEB 26/27 · entrenador Denís Pombar (verificado 16/10/2026)"
+    },
+    "sanpablo": {
+      "nombre": "Recoletas Salud San Pablo Burgos",
+      "corto": "San Pablo",
+      "siglas": "SPB",
+      "color": "#111111",
+      "escudo": "",
+      "_nota": "Nombre tomado del título de la retransmisión del 14/10/2026; falta escudo y verificar entrenador"
+    }
+  }
+}

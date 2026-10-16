@@ -1,58 +1,196 @@
 {
-  "version": 3,
-  "evento": "Rueda de prensa DOMUND 2026 · Archidiócesis de Burgos",
-  "escena": "auto",
-  "inicio": "2026-10-16T10:30:00+02:00",
-
-  "tema": { "acento": "#E2672B" },
-  "sello": { "visible": true, "grande": "100", "pequeno": "AÑOS", "anillo": "DOMUND · JORNADA MUNDIAL DE LAS MISIONES · 1926 – 2026" },
-
-  "etiqueta": "Rueda de prensa",
-  "antetitulo": "Archidiócesis de Burgos",
-  "titulo": "El DOMUND cumple 100 años",
-  "subtitulo": "Presentación de la Jornada Mundial de las Misiones · Casa de la Iglesia, Burgos",
-  "rotulo": true,
-  "hablando": 0,
-  "ponentes": [
-    { "nombre": "Maite Domínguez", "cargo": "Delegada diocesana para las Misiones · Archidiócesis de Burgos" },
-    { "nombre": "María Ángeles Martínez García", "cargo": "Misionera carmelita en el Congo" },
-    { "nombre": "José Septién", "cargo": "Misionero carmelita · 30 años en Ecuador" }
-  ],
-
-  "ticker": {
-    "visible": true,
-    "titulo": "Claves",
-    "items": [
-      "El **DOMUND** se celebra el domingo **18 de octubre** en todo el mundo",
-      "La Jornada Mundial de las Misiones cumple este año **100 años**",
-      "El DOMUND fue creado en **1926** por el papa **Pío XI**",
-      "Se celebra cada año el penúltimo domingo de octubre",
-      "Lema: **«Uno en Cristo, unidos en la misión»**",
-      "**418 misioneros de Burgos** han sido enviados por el mundo desde la Iglesia diocesana",
-      "Escúchanos en el **104.1 FM** y en **radioevolucion.es**"
-    ]
-  },
-
-  "tarjetas": {
-    "ciclo": ["cifra", "intervienen", "cita"],
-    "fija": "",
-    "cada": 75,
-    "dura": 20,
-    "cifra": {
-      "titulo": "De Burgos al mundo",
-      "numero": 418,
-      "texto": "misioneros de Burgos enviados por el mundo",
-      "pie": "Desde la Iglesia diocesana. En el mapa, los destinos de los misioneros invitados.",
-      "mapa": { "destinos": [ { "nombre": "ECUADOR", "lon": -78.5, "lat": -1.5 }, { "nombre": "CONGO", "lon": 17.0, "lat": -1.5 } ] }
+  "version": 4,
+  "equipos": {
+    "tizona": {
+      "nombre": "Grupo Ureta Tizona",
+      "corto": "Tizona",
+      "siglas": "TIZ",
+      "color": "#1C4F9C",
+      "escudo": "https://www.cbtizona.es/wp-content/uploads/2024/08/15-TIZONA.png"
     },
-    "intervienen": { "titulo": "Intervienen" },
-    "cita": { "titulo": "El lema", "texto": "Uno en Cristo, unidos en la misión", "datos": ["Domingo **18 de octubre**", "Creado en **1926** por Pío XI", "**100** años"] }
+    "oviedo": {
+      "nombre": "Alimerka Oviedo",
+      "corto": "Oviedo",
+      "siglas": "OVI",
+      "color": "#1B2A4A",
+      "escudo": "https://oviedobaloncesto.com/wp-content/uploads/2024/10/logo-OCB-scaled.png"
+    }
   },
-
-  "espera": {
-    "antetitulo": "Rueda de prensa · Archidiócesis de Burgos",
-    "titulo": "El DOMUND cumple **100 años**",
-    "lugar": "Casa de la Iglesia · C/ Eduardo Martínez del Campo, 7 · Burgos"
-  },
-  "fin": { "titulo": "Gracias por acompañarnos", "texto": "Más información en radioevolucion.es y en el 104.1 FM" }
+  "programa": [
+    {
+      "desde": "2026-10-16T00:00:00+02:00",
+      "evento": "Rueda de prensa DOMUND 2026 · Archidiócesis de Burgos",
+      "escena": "auto",
+      "inicio": "2026-10-16T10:30:00+02:00",
+      "tema": {
+        "acento": "#E2672B"
+      },
+      "sello": {
+        "visible": true,
+        "grande": "100",
+        "pequeno": "AÑOS",
+        "anillo": "DOMUND · JORNADA MUNDIAL DE LAS MISIONES · 1926 – 2026"
+      },
+      "etiqueta": "Rueda de prensa",
+      "antetitulo": "Archidiócesis de Burgos",
+      "titulo": "El DOMUND cumple 100 años",
+      "subtitulo": "Presentación de la Jornada Mundial de las Misiones · Casa de la Iglesia, Burgos",
+      "rotulo": true,
+      "hablando": 0,
+      "ponentes": [
+        {
+          "nombre": "Maite Domínguez",
+          "cargo": "Delegada diocesana para las Misiones · Archidiócesis de Burgos"
+        },
+        {
+          "nombre": "María Ángeles Martínez García",
+          "cargo": "Misionera carmelita en el Congo"
+        },
+        {
+          "nombre": "José Septién",
+          "cargo": "Misionero carmelita · 30 años en Ecuador"
+        }
+      ],
+      "ticker": {
+        "visible": true,
+        "titulo": "Claves",
+        "items": [
+          "El **DOMUND** se celebra el domingo **18 de octubre** en todo el mundo",
+          "La Jornada Mundial de las Misiones cumple este año **100 años**",
+          "El DOMUND fue creado en **1926** por el papa **Pío XI**",
+          "Se celebra cada año el penúltimo domingo de octubre",
+          "Lema: **«Uno en Cristo, unidos en la misión»**",
+          "**418 misioneros de Burgos** han sido enviados por el mundo desde la Iglesia diocesana",
+          "Escúchanos en el **104.1 FM** y en **radioevolucion.es**"
+        ]
+      },
+      "tarjetas": {
+        "ciclo": [
+          "cifra",
+          "intervienen",
+          "cita"
+        ],
+        "fija": "",
+        "cada": 75,
+        "dura": 20,
+        "cifra": {
+          "titulo": "De Burgos al mundo",
+          "numero": 418,
+          "texto": "misioneros de Burgos enviados por el mundo",
+          "pie": "Desde la Iglesia diocesana. En el mapa, los destinos de los misioneros invitados.",
+          "mapa": {
+            "destinos": [
+              {
+                "nombre": "ECUADOR",
+                "lon": -78.5,
+                "lat": -1.5
+              },
+              {
+                "nombre": "CONGO",
+                "lon": 17.0,
+                "lat": -1.5
+              }
+            ]
+          }
+        },
+        "intervienen": {
+          "titulo": "Intervienen"
+        },
+        "cita": {
+          "titulo": "El lema",
+          "texto": "Uno en Cristo, unidos en la misión",
+          "datos": [
+            "Domingo **18 de octubre**",
+            "Creado en **1926** por Pío XI",
+            "**100** años"
+          ]
+        }
+      },
+      "espera": {
+        "antetitulo": "Rueda de prensa · Archidiócesis de Burgos",
+        "titulo": "El DOMUND cumple **100 años**",
+        "lugar": "Casa de la Iglesia · C/ Eduardo Martínez del Campo, 7 · Burgos"
+      },
+      "fin": {
+        "titulo": "Gracias por acompañarnos",
+        "texto": "Más información en radioevolucion.es y en el 104.1 FM"
+      }
+    },
+    {
+      "desde": "2026-10-16T14:00:00+02:00",
+      "evento": "Declaraciones post partido · Grupo Ureta Tizona – Alimerka Oviedo",
+      "escena": "directo",
+      "tema": {
+        "acento": "#F07A2A"
+      },
+      "sello": {
+        "visible": false
+      },
+      "partido": {
+        "local": "tizona",
+        "visitante": "oviedo",
+        "puntos_local": null,
+        "puntos_visitante": null,
+        "estado": "Final",
+        "competicion": "Primera FEB",
+        "jornada": "Jornada 4",
+        "estado_previo": "Post partido",
+        "titulo_tarjeta": "El partido",
+        "datos": [
+          [
+            "Competición",
+            "Primera FEB · Jornada 4"
+          ],
+          [
+            "Pabellón",
+            "El Plantío · Burgos"
+          ],
+          [
+            "Fecha",
+            "Viernes 16 de octubre · 20.45 h"
+          ]
+        ],
+        "proximo": "Copa España FEB · Miércoles 21 de octubre, 20.30 h · Cajasol Coto Córdoba – Grupo Ureta Tizona"
+      },
+      "etiqueta": "Rueda de prensa",
+      "antetitulo": "Primera FEB · Jornada 4",
+      "titulo": "Declaraciones post partido",
+      "subtitulo": "Grupo Ureta Tizona – Alimerka Oviedo · Pabellón El Plantío",
+      "equipo_rotulo": "tizona",
+      "rotulo": true,
+      "hablando": 1,
+      "rotulo_alterna": 25,
+      "ponentes": [
+        {
+          "nombre": "Denís Pombar",
+          "cargo": "Entrenador · Grupo Ureta Tizona",
+          "equipo": "tizona"
+        }
+      ],
+      "ticker": {
+        "visible": true,
+        "titulo": "Baloncesto",
+        "items": [
+          "**Primera FEB** · Jornada 4: **Grupo Ureta Tizona – Alimerka Oviedo**",
+          "Pabellón **El Plantío** · Viernes 16 de octubre, 20.45 horas",
+          "**Denís Pombar** dirige al primer equipo del Tizona desde enero de 2026",
+          "Pombar fue elegido **Mejor Entrenador del Mes** de mayo por la AEEB",
+          "Próximo partido: **Copa España FEB** · Miércoles 21 de octubre, 20.30 h · Cajasol Coto Córdoba – Grupo Ureta Tizona",
+          "Escúchanos en el **104.1 FM** y en **radioevolucion.es**"
+        ]
+      },
+      "tarjetas": {
+        "ciclo": [
+          "partido"
+        ],
+        "fija": "",
+        "cada": 60,
+        "dura": 22
+      },
+      "fin": {
+        "titulo": "Gracias por acompañarnos",
+        "texto": "Más baloncesto en radioevolucion.es y en el 104.1 FM"
+      }
+    }
+  ]
 }
