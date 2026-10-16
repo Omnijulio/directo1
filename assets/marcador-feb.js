@@ -5,7 +5,7 @@
   const RAW_ROOT = "https://raw.githubusercontent.com/Omnijulio/directo1/main/";
   const API = "https://intrafeb.feb.es/LiveStats.API/api/v1/KeyFacts/";
   const preview = params.get("prueba") || "";
-  const previewMode = ["previa", "vivo", "descanso", "final", "conexion", "faltas", "accion", "comparativa"].includes(preview);
+  const previewMode = ["previa", "vivo", "tiempo-muerto", "fin-cuarto", "descanso", "final", "conexion", "faltas", "accion", "comparativa"].includes(preview);
   const timeFormat = new Intl.DateTimeFormat("es-ES", {timeZone: "Europe/Madrid", hour: "2-digit", minute: "2-digit", second: "2-digit"});
   const hourFormat = new Intl.DateTimeFormat("es-ES", {timeZone: "Europe/Madrid", hour: "2-digit", minute: "2-digit"});
   let game, configVersion, bootstrap, state, lastGood = 0, failed = false, pending = false, configPending = false;
@@ -92,10 +92,20 @@
     throw new Error("Acceso público FEB pendiente de renovación");
   }
 
-  function setImage(id, url, name) {
-    const img = $(id); img.alt = "Escudo de " + name;
+  function setImage(id, url, name, isBrand) {
+    const img = $(id); img.alt = isBrand ? name : "Escudo de " + name;
     if (img.getAttribute("src") === url) return;
     img.hidden = false; img.onerror = () => { img.hidden = true; }; img.src = url;
+  }
+  function teamCrest(team) {
+    const crest = element("span", "card-crest");
+    crest.dataset.team = String(team.id);
+    const fallback = element("span", "", team.siglas), img = element("img");
+    fallback.setAttribute("aria-hidden", "true");
+    img.alt = "Escudo de " + team.nombre;
+    img.onerror = () => { img.hidden = true; crest.setAttribute("aria-label", team.nombre); };
+    img.src = team.escudo;
+    crest.append(fallback, img); return crest;
   }
 
   function restoreSession() {
@@ -121,10 +131,12 @@
     if (/^#[\da-f]{6}$/i.test(accent)) document.documentElement.style.setProperty("--acc", accent);
     const brand = config.marca || {};
     $("brand").hidden = brand.visible === false || params.get("solo") === "marcador";
+    document.body.classList.toggle("no-top-brand", $("brand").hidden);
     write("brand-name", brand.nombre || "Radio Evolución");
     write("brand-place", brand.localidad || "Burgos");
     write("brand-frequency", brand.frecuencia || "104.1 FM");
-    setImage("brand-logo", brand.logo || "assets/radio-evolucion.png", brand.nombre || "Radio Evolución Burgos");
+    setImage("brand-logo", brand.logo || "assets/radio-evolucion.png", brand.nombre || "Radio Evolución Burgos", true);
+    setImage("commentator-logo", brand.logo || "assets/radio-evolucion.png", brand.nombre || "Radio Evolución Burgos", true);
     $("feed-label").hidden = previewMode || !game.prueba;
     document.title = game.local.corto + " – " + game.visitante.corto + " · Radio Evolución";
     for (const [side, team] of [["home", game.local], ["away", game.visitante]]) {
@@ -139,6 +151,7 @@
     if (!statsEnabled() && activeFlash && activeFlash.kind === "comparison") hideFlash();
     if (changed) {
       generation++; state = null; bootstrap = null; lastGood = 0; failed = false; bootChecked = 0;
+      tickerItems = []; tickerCopies = [];
       queue = []; slideIndex = 0; nextComparisonAt = Date.now() + seconds(game.comparar_cada_segundos, 60, 30, 600) * 1000;
       hideFlash(); clearTimeout(nextPoll); restoreSession(); render();
       if (previewMode) showPreview(); else poll();
@@ -212,6 +225,9 @@
     if (state && state.snapshot && !previewMode && Date.now() >= Date.parse(game.inicio)) state = null;
     const phase = state ? state.phase : "unknown", isStale = stale();
     $("scorebug").dataset.phase = phase; $("scorebug").dataset.stale = String(isStale);
+    const activity = state && state.activity || {kind:phase,label:phase === "live" ? "EN JUEGO" : ""};
+    $("scorebug").dataset.activity = isStale ? "stale" : activity.kind;
+    write("play-state", isStale ? "RECONECTANDO" : activity.label);
     $("scorebug").dataset.source = previewMode ? "simulation" : state ? state.snapshot ? "feb-ficha" : "feb-api" : "pending";
     $("scorebug").dataset.received = lastGood ? new Date(lastGood).toISOString() : "";
     setScore("score-home", state && state.home.score); setScore("score-away", state && state.away.score);
@@ -222,7 +238,7 @@
       period = "";
       if (Date.now() >= Date.parse(game.inicio)) status = "ESPERANDO ACTUALIZACIÓN";
     } else if (phase === "final") { clock = "FINAL"; period = ""; }
-    else if (phase === "break") { clock = "PAUSA"; period = "DESCANSO"; }
+    else if (phase === "break" && clock === "—") clock = "PAUSA";
     else if (phase === "paused") status = "PARTIDO INTERRUMPIDO";
     else if (phase !== "live") status = "ESPERANDO DATOS FEB";
     else if (state.home.score === 0 && state.away.score === 0) status = "0–0 · EN JUEGO";
@@ -231,7 +247,7 @@
     write("score-clock", clock); write("score-period", period); write("score-status", status);
     $("score-status").hidden = !status;
     $("scorebug").setAttribute("aria-label", [game.local.nombre, state ? state.home.score : "sin dato", game.visitante.nombre,
-      state ? state.away.score : "sin dato", phase, status].join(" · "));
+      state ? state.away.score : "sin dato", isStale ? "RECONECTANDO" : activity.label, status].filter(Boolean).join(" · "));
     if (isStale && activeFlash && activeFlash.kind === "comparison") hideFlash();
     renderTicker();
   }
@@ -252,18 +268,18 @@
     const list = $("commentator-list");
     if (list.dataset.names === names.join("|")) return;
     list.dataset.names = names.join("|");
-    list.replaceChildren(...names.map(name => {
-      const card = element("div", "commentator-card");
-      card.append(element("span", "commentator-role", "NARRACIÓN"),element("strong", "commentator-name", name));
-      return card;
+    list.replaceChildren(...names.flatMap((name, index) => {
+      const label = element("strong", "commentator-name", name);
+      return index ? [element("span", "narrator-separator", "·"), label] : [label];
     }));
     fitNarrators();
   }
   function fitNarrators() {
-    $("commentator-list").querySelectorAll(".commentator-name").forEach(el => {
-      let size = 43; el.style.fontSize = size + "px";
-      while (el.scrollWidth > el.clientWidth && size > 33) el.style.fontSize = --size + "px";
-    });
+    const list = $("commentator-list"), names = list.querySelectorAll(".commentator-name");
+    let size = 43;
+    const apply = () => names.forEach(el => { el.style.fontSize = size + "px"; });
+    apply();
+    while (list.scrollWidth > list.clientWidth && size > 33) { size--; apply(); }
   }
   function fitTicker() {
     const copy = tickerCopies[0];
@@ -279,12 +295,18 @@
       tickerCopies = [0,1].map(i => {
         const copy = element("div", "ticker-copy");
         if (i) copy.setAttribute("aria-hidden","true");
-        lines.forEach(line => copy.append(element("span", "ticker-item", line)));
+        lines.forEach(line => {
+          const item = element("span", "ticker-item"), crests = element("span", "ticker-crests");
+          crests.append(teamCrest(game.local), teamCrest(game.visitante));
+          item.append(crests, element("span", "ticker-text", line)); copy.append(item);
+        });
         return copy;
       });
       $("ticker-track").replaceChildren(...tickerCopies); fitTicker();
     } else {
-      lines.forEach((line,i) => { if (line !== tickerItems[i]) tickerCopies.forEach(copy => {copy.children[i].textContent = line;}); });
+      lines.forEach((line,i) => { if (line !== tickerItems[i]) tickerCopies.forEach(copy => {
+        copy.children[i].querySelector(".ticker-text").textContent = line;
+      }); });
     }
     tickerItems = lines;
   }
@@ -304,14 +326,17 @@
     heading.append(element("span", "", team.corto), element("span", "", [periodText(event.quarter), event.clock].filter(Boolean).join(" · ")));
     const metrics = element("div", "action-metrics");
     event.metrics.forEach(metric => metrics.append(element("span", "", core.metricLabel(metric))));
-    showFlash("player", [heading, element("div", "player-name", event.name), metrics], duration, team.color);
+    const identity = element("div", "player-identity"), copy = element("div", "player-copy");
+    copy.append(element("div", "player-name", event.name), metrics);
+    identity.append(teamCrest(team), copy);
+    showFlash("player", [heading, identity], duration, team.color);
   }
   function showComparison(slide, duration) {
     const grid = element("div", "comparison-grid");
     for (const [i, side] of ["home", "away"].entries()) {
       if (i) grid.append(element("div", "comparison-divider", "—"));
       const team = i ? game.visitante : game.local, cell = element("div", "comparison-team " + side);
-      cell.append(element("span", "comparison-name", team.corto), element("span", "comparison-value", slide[side].value)); grid.append(cell);
+      cell.append(teamCrest(team), element("span", "comparison-name", team.corto), element("span", "comparison-value", slide[side].value)); grid.append(cell);
     }
     const nodes = [element("div", "comparison-title", slide.title), grid];
     const a = core.number(slide.home.numeric), b = core.number(slide.away.numeric);
@@ -347,6 +372,11 @@
       quarter:preview === "descanso" ? 2 : 3,clock:"06:24",home:team(game.local,preview === "previa" ? 0 : 64,preview === "faltas" ? 4 : 2),
       away:team(game.visitante,preview === "previa" ? 0 : 59,preview === "faltas" ? 5 : 3),quarters:[]};
     if (preview === "previa") state.home.fouls = state.away.fouls = 0;
+    if (preview === "fin-cuarto") { state.quarter = 1; state.clock = "00:00"; }
+    if (preview === "descanso") state.clock = "00:00";
+    const previewHeader = {status:state.phase === "final" ? "3" : state.phase === "pregame" ? "1" : "2",
+      quarter:state.quarter,time:state.clock,statusText:preview === "tiempo-muerto" ? "TIMEOUT" : ""};
+    state.activity = core.activity({HEADER:previewHeader});
     state.away.stats.rt = "19"; state.away.stats.assist = "10";
     lastGood = Date.now(); failed = preview === "conexion"; render();
     if (preview === "accion") showPlayer({teamId:state.home.id,name:"JUGADOR DE PRUEBA",quarter:3,clock:"06:24",metrics:[{key:"pts",amount:3},{key:"p3m",amount:1}]},86400000);

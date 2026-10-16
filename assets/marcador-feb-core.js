@@ -68,6 +68,7 @@
   function phase(header) {
     const status = text(header.statusText).toUpperCase();
     const time = text(header.time).toUpperCase();
+    if (String(header.status) !== "3" && /(?:FIN(?:AL)?\s+(?:DEL?\s+)?CUARTO|END\s*(?:OF\s*)?(?:QUARTER|PERIOD))/.test(status + " " + time)) return "break";
     if (String(header.status) === "3" || /FINISHED|FINAL|ENDED/.test(status) || time === "FINAL") return "final";
     if (/DESCANSO|HALF|BREAK|INTERVAL/.test(status + " " + time)) return "break";
     if (/SUSPEND|POSTPON|CANCEL|APLAZ/.test(status + " " + time)) return "paused";
@@ -75,6 +76,33 @@
     if (String(header.status) === "1" || /SCHEDULED|NOTSTARTED|PRE|PENDING/.test(status)) return "pregame";
     if (number(header.quarter) > 0 && /\d{1,2}:\d{2}/.test(time)) return "live";
     return "unknown";
+  }
+
+  function activity(raw) {
+    const header = raw.HEADER, currentPhase = phase(header), quarter = number(header.quarter);
+    const words = (text(header.statusText) + " " + text(header.time)).toUpperCase();
+    const finishLabel = quarter === 2 ? "DESCANSO" : quarter > 4 ? "FIN DE PRÓRROGA " + (quarter - 4) : "FIN DEL CUARTO " + quarter;
+    if (currentPhase === "final") return {kind:"final",label:"FINAL DEL PARTIDO"};
+    if (currentPhase === "pregame") return {kind:"pregame",label:""};
+    if (currentPhase === "paused") return {kind:"paused",label:"PARTIDO INTERRUMPIDO"};
+    const lines = timeline(raw).filter(line => number(line.quarter) === quarter);
+    const zeroClock = /^0{1,2}:00(?:[.,]0+)?$/.test(text(header.time));
+    const lastPeriod = lines.filter(line => line.action === "period").sort((a,b) => (number(b.num)||0)-(number(a.num)||0))[0];
+    const endedPeriod = lastPeriod && (String(lastPeriod.logParam2) === "1" || /fin|end/i.test(text(lastPeriod.text)));
+    if (/DESCANSO|HALFTIME|HALF TIME|FIN(?:AL)?\s+(?:DEL?\s+)?CUARTO|END\s*(?:OF\s*)?(?:QUARTER|PERIOD)/.test(words) || (quarter > 0 && zeroClock) || endedPeriod) {
+      return {kind:quarter === 2 ? "break" : "quarter-end",label:quarter > 0 ? finishLabel : "DESCANSO"};
+    }
+    const timeout = lines.filter(line => line.action === "timeout").sort((a,b) => (number(b.num)||0)-(number(a.num)||0))[0];
+    const explicitTimeout = /TIME\s?OUT|TIEMPO\s+MUERTO|\bTMO\b/.test(words);
+    if (explicitTimeout) return {kind:"timeout",label:"TIEMPO MUERTO",teamId:timeout ? text(timeout.idTeam) : ""};
+    if (timeout && text(timeout.time) === text(header.time)) {
+      const resumed = lines.some(line => (number(line.num)||0) > (number(timeout.num)||0) &&
+        /^(shoot|fthrow|rebound|assist|recovery|lose|blockshot)$/.test(line.action));
+      if (!resumed) return {kind:"timeout",label:"TIEMPO MUERTO",teamId:text(timeout.idTeam)};
+    }
+    if (currentPhase === "break") return {kind:quarter === 2 ? "break" : "quarter-end",label:quarter > 0 ? finishLabel : "DESCANSO"};
+    if (currentPhase === "live") return {kind:"live",label:"EN JUEGO"};
+    return {kind:"unknown",label:""};
   }
 
   function normalize(raw, game) {
@@ -108,7 +136,7 @@
     return {
       phase: currentPhase, quarter: number(header.quarter),
       clock: /^\d{1,2}:\d{2}(?:[.,]\d+)?$/.test(clockText) ? clockText : "—",
-      statusText: text(header.statusText), quarters,
+      statusText: text(header.statusText), activity: activity(raw), quarters,
       home: homeTeam, away: awayTeam
     };
   }
@@ -271,6 +299,6 @@
     });
   }
 
-  return {number, score, phase, selectGame, normalize, snapshotState, slides, tickerLines, quarterFouls, foulLights,
+  return {number, score, phase, activity, selectGame, normalize, snapshotState, slides, tickerLines, quarterFouls, foulLights,
     playerEvents, createEventTracker, groupEvents, metricLabel};
 });

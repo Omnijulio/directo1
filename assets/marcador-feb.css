@@ -23,7 +23,7 @@ body{font-family:Inter,system-ui,sans-serif;color:var(--paper);-webkit-font-smoo
 .foul-lights i[data-light=unknown]{background:transparent;border-style:dashed;opacity:.55}
 .score-status{padding:5px 10px;background:#060c1570;border-top:1px solid #ffffff10;text-align:center;color:#bccade;font-size:10px;font-weight:700;letter-spacing:1px;line-height:1.2}
 #scorebug[data-stale=true] .score-status{color:#ffd394}
-#location{position:absolute;left:40px;bottom:250px;display:flex;align-items:center;gap:8px;padding:6px 9px;color:#f5efe4c9;background:#0f17266b;border-radius:4px;font-size:18px;font-weight:600;letter-spacing:.8px;text-shadow:0 1px 4px #0009}
+#location{position:absolute;left:40px;bottom:250px;display:flex;align-items:center;gap:8px;padding:6px 9px;color:#f5efe4c9;background:transparent;border-radius:0;font-size:18px;font-weight:600;letter-spacing:.8px;text-shadow:0 1px 4px #0009}
 #flash{position:absolute;left:auto;right:40px;bottom:110px;width:660px;padding:18px 22px 20px;background:var(--panel);border:1px solid #ffffff20;border-left:4px solid var(--flash-team,var(--team-home));border-radius:11px;box-shadow:0 12px 30px #05091266;animation:flash-in .35s ease-out}
 .flash-eyebrow{font-size:10px;font-weight:700;letter-spacing:1.7px;color:#adc0d7;display:flex;align-items:center;justify-content:space-between;gap:12px;text-transform:uppercase;line-height:1.3}
 .player-name{font-family:"Playfair Display",Georgia,serif;margin-top:7px;font-size:27px;font-weight:900;line-height:1.12;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -88,11 +88,11 @@ body{font-family:Inter,system-ui,sans-serif;color:var(--paper);-webkit-font-smoo
 #flash[data-kind=comparison] .comparison-title{color:var(--acc)}
 
 /* Faldones permanentes y banda de estadísticas. */
-#commentators{position:absolute;left:40px;bottom:110px;width:1140px}
-#commentator-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
-.commentator-card{height:128px;padding:20px 23px;background:var(--ivory);border-left:5px solid var(--acc);border-radius:9px;box-shadow:0 10px 30px #05091266;color:var(--ink);min-width:0}
+#commentators{position:absolute;left:40px;bottom:110px;width:1140px;height:128px;display:flex;align-items:center;gap:24px;padding:18px 24px;background:var(--ivory);border-left:5px solid var(--acc);border-radius:10px;box-shadow:0 10px 30px #05091266;color:var(--ink)}
+#commentator-list{display:flex;align-items:baseline;gap:22px;white-space:nowrap;margin-top:8px}
+.commentator-copy{flex:1;min-width:0}.commentator-logo{position:relative;flex:0 0 88px;height:88px;border-radius:50%;overflow:hidden;background:#fff}.commentator-logo img{display:block;width:106.5%;height:auto;margin:-3.7% 0 0 -2.9%;max-width:none}.narrator-separator{font-size:30px;color:var(--acc);font-weight:700}
 .commentator-role{font-size:12px;font-weight:700;letter-spacing:2.8px;color:var(--slate);text-transform:uppercase}
-.commentator-name{display:block;margin-top:9px;font-family:"Playfair Display",Georgia,serif;font-size:43px;font-weight:700;line-height:1.1;white-space:nowrap}
+.commentator-name{display:block;margin-top:0;font-family:"Playfair Display",Georgia,serif;font-size:43px;font-weight:700;line-height:1.1;white-space:nowrap}
 #location svg{width:14px;height:18px}
 .without-commentators #location{bottom:108px}
 #ticker{position:absolute;left:0;right:0;bottom:20px;height:62px;display:flex;align-items:stretch;background:#0f1726f2;border-top:2px solid var(--acc);box-shadow:0 4px 18px #0005;font-variant-numeric:tabular-nums}
@@ -106,3 +106,26 @@ body{font-family:Inter,system-ui,sans-serif;color:var(--paper);-webkit-font-smoo
 .ticker-item:after{content:"•";padding-left:35px;font-size:19px;color:var(--acc)}
 @keyframes ticker-scroll{to{transform:translateX(-50%)}}
 @media(prefers-reduced-motion:reduce){#ticker-track{animation-duration:180s}}
+
+/* Estado de juego: las luces de movimiento son independientes de las faltas. */
+#play-lights{display:flex;justify-content:center;gap:7px;height:6px;margin:9px 0 6px}
+#play-lights i{width:6px;height:6px;border-radius:50%;background:#f5efe43d;opacity:.65}
+#play-state{min-height:15px;font-size:11px;font-weight:700;letter-spacing:.7px;line-height:1.3;white-space:nowrap;color:#b4c3d5}
+#scorebug[data-activity=live][data-stale=false] #play-lights i{background:#74dfb0;animation:play-chase 1.5s ease-in-out infinite;animation-delay:calc(var(--lamp) * .15s)}
+#scorebug[data-activity=live][data-stale=false] #play-state{color:#8ce7bb}
+#scorebug[data-activity=timeout] #play-lights i,#scorebug[data-activity=quarter-end] #play-lights i,#scorebug[data-activity=break] #play-lights i{background:var(--orange);opacity:.9}
+#scorebug[data-activity=timeout] #play-state,#scorebug[data-activity=quarter-end] #play-state,#scorebug[data-activity=break] #play-state{color:#ffd29b}
+#scorebug[data-activity=final] #play-lights i{background:#f5efe47a}
+@keyframes play-chase{0%,70%,100%{opacity:.25;box-shadow:none}30%{opacity:1;box-shadow:0 0 7px #74dfb099}}
+.no-top-brand #feed-label{top:38px}
+.card-crest{position:relative;display:inline-grid;place-items:center;flex:0 0 46px;width:46px;height:46px;border-radius:50%;background:#fff;color:var(--ink);font:900 11px Inter,system-ui,sans-serif;overflow:hidden}
+.card-crest img{position:absolute;inset:4px;width:calc(100% - 8px);height:calc(100% - 8px);object-fit:contain}
+.player-identity{display:flex;align-items:center;gap:18px;margin-top:12px;min-width:0}
+.player-identity .card-crest{flex-basis:66px;width:66px;height:66px}
+.player-copy{flex:1;min-width:0}
+.player-identity .player-name{margin-top:0;font-size:27px}
+.comparison-team{gap:8px}.comparison-name{font-size:13px}.comparison-value{font-size:32px}
+.ticker-crests{display:inline-flex;align-items:center;gap:5px;margin-right:12px}
+.ticker-crests .card-crest{flex-basis:27px;width:27px;height:27px;font-size:8px}
+.ticker-crests .card-crest img{inset:2px;width:calc(100% - 4px);height:calc(100% - 4px)}
+@media(prefers-reduced-motion:reduce){#scorebug[data-activity=live][data-stale=false] #play-lights i{animation-duration:4s}}

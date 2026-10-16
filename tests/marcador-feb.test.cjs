@@ -74,6 +74,57 @@ test('conserva el reloj oficial, reconoce final, descanso y prórroga', () => {
   data.HEADER.time='03:28';data.HEADER.quarter=5;
   assert.equal(core.normalize(data,game).quarter,5);
 });
+test('las luces distinguen juego, fin de cuarto, descanso y final sin anticipar el resultado final', () => {
+  const raw=response('25','12');
+  assert.deepEqual(core.activity(raw),{kind:'live',label:'EN JUEGO'});
+  raw.HEADER.time='00:00';
+  assert.deepEqual(core.activity(raw),{kind:'quarter-end',label:'FIN DEL CUARTO 1'});
+  raw.HEADER.quarter=2;
+  assert.deepEqual(core.activity(raw),{kind:'break',label:'DESCANSO'});
+  raw.HEADER.quarter=4;
+  assert.equal(core.activity(raw).kind,'quarter-end');
+  raw.HEADER.quarter=5;
+  assert.equal(core.activity(raw).label,'FIN DE PRÓRROGA 1');
+  raw.HEADER.status='3';
+  assert.deepEqual(core.activity(raw),{kind:'final',label:'FINAL DEL PARTIDO'});
+});
+test('un tiempo muerto FEB persiste entre sustituciones y termina cuando avanza el reloj o se reanuda una jugada', () => {
+  const raw=response('42','30');raw.HEADER.quarter=2;raw.HEADER.time='03:10';
+  raw.PLAYBYPLAY={LINES:[{num:'548',action:'timeout',quarter:'2',time:'03:10',idTeam:'1008400'},
+    {num:'549',action:'substitution',quarter:'2',time:'03:10',idTeam:'1009837'}]};
+  assert.deepEqual(core.activity(raw),{kind:'timeout',label:'TIEMPO MUERTO',teamId:'1008400'});
+  raw.HEADER.time='03:09';assert.equal(core.activity(raw).kind,'live');
+  raw.HEADER.time='03:10';
+  raw.PLAYBYPLAY.LINES.push({num:'550',action:'shoot',quarter:'2',time:'03:10'});
+  assert.equal(core.activity(raw).kind,'live');
+});
+test('descarta tiempos muertos borrados, de otro cuarto o anteriores a una jugada posterior', () => {
+  const raw=response();raw.HEADER.time='03:10';
+  raw.PLAYBYPLAY={LINES:[{num:'548',action:'timeout',quarter:'1',time:'03:10',deleted:true}]};
+  assert.equal(core.activity(raw).kind,'live');
+  raw.PLAYBYPLAY.LINES[0].deleted=false;raw.HEADER.quarter=2;
+  assert.equal(core.activity(raw).kind,'live');
+  raw.HEADER.quarter=1;
+  raw.PLAYBYPLAY.LINES.push({num:'549',action:'fthrow',quarter:'1',time:'03:10'});
+  assert.equal(core.activity(raw).kind,'live');
+});
+test('reconoce un tiempo muerto explícito y da prioridad al descanso o al final', () => {
+  const raw=response();raw.HEADER.statusText='TIMEOUT';
+  assert.equal(core.activity(raw).kind,'timeout');
+  raw.HEADER.statusText='TIEMPO MUERTO';assert.equal(core.activity(raw).label,'TIEMPO MUERTO');
+  raw.HEADER.quarter=2;raw.HEADER.time='00:00';assert.equal(core.activity(raw).kind,'break');
+  raw.HEADER.status='3';assert.equal(core.activity(raw).kind,'final');
+});
+test('el registro FEB de fin de periodo detiene las luces hasta el siguiente cuarto', () => {
+  const raw=response();raw.PLAYBYPLAY={LINES:[{num:'159',action:'period',quarter:'1',logParam2:'1',text:'Fin del Cuarto 1'}]};
+  assert.equal(core.activity(raw).kind,'quarter-end');
+  raw.HEADER.quarter=2;raw.HEADER.time='10:00';
+  raw.PLAYBYPLAY.LINES.push({num:'160',action:'period',quarter:'2',logParam2:'0',text:'Comienzo del Cuarto 2'});
+  assert.equal(core.activity(raw).kind,'live');
+  raw.HEADER.statusText='FINAL DE CUARTO';
+  assert.equal(core.normalize(raw,game).phase,'break');
+  assert.equal(core.activity(raw).label,'DESCANSO');
+});
 test('la ficha previa 0–0 deja de servir justo al llegar la hora de inicio', () => {
   const bootstrap={consultado:'2026-10-16T03:00:00Z',ficha:{partido:2535753,previa:true,
     local:{id:'1008400',puntos:0,nombre:'Tizona'},visitante:{id:'1009837',puntos:0,nombre:'Oviedo'}}};

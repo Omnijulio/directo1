@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Baloncesto · Radio Evolución Burgos</title>
-<link rel="stylesheet" href="assets/directos-fonts.css?v=5">
-<link rel="stylesheet" href="assets/marcador-feb.css?v=5">
-<script defer src="assets/marcador-feb-core.js?v=5"></script>
-<script defer src="assets/marcador-feb.js?v=5"></script>
+<link rel="stylesheet" href="assets/directos-fonts.css?v=6">
+<link rel="stylesheet" href="assets/marcador-feb.css?v=6">
+<script defer src="assets/marcador-feb-core.js?v=6"></script>
+<script defer src="assets/marcador-feb.js?v=6"></script>
 </head>
 <body>
 <main id="stage">
@@ -23,7 +23,7 @@
         <div class="team-main"><div class="team-emblem"><span id="score-home-fallback">TIZ</span><img id="score-home-logo" alt="Escudo del Tizona" hidden></div><div id="score-home" class="score-value">—</div></div>
         <div id="home-fouls" class="foul-lights" role="img" aria-label="Faltas del cuarto sin dato"><i></i><i></i><i></i><i></i><i></i></div>
       </div>
-      <div class="score-time"><div id="score-clock">—</div><div id="score-period">FEB</div></div>
+      <div class="score-time"><div id="score-clock">—</div><div id="score-period">FEB</div><div id="play-lights" aria-hidden="true"><i style="--lamp:0"></i><i style="--lamp:1"></i><i style="--lamp:2"></i><i style="--lamp:3"></i><i style="--lamp:4"></i><i style="--lamp:5"></i></div><div id="play-state" role="status"></div></div>
       <div class="score-team away">
         <div class="team-main"><div class="team-emblem"><span id="score-away-fallback">OVI</span><img id="score-away-logo" alt="Escudo del Oviedo" hidden></div><div id="score-away" class="score-value">—</div></div>
         <div id="away-fouls" class="foul-lights" role="img" aria-label="Faltas del cuarto sin dato"><i></i><i></i><i></i><i></i><i></i></div>
@@ -31,7 +31,7 @@
     </div>
     <div id="score-status" class="score-status" role="status">CONECTANDO CON FEB</div>
   </section>
-  <section id="commentators" aria-label="Comentaristas del partido"><div id="commentator-list"></div></section>
+  <section id="commentators" aria-label="Comentaristas del partido"><span class="commentator-logo"><img id="commentator-logo" src="assets/radio-evolucion.png" alt="Radio Evolución"></span><div class="commentator-copy"><div class="commentator-role">NARRACIÓN</div><div id="commentator-list"></div></div></section>
   <aside id="flash" hidden aria-live="polite" aria-atomic="true"></aside>
   <div id="location"><svg width="12" height="15" viewBox="0 0 12 15" aria-hidden="true"><path d="M6 14s5-5.5 5-8A5 5 0 0 0 1 6c0 2.5 5 8 5 8Z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="6" cy="6" r="1.5" fill="currentColor"/></svg><span id="venue">El Plantío · Burgos</span></div>
   <section id="ticker" aria-label="Estadísticas del partido">
@@ -46,7 +46,7 @@
   <label for="cfg-game">Partido</label><select id="cfg-game"><option value="">Partido activo</option><option value="2538980">Prueba FEB · UCAM Murcia CAR – Obradoiro</option></select>
   <label><input id="cfg-stats" type="checkbox" checked> Banda de estadísticas y comparativas</label>
   <label><input id="cfg-events" type="checkbox" checked> Avisos de nuevas estadísticas de jugadores</label>
-  <label><input id="cfg-credits" type="checkbox" checked> Faldones fijos de los comentaristas</label>
+  <label><input id="cfg-credits" type="checkbox" checked> Faldón fijo de los comentaristas</label>
   <label for="cfg-url">Enlace para PRISM</label><textarea id="cfg-url" readonly></textarea>
   <div class="config-actions"><button id="cfg-copy" type="button">Copiar enlace</button><a id="cfg-preview" target="_blank" rel="noopener">Vista de encuadre</a></div>
   <p id="cfg-result" role="status"></p>
