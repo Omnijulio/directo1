@@ -1,5 +1,5 @@
 {
-  "version": 10,
+  "version": 11,
   "narradores": [
     "Iñaqui García",
     "Pancho"
@@ -79,5 +79,40 @@
       }
     }
   ],
-  "narracion_fija": true
+  "narracion_fija": true,
+  "activo": 105404,
+  "partidos": [
+    {
+      "partido": 105404,
+      "proveedor": "acb",
+      "referencia_flashscore": "42mhERFs",
+      "fuente": "https://live.acb.com/es/partidos/recoletas-salud-san-vs-monbus-obradoiro-105404/estadisticas",
+      "inicio": "2026-10-17T21:00:00+02:00",
+      "competicion": "Liga Endesa",
+      "jornada": "Jornada 4",
+      "pabellon": "Coliseum · Burgos",
+      "actualizar_segundos": 10,
+      "estadisticas": true,
+      "comparar_cada_segundos": 60,
+      "comparar_durante_segundos": 7,
+      "aviso_jugador_segundos": 4,
+      "avisos_jugadores": true,
+      "local": {
+        "id": "4469",
+        "nombre": "Recoletas Salud San Pablo Burgos",
+        "corto": "San Pablo Burgos",
+        "siglas": "BUR",
+        "color": "#00669E",
+        "escudo": "https://static.acb.com/img/www/clubes2025/2526SanPabloLogo.png"
+      },
+      "visitante": {
+        "id": "4479",
+        "nombre": "Monbus Obradoiro",
+        "corto": "Monbus Obradoiro",
+        "siglas": "OBR",
+        "color": "#4A96C4",
+        "escudo": "https://static.acb.com/img/www/clubes2026/202627MonbusObradoiroLogoPositivoOK.png"
+      }
+    }
+  ]
 }

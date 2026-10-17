@@ -22,9 +22,10 @@
   function selectGame(config, requested, now) {
     const practice = config.prueba_activa;
     if (!requested && practice && (now === undefined ? Date.now() : now) < Date.parse(practice.hasta)) requested = practice.partido;
+    if (!requested && config.activo) requested = config.activo;
     if (!requested) return config.feb || null;
     if (!/^\d{1,10}$/.test(String(requested))) return null;
-    return [config.feb, ...list(config.pruebas)].find(game => game && String(game.partido) === String(requested)) || null;
+    return [...list(config.partidos), config.feb, ...list(config.pruebas)].find(game => game && String(game.partido) === String(requested)) || null;
   }
 
   function timeline(raw) {

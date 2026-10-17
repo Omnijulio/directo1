@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Comprobar el marcador
-        run: node --test tests/marcador-feb.test.cjs
+        run: node --test tests/*.test.cjs
       - name: Comprobar el lector de la ficha
         run: python -m unittest discover -s tests -p 'test_*.py'
       - name: Consultar la ficha pública de la FEB

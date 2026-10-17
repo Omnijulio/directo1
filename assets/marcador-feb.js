@@ -1,9 +1,12 @@
 (function () {
   "use strict";
-  const core = window.FEBScore, $ = id => document.getElementById(id);
+  const core = window.FEBScore, acb = window.ACBScore, $ = id => document.getElementById(id);
   const params = new URLSearchParams(location.search);
   const RAW_ROOT = "https://raw.githubusercontent.com/Omnijulio/directo1/main/";
   const API = "https://intrafeb.feb.es/LiveStats.API/api/v1/KeyFacts/";
+  const ACB_API = "https://api2.acb.com/api/matchdata/";
+  // Clave pública incluida en el cliente oficial de ACB Live.
+  const ACB_HEADERS = {"X-APIKEY":"0dd94928-6f57-4c08-a3bd-b1b2f092976e"};
   const preview = params.get("prueba") || "";
   const previewMode = ["previa", "vivo", "tiempo-muerto", "fin-cuarto", "descanso", "final", "conexion", "faltas", "accion", "comparativa", "animacion"].includes(preview);
   const FLASH_ENTER_MS = 420, FLASH_EXIT_MS = 300;
@@ -48,7 +51,8 @@
     getJSON("config-baloncesto.json?t=" + Date.now()).then(config => {
       const selected = $("cfg-game").value;
       const choices = [{game:core.selectGame(config,null),value:"",label:"Activo · "},
-        {game:config.feb,value:String(config.feb.partido),label:"Tizona · "},
+        ...(config.partidos || []).map(game => ({game,value:String(game.partido),label:"Partido · "})),
+        {game:config.feb,value:String(config.feb.partido),label:"Partido · "},
         ...(config.pruebas || []).map(game => ({game,value:String(game.partido),label:"Partido · "}))];
       $("cfg-game").replaceChildren(...choices.map(({game:entry,value,label}) => {
         const option = element("option", "", label + entry.local.corto + " – " + entry.visitante.corto);
@@ -73,6 +77,7 @@
     try {
       const response = await fetch(url, {headers, signal: controller.signal, cache: "no-store", credentials: "omit"});
       if (!response.ok) { const error = new Error("HTTP " + response.status); error.status = response.status; throw error; }
+      if (response.status === 204) return null;
       return await response.json();
     } finally { clearTimeout(timer); }
   }
@@ -113,7 +118,7 @@
   function restoreSession() {
     let saved;
     try { saved = JSON.parse(sessionStorage.getItem("feb-" + game.partido)); } catch (_) {}
-    tracker = core.createEventTracker(saved && saved.tracker);
+    tracker = game.proveedor === "acb" ? acb.createStatsTracker(saved && saved.tracker) : core.createEventTracker(saved && saved.tracker);
     if (saved && saved.state && Date.now() - saved.lastGood < 900000 && saved.lastGood <= Date.now() &&
         saved.state.home.id === String(game.local.id) && saved.state.away.id === String(game.visitante.id)) {
       state = saved.state; lastGood = saved.lastGood; failed = true;
@@ -159,7 +164,9 @@
     if (configPending) return;
     configPending = true;
     try {
-      const config = await getJSON("config-baloncesto.json?t=" + Date.now());
+      let config;
+      try { config = await getJSON("config-baloncesto.json?t=" + Date.now()); }
+      catch (_) { config = await getJSON(RAW_ROOT + "config-baloncesto.json?t=" + Date.now()); }
       if (configVersion !== undefined && config.version !== configVersion) { location.reload(); return; }
       configVersion = config.version; configure(config);
     } catch (_) {
@@ -173,6 +180,31 @@
     pending = true;
     const requestGeneration = generation, startedAt = Date.now();
     try {
+      if (game.proveedor === "acb") {
+        const id = encodeURIComponent(game.partido), suffix = "?matchId=" + id + "&t=" + Date.now();
+        const header = await getJSON(ACB_API + "MatchHeader/match-header" + suffix, ACB_HEADERS);
+        if (requestGeneration !== generation) return;
+        // El tanteo y el reloj se muestran sin esperar a las estadísticas secundarias.
+        const nextState = acb.normalize(header, null, null, game);
+        if (state && !stale()) {
+          for (const side of ["home","away"]) { nextState[side].stats=state[side].stats; nextState[side].players=state[side].players; }
+          if (state.activity && state.activity.kind === "timeout" && nextState.phase === "live" &&
+              state.clock === nextState.clock && state.quarter === nextState.quarter &&
+              state.home.score === nextState.home.score && state.away.score === nextState.away.score) nextState.activity=state.activity;
+        }
+        state = nextState; lastGood = Date.now(); failed = false; render();
+        const [boxResult, playsResult] = await Promise.allSettled([
+          getJSON(ACB_API + "Result/boxscores" + suffix, ACB_HEADERS),
+          header.availableContent && header.availableContent.playbyplay ? getJSON(ACB_API + "PlayByPlay/play-by-play" + suffix, ACB_HEADERS) : Promise.resolve(null)
+        ]);
+        if (requestGeneration !== generation) return;
+        const box = boxResult.status === "fulfilled" ? boxResult.value : null;
+        const plays = playsResult.status === "fulfilled" ? playsResult.value : null;
+        state = acb.normalize(header, box, plays, game);
+        const fresh = box && box.teamBoxscores && box.teamBoxscores.length ? tracker.take(state,Date.now()) : [];
+        if (eventsEnabled()) enqueue(fresh);
+        saveSession(); return;
+      }
       const data = await loadBootstrap(false);
       if (requestGeneration !== generation) return;
       if (!state || state.snapshot) {
@@ -195,7 +227,7 @@
     } catch (_) {
       if (requestGeneration !== generation) return;
       failed = true;
-      if (!state || state.snapshot) state = core.snapshotState(bootstrap, game, Date.now());
+      if (game.proveedor !== "acb" && (!state || state.snapshot)) state = core.snapshotState(bootstrap, game, Date.now());
     } finally {
       pending = false;
       if (requestGeneration === generation) render();
@@ -225,7 +257,7 @@
     const activity = state && state.activity || {kind:phase,label:phase === "live" ? "EN JUEGO" : ""};
     $("scorebug").dataset.activity = isStale ? "stale" : activity.kind;
     write("play-state", isStale ? "RECONECTANDO" : activity.label);
-    $("scorebug").dataset.source = previewMode ? "simulation" : state ? state.snapshot ? "feb-ficha" : "feb-api" : "pending";
+    $("scorebug").dataset.source = previewMode ? "simulation" : state ? game.proveedor === "acb" ? "acb-api" : state.snapshot ? "feb-ficha" : "feb-api" : "pending";
     $("scorebug").dataset.received = lastGood ? new Date(lastGood).toISOString() : "";
     setScore("score-home", state && state.home.score); setScore("score-away", state && state.away.score);
     renderFouls("home", state && state.home); renderFouls("away", state && state.away);

@@ -3,6 +3,14 @@
 Gráfico horizontal (1920×1080, fondo transparente) para el widget **Web** de PRISM.
 URL fija: https://omnijulio.github.io/directo1/
 
+## Emisión de baloncesto activa · 17/10/2026
+
+El marcador de https://omnijulio.github.io/directo1/baloncesto.html está conectado a **San Pablo Burgos–Monbus Obradoiro**, ACB 105404, identificado en Flashscore como `42mhERFs`. Enlace fijo de este partido para PRISM: https://omnijulio.github.io/directo1/baloncesto.html?partido=105404.
+
+La conexión utiliza directamente los endpoints públicos de ACB Live para cabecera, reloj, faltas del cuarto, estadísticas y jugadas, con consulta cada 10 segundos. No utiliza el token temporal FEB para este encuentro. La API ACB devuelve puntuaciones nulas en la previa; únicamente en estado `NOT_STARTED` y cuarto 0 se muestra el 0–0 inicial. Durante el juego, una puntuación ausente produce un aviso de conexión y nunca se convierte en cero. Los avisos de jugadores se calculan a partir de incrementos observados en sus estadísticas y no reproducen el historial al cargar o tras una desconexión prolongada.
+
+La página principal del proyecto `/` sigue dedicada a las declaraciones. Para el partido se usa `baloncesto.html` o `marcador.html`. Los encuentros FEB anteriores siguen disponibles mediante `?partido=2535753` y `?partido=2538980`.
+
 ## Cómo funciona
 - `index.html` es la plantilla común de todos los directos. No se toca entre eventos.
 - `config.json` lleva todo el contenido del evento. La página lo relee cada 5 s.
