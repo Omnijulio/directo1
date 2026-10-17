@@ -7,10 +7,10 @@ body{font-family:var(--font);color:var(--paper);-webkit-font-smoothing:antialias
 #scorebug{position:absolute;left:50%;right:auto;top:32px;width:900px;transform:translateX(-50%);border:1px solid #f5efe424;border-radius:12px;background:var(--panel);box-shadow:0 10px 28px #05091266;overflow:hidden;font-variant-numeric:tabular-nums}
 .score-main{display:grid;grid-template-columns:minmax(0,1fr) 158px minmax(0,1fr);align-items:center;padding:19px 24px 16px;gap:16px}
 .score-team{display:flex;flex-direction:column;gap:26px}
-.team-main{display:flex;align-items:center;justify-content:center;gap:32px;height:104px}
+.team-main{display:flex;align-items:center;justify-content:center;gap:20px;height:104px}
 .away .team-main{flex-direction:row-reverse}
-.team-emblem{position:relative;display:grid;place-items:center;flex:0 0 96px;height:96px;border-radius:50%;background:#faf9f5;color:#14233b;font-size:25px;font-weight:900;overflow:hidden}
-.team-emblem img{position:absolute;inset:7px;width:82px;height:82px;object-fit:contain}
+.team-emblem{position:relative;display:grid;place-items:center;flex:0 0 112px;height:112px;border-radius:50%;background:#faf9f5;color:#14233b;font-size:25px;font-weight:900;overflow:hidden}
+.team-emblem img{position:absolute;inset:3px;width:106px;height:106px;object-fit:contain}
 .score-value{min-width:125px;text-align:center;font-family:var(--font);font-size:90px;font-weight:900;letter-spacing:-4px;line-height:1}
 .score-value.changed{animation:score-change .65s ease-out}
 .score-time{text-align:center;padding:8px 0;border-left:1px solid #ffffff16;border-right:1px solid #ffffff16}

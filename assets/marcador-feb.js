@@ -101,8 +101,17 @@
 
   function setImage(id, url, name, isBrand) {
     const img = $(id); img.alt = isBrand ? name : "Escudo de " + name;
-    if (img.getAttribute("src") === url) return;
-    img.hidden = false; img.onerror = () => { img.hidden = true; }; img.src = url;
+    const fallback = $(id.replace(/-logo$/, "-fallback"));
+    const sync = () => {
+      const loaded = img.complete && img.naturalWidth > 0;
+      img.hidden = !loaded;
+      if (fallback) fallback.hidden = loaded;
+    };
+    img.onload = sync; img.onerror = sync;
+    if (img.getAttribute("src") !== url) {
+      img.hidden = true; if (fallback) fallback.hidden = false; img.src = url;
+    }
+    sync();
   }
   function teamCrest(team) {
     const crest = element("span", "card-crest");
@@ -110,7 +119,9 @@
     const fallback = element("span", "", team.siglas), img = element("img");
     fallback.setAttribute("aria-hidden", "true");
     img.alt = "Escudo de " + team.nombre;
-    img.onerror = () => { img.hidden = true; crest.setAttribute("aria-label", team.nombre); };
+    img.hidden = true;
+    img.onload = () => { img.hidden = false; fallback.hidden = true; };
+    img.onerror = () => { img.hidden = true; fallback.hidden = false; crest.setAttribute("aria-label", team.nombre); };
     img.src = team.escudo;
     crest.append(fallback, img); return crest;
   }
