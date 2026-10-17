@@ -7,7 +7,7 @@ URL fija: https://omnijulio.github.io/directo1/
 
 El marcador de https://omnijulio.github.io/directo1/baloncesto.html está conectado a **San Pablo Burgos–Monbus Obradoiro**, ACB 105404, identificado en Flashscore como `42mhERFs`. Enlace fijo de este partido para PRISM: https://omnijulio.github.io/directo1/baloncesto.html?partido=105404.
 
-La conexión utiliza directamente los endpoints públicos de ACB Live para cabecera, reloj, faltas del cuarto, estadísticas y jugadas, con consulta cada 10 segundos. No utiliza el token temporal FEB para este encuentro. La API ACB devuelve puntuaciones nulas en la previa; únicamente en estado `NOT_STARTED` y cuarto 0 se muestra el 0–0 inicial. Durante el juego, una puntuación ausente produce un aviso de conexión y nunca se convierte en cero. Los avisos de jugadores se calculan a partir de incrementos observados en sus estadísticas y no reproducen el historial al cargar o tras una desconexión prolongada.
+La conexión utiliza directamente los endpoints públicos de ACB Live para cabecera, reloj, faltas del cuarto, estadísticas y jugadas, con consulta cada 10 segundos. No utiliza el token temporal FEB para este encuentro. La API ACB devuelve puntuaciones nulas en la previa; solo con estado previo y cuarto 0 se muestra el 0–0 inicial. Durante el juego, una puntuación ausente produce un aviso de conexión y nunca se convierte en cero. Los avisos de jugadores se calculan a partir de incrementos observados en sus estadísticas y no reproducen el historial al cargar o tras una desconexión prolongada.
 
 La página principal del proyecto `/` sigue dedicada a las declaraciones. Para el partido se usa `baloncesto.html` o `marcador.html`. Los encuentros FEB anteriores siguen disponibles mediante `?partido=2535753` y `?partido=2538980`.
 
@@ -57,7 +57,7 @@ La composición comparte la identidad ya presente en las plantillas del reposito
 
 ### Prueba con el partido solicitado
 
-Abrir https://omnijulio.github.io/directo1/marcador.html?partido=2538980 para consultar **UCAM Murcia CAR–Obradoiro** mediante su API oficial FEB. La ficha de origen es https://www.feb.es/competiciones/partido/2538980, Liga U · Grupo B · 16/10/2026, 17:00 (Madrid). El grafismo no muestra etiquetas de prueba ni menciones a la fuente de datos; empieza con el 0–0 previo que publique la federación y continúa automáticamente cuando la FEB pase a estado de juego. No contiene una simulación. El enlace general está fijado a **Tizona–Oviedo (2535753)**. `?partido=2535753` fija este partido y `?partido=2538980` permite abrir la prueba por separado.
+Abrir https://omnijulio.github.io/directo1/marcador.html?partido=2538980 para consultar **UCAM Murcia CAR–Obradoiro** mediante su API oficial FEB. La ficha de origen es https://www.feb.es/competiciones/partido/2538980, Liga U · Grupo B · 16/10/2026, 17:00 (Madrid). El grafismo no muestra etiquetas de prueba ni menciones a la fuente de datos; empieza con el 0–0 previo que publique la federación y continúa automáticamente cuando la FEB pase a estado de juego. No contiene una simulación. El encuentro **Tizona–Oviedo (2535753)** se conserva mediante `?partido=2535753`; `?partido=2538980` permite abrir la prueba por separado. El enlace general utiliza el partido seleccionado en `activo`.
 
 Añadir `&demo=1` permite comprobar el encuadre sobre una pista de muestra. El enlace sin `demo` mantiene todo el fondo transparente. El configurador `?config=1` permite elegir entre la emisión y el partido de prueba.
 
