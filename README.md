@@ -44,7 +44,7 @@ Previsualizar otro momento del programa: añadir `?ahora=2026-10-16T22:40:00%2B0
 
 ## Declaración de Santiago Abascal (Vox) · Plaza Mayor de Burgos · 22/10/2026
 
-Dos layouts independientes con fondo transparente, sin tocar la página principal:
+Dos layouts independientes, sin tocar la página principal (las páginas se regeneran con `python3 scripts/generar-declaracion.py config-vox-burgos.json vox-burgos "Abascal en Burgos"`):
 
 | Formato | URL para PRISM (widget Web) |
 |---|---|
@@ -52,13 +52,13 @@ Dos layouts independientes con fondo transparente, sin tocar la página principa
 | Vertical 1080 × 1920 | https://omnijulio.github.io/directo1/vox-burgos-vertical.html |
 
 Funcionamiento automático (hora de Madrid, `config-vox-burgos.json`):
-- **Hasta las 11:45**: no se ve nada.
+- **Hasta las 11:45**: pantalla de espera a pantalla completa (sección `espera`): logo de Radio Evolución grande con ondas de radio y anillo de segundos, cuenta atrás HH:MM:SS hasta las 11:45 (`cuenta_hasta: "inicio"` la lleva a las 12:00), Santiago Abascal con el logo del partido (`logo_invitado`, `assets/vox.png`; si no existe, la caja se oculta y se reintenta cada 10 s), lugar, fecha y hora, rotativo de acompañantes e informadores, y faldón de claves.
 - **11:45–12:00**: «EN BREVE» + hora, faldón «Declaración a los medios · Plaza Mayor · Burgos», cuenta atrás y rotativos (Abascal → acompañantes → informan).
 - **Desde las 12:00**: «EN DIRECTO» con punto rojo + hora y rotativos (Santiago Abascal · Presidente nacional de Vox → titular → acompañantes → informan).
 - **A las 14:00** (`hasta`) vuelve a ocultarse.
 - Faldón de claves «Elecciones 29N» con texto en movimiento en ambas fases.
 
-Controles por URL: `?escena=previa|directo|oculto` fuerza la fase sin distintivo; `?fijo=0` deja fijo el rótulo indicado; `?ahora=11:50` simula la hora (con distintivo rojo «Vista previa»); `?demo=1` añade un fondo de muestra; `?guias=1` marca en vertical las zonas que tapan las apps.
+Controles por URL: `?escena=espera|previa|directo|oculto` fuerza la fase sin distintivo; `?fijo=0` deja fijo el rótulo indicado; `?ahora=11:50` simula la hora (con distintivo rojo «Vista previa»); `?demo=1` añade un fondo de muestra; `?guias=1` marca en vertical las zonas que tapan las apps.
 
 Datos verificados el 22/10/2026: Santiago Abascal, presidente nacional de Vox; Iñaki (Ignacio) Sicilia Doménech, presidente de Vox en Burgos (convocatoria, El Español, El Debate); Eugenia Landaluce Miranda, cabeza de lista de Vox al Congreso por Burgos para el 29N (El Correo de Burgos, El Debate, Burgos Noticias, Noticias Burgos). Burgos elige 4 diputados; en 2023, 2 PP y 2 PSOE (Última Hora, Diario de Castilla y León). Agenda: Ponferrada (20/10), A Coruña (21/10), Burgos 12:00 y Segovia 19:00 (22/10) según EFE, El Español y El Bierzo Digital. Informan: Julio García, Hugo Cuñado y David Orcajo.
 

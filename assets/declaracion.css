@@ -205,3 +205,138 @@ body.v .mic svg{width:30px;height:30px}
   .pieza,.slot.sale{transition-duration:.01s!important}
   .slot.entra{animation:none}
 }
+
+/* =================== PANTALLA DE ESPERA (hasta la previa) =================== */
+.espera{position:absolute;inset:0;z-index:5;overflow:hidden;color:var(--marfil);opacity:0;visibility:hidden;
+  background:radial-gradient(ellipse 80% 70% at 30% 40%,#1B2945 0%,#111a2d 55%,#0B111D 100%);
+  transition:opacity 1.2s var(--curva),transform 1.4s var(--curva),visibility 0s linear 1.4s;transform:scale(1.035)}
+[data-fase="espera"] .espera{opacity:1;visibility:visible;transform:none;transition:opacity .8s var(--curva),transform 1s var(--curva)}
+.espera *{animation-play-state:paused}
+[data-fase="espera"] .espera *{animation-play-state:running}
+[data-fase="espera"] .ticker{opacity:1;transform:none}
+.ticker{z-index:6}
+.prueba{z-index:9}
+
+.e-mancha{position:absolute;border-radius:50%;pointer-events:none}
+.e-m1{background:radial-gradient(circle,rgba(238,106,42,.26) 0%,rgba(238,106,42,0) 68%);animation:deriva1 34s ease-in-out infinite alternate}
+.e-m2{background:radial-gradient(circle,rgba(86,190,216,.20) 0%,rgba(86,190,216,0) 68%);animation:deriva2 41s ease-in-out infinite alternate}
+@keyframes deriva1{from{transform:translate(0,0)}to{transform:translate(220px,-120px)}}
+@keyframes deriva2{from{transform:translate(0,0)}to{transform:translate(-260px,140px)}}
+.e-ondas{position:absolute;left:0;overflow:visible}
+.e-ondas path{fill:none;stroke-linecap:round}
+.e-onda{animation:ola linear infinite}
+.e-onda.o1{stroke:rgba(238,106,42,.42);stroke-width:3;animation-duration:26s}
+.e-onda.o2{stroke:rgba(86,190,216,.30);stroke-width:2.5;animation-duration:37s}
+.e-onda.o3{stroke:rgba(245,239,228,.12);stroke-width:2;animation-duration:49s}
+@keyframes ola{from{transform:translateX(0)}to{transform:translateX(var(--paso))}}
+.e-skyline{position:absolute;opacity:.07}
+.e-rejilla{position:absolute;inset:0;opacity:.35;
+  background-image:radial-gradient(rgba(245,239,228,.10) 1.2px,transparent 1.3px);background-size:34px 34px;
+  -webkit-mask-image:radial-gradient(ellipse at 50% 45%,#000 0%,transparent 75%);mask-image:radial-gradient(ellipse at 50% 45%,#000 0%,transparent 75%)}
+
+/* Logo grande con ondas de radio y anillo de segundos */
+.e-logo{position:absolute}
+.e-logo img{position:absolute;inset:0;width:100%;height:100%;border-radius:50%;
+  box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 0 10px rgba(245,239,228,.06);animation:flota 7s ease-in-out infinite}
+@keyframes flota{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.e-anillo{position:absolute;inset:0;border-radius:50%;border:3px solid rgba(238,106,42,.55);animation:emite 4.8s cubic-bezier(.25,.6,.3,1) infinite;opacity:0}
+.e-anillo:nth-child(2){animation-delay:1.6s;border-color:rgba(86,190,216,.5)}
+.e-anillo:nth-child(3){animation-delay:3.2s}
+@keyframes emite{0%{transform:scale(1);opacity:.75}100%{transform:scale(1.62);opacity:0}}
+.e-seg{position:absolute;overflow:visible;transform:rotate(-90deg)}
+.e-seg circle{fill:none}
+.e-seg-pista{stroke:rgba(245,239,228,.10)}
+.e-seg-prog{stroke:var(--naranja);stroke-linecap:round;transition:stroke-dashoffset .3s linear}
+.e-seg-prog.sin-trans{transition:none}
+
+/* Bloque de información */
+.e-info{position:absolute;display:flex;flex-direction:column}
+.e-lbl{font-weight:900;text-transform:uppercase;color:var(--naranja);white-space:nowrap}
+.e-cuenta{display:flex;align-items:flex-start;font-variant-numeric:tabular-nums}
+.e-grupo{display:flex;flex-direction:column;align-items:center}
+.e-dig{display:flex;font-weight:900;line-height:1;letter-spacing:-.01em;color:var(--marfil)}
+.e-dig span{display:inline-block;width:.62em;text-align:center}
+.e-dig span.cambia{animation:cae .45s var(--curva)}
+@keyframes cae{from{transform:translateY(-.32em);opacity:0}to{transform:none;opacity:1}}
+.e-u{font-weight:900;text-transform:uppercase;color:var(--gris)}
+.e-dos{font-weight:900;line-height:1;color:var(--naranja);animation:late 1s steps(1) infinite}
+.e-cuenta.final .e-dig{color:var(--naranja)}
+@keyframes late{50%{opacity:.35}}
+.e-filete{background:linear-gradient(90deg,var(--naranja) 0,var(--naranja) 90px,rgba(245,239,228,.16) 90px)}
+.e-evento{display:flex;align-items:center}
+.e-inv{flex:none;display:flex;align-items:center;justify-content:center;background:#fff;box-shadow:0 14px 36px rgba(0,0,0,.4)}
+.e-inv img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+.e-evento.sin-logo .e-inv{display:none}
+.e-ev-ante{font-weight:900;text-transform:uppercase;color:var(--naranja);white-space:nowrap}
+.e-ev-tit{font-weight:900;line-height:1.04;letter-spacing:-.01em;white-space:nowrap;overflow:hidden}
+.e-ev-sub{font-weight:600;color:var(--gris);white-space:nowrap;overflow:hidden}
+.e-datos{display:flex;flex-wrap:wrap;align-items:center;font-weight:700;color:var(--marfil2)}
+.e-datos span{display:inline-flex;align-items:center;white-space:nowrap}
+.e-datos svg{flex:none;color:var(--naranja)}
+.e-rot{position:relative;background:rgba(245,239,228,.06);box-shadow:inset 0 0 0 1px rgba(245,239,228,.10);overflow:hidden}
+.e-rot::before{content:"";position:absolute;left:0;top:0;bottom:0;background:var(--naranja)}
+.e-rot-in{transition:opacity .35s,transform .35s}
+.e-rot-in.sale{opacity:0;transform:translateY(-8px)}
+.e-rot-in.entra{animation:entra .5s var(--curva)}
+.e-rot-ante{font-weight:900;text-transform:uppercase;color:var(--naranja)}
+.e-rot-l{font-weight:600;color:var(--marfil2);white-space:nowrap;overflow:hidden}
+.e-rot-l strong{color:var(--marfil);font-weight:900}
+.e-reloj{position:absolute;display:flex;align-items:center;background:rgba(245,239,228,.07);box-shadow:inset 0 0 0 1px rgba(245,239,228,.12)}
+.e-reloj b{font-weight:900;color:var(--marfil)}
+.e-reloj em{font-style:normal;font-weight:900;text-transform:uppercase;color:var(--gris)}
+
+/* Horizontal */
+body.h .e-m1{width:1300px;height:1300px;left:-260px;top:-300px}
+body.h .e-m2{width:1200px;height:1200px;right:-300px;bottom:-420px}
+body.h .e-ondas{top:790px;width:1920px;height:220px}
+body.h .e-skyline{left:50%;bottom:0;width:1100px;margin-left:-550px;opacity:.05}
+body.h .e-logo{left:200px;top:180px;width:600px;height:600px}
+body.h .e-seg{left:-34px;top:-34px;width:668px;height:668px}
+body.h .e-info{left:960px;top:150px;width:880px}
+body.h .e-lbl{font-size:22px;letter-spacing:.24em;margin-bottom:10px}
+body.h .e-dig{font-size:150px}
+body.h .e-dos{font-size:120px;margin:12px 10px 0}
+body.h .e-u{font-size:15px;letter-spacing:.3em;margin-top:8px}
+body.h .e-filete{height:3px;margin:34px 0 34px}
+body.h .e-evento{gap:30px}
+body.h .e-inv{width:132px;height:132px;border-radius:24px;padding:18px;box-sizing:border-box}
+body.h .e-ev-ante{font-size:17px;letter-spacing:.2em;margin-bottom:8px}
+body.h .e-ev-tit{font-size:66px}
+body.h .e-ev-sub{font-size:27px;margin-top:6px}
+body.h .e-datos{font-size:22px;gap:12px 30px;margin-top:30px}
+body.h .e-datos span{gap:10px}
+body.h .e-rot{margin-top:30px;height:116px;border-radius:14px;padding:0 30px 0 38px;display:flex;align-items:center}
+body.h .e-rot::before{width:6px}
+body.h .e-rot-ante{font-size:15px;letter-spacing:.22em;margin-bottom:6px}
+body.h .e-rot-l{font-size:23px;line-height:1.38}
+body.h .e-reloj{right:48px;top:50px;height:52px;padding:0 22px;gap:14px;border-radius:26px}
+body.h .e-reloj b{font-size:25px}
+body.h .e-reloj em{font-size:14px;letter-spacing:.22em}
+
+/* Vertical */
+body.v .e-m1{width:1200px;height:1200px;left:-400px;top:-120px}
+body.v .e-m2{width:1200px;height:1200px;right:-480px;top:900px}
+body.v .e-ondas{top:560px;width:1080px;height:200px}
+body.v .e-skyline{left:0;bottom:0;width:1080px;opacity:.06}
+body.v .e-logo{left:270px;top:214px;width:540px;height:540px}
+body.v .e-seg{left:-30px;top:-30px;width:600px;height:600px}
+body.v .e-info{left:40px;top:812px;width:1000px;align-items:center;text-align:center}
+body.v .e-lbl{font-size:22px;letter-spacing:.24em;margin-bottom:8px}
+body.v .e-dig{font-size:148px}
+body.v .e-dos{font-size:116px;margin:12px 8px 0}
+body.v .e-u{font-size:16px;letter-spacing:.3em;margin-top:8px}
+body.v .e-filete{width:100%;height:3px;margin:28px 0 30px;background:linear-gradient(90deg,rgba(245,239,228,.16) 0,rgba(245,239,228,.16) calc(50% - 45px),var(--naranja) calc(50% - 45px),var(--naranja) calc(50% + 45px),rgba(245,239,228,.16) calc(50% + 45px))}
+body.v .e-evento{gap:28px;text-align:left;max-width:1000px}
+body.v .e-inv{width:126px;height:126px;border-radius:22px;padding:16px;box-sizing:border-box}
+body.v .e-ev-ante{font-size:17px;letter-spacing:.18em;margin-bottom:8px}
+body.v .e-ev-tit{font-size:62px}
+body.v .e-ev-sub{font-size:27px;margin-top:6px}
+body.v .e-datos{font-size:23px;gap:10px 28px;margin-top:28px;justify-content:center}
+body.v .e-datos span{gap:10px}
+body.v .e-rot{margin-top:28px;width:100%;box-sizing:border-box;height:150px;border-radius:16px;padding:0 30px 0 38px;display:flex;align-items:center;text-align:left}
+body.v .e-rot::before{width:6px}
+body.v .e-rot-ante{font-size:16px;letter-spacing:.22em;margin-bottom:6px}
+body.v .e-rot-l{font-size:25px;line-height:1.4}
+body.v .e-reloj{right:44px;top:150px;height:54px;padding:0 22px;gap:14px;border-radius:27px}
+body.v .e-reloj b{font-size:27px}
+body.v .e-reloj em{font-size:15px;letter-spacing:.22em}

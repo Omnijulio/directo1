@@ -1,10 +1,11 @@
 /* Declaraciones en directo · Radio Evolución Burgos
    Fases automáticas por hora de Madrid:
-     oculto  → nada visible (hasta `previa_minutos` antes de `inicio`)
+     espera  → pantalla completa con cuenta atrás, logo grande y datos (hasta `previa_minutos` antes de `inicio`;
+               con `espera.visible: false` no se ve nada)
      previa  → «En breve», cuenta atrás, faldón y rotativos
      directo → «En directo», rotativos y hora (hasta `hasta`)
    Parámetros de URL:
-     ?escena=oculto|previa|directo  fuerza una fase (sin distintivo)
+     ?escena=oculto|espera|previa|directo  fuerza una fase (sin distintivo)
      ?ahora=11:50 o ?ahora=2026-10-22T11:50:00%2B02:00  hora simulada (con distintivo «Vista previa»)
      ?fijo=N  deja fijo el rótulo N (empieza en 0) de la fase actual
      ?demo=1  fondo de muestra · ?guias=1 zonas ocupadas por las apps (vertical) */
@@ -55,6 +56,9 @@
   const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const neg = (s) => esc(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
 
+  const ICONO_PIN = '<svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.5s-7-6.3-7-11.7a7 7 0 0 1 14 0c0 5.4-7 11.7-7 11.7z"/><circle cx="12" cy="9.8" r="2.6"/></svg>';
+  const ICONO_CAL = '<svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>';
+  const ICONO_RELOJ = '<svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>';
   const ICONO_MIC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="11.5" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg>';
 
   /* Reduce el cuerpo hasta que el texto quepa: a lo ancho y, si el estilo permite
@@ -94,15 +98,16 @@
 
   /* ---------- Configuración ---------- */
   let cfg = null, versionRemota = null;
+  const VISIBLE = (f) => f === 'previa' || f === 'directo';
+  const momentoPrevia = () => Date.parse(cfg.inicio) - (Number(cfg.previa_minutos) || 15) * 60000;
 
   function faseActual() {
     const e = escenaURL || cfg.escena || 'auto';
-    if (e !== 'auto') return ['oculto', 'previa', 'directo'].includes(e) ? e : 'oculto';
+    if (e !== 'auto') return ['oculto', 'espera', 'previa', 'directo'].includes(e) ? e : 'oculto';
     const t = ahora();
     const ini = Date.parse(cfg.inicio);
-    const pre = ini - (Number(cfg.previa_minutos) || 15) * 60000;
     const fin = cfg.hasta ? Date.parse(cfg.hasta) : Infinity;
-    if (t < pre) return 'oculto';
+    if (t < momentoPrevia()) return (cfg.espera && cfg.espera.visible !== false) ? 'espera' : 'oculto';
     if (t < ini) return 'previa';
     if (t < fin) return 'directo';
     return 'oculto';
@@ -157,8 +162,8 @@
   let firmaTicker = '';
   function pintarTicker(f, animar) {
     const t = cfg.ticker || {};
-    const items = (f === 'previa' ? t.previa : t.directo) || t.items || [];
-    const firma = JSON.stringify([f, items, t.titulo]);
+    const items = (f === 'directo' ? t.directo : (f === 'espera' ? (t.espera || t.previa) : t.previa)) || t.items || [];
+    const firma = JSON.stringify([items, t.titulo]);
     if (firma === firmaTicker) return;
     firmaTicker = firma;
     const vent = $('.ticker-vent');
@@ -177,6 +182,114 @@
     if (animar) { vent.classList.add('cambio'); setTimeout(aplicar, 360); } else aplicar();
   }
 
+  /* ---------- Pantalla de espera ---------- */
+  const esperaRot = { i: 0, t: null, firma: '' };
+  let logoFallido = false;
+
+  function cargarLogoInvitado(reintento) {
+    const e = cfg.espera || {};
+    const img = $('.e-inv img');
+    const caja = $('.e-evento');
+    if (!e.logo_invitado) { caja.classList.add('sin-logo'); return; }
+    const base = e.logo_invitado;
+    img.onload = () => { logoFallido = false; caja.classList.remove('sin-logo'); };
+    img.onerror = () => { logoFallido = true; caja.classList.add('sin-logo'); };
+    const destino = reintento ? base + (base.includes('?') ? '&' : '?') + 'r=' + Date.now() : base;
+    if (reintento || img.dataset.base !== base) { img.dataset.base = base; img.src = destino; }
+  }
+
+  function construirOndas() {
+    const svg = $('.e-ondas');
+    if (!svg || svg.dataset.listo) return;
+    svg.dataset.listo = '1';
+    const alto = parseFloat(getComputedStyle(svg).height) || 240;
+    const defs = [['o1', 520, 0.30], ['o2', 760, 0.22], ['o3', 380, 0.14]];
+    svg.setAttribute('viewBox', `0 0 ${W} ${alto}`);
+    svg.innerHTML = defs.map(([c, lon, amp], k) => {
+      const A = alto * amp, y0 = alto * (0.42 + k * 0.1);
+      let d = `M ${-lon} ${y0}`;
+      for (let x = -lon; x < W * 2 + lon; x += lon) {
+        d += ` C ${x + lon * 0.25} ${y0 - A}, ${x + lon * 0.25} ${y0 - A}, ${x + lon * 0.5} ${y0}`;
+        d += ` S ${x + lon * 0.75} ${y0 + A}, ${x + lon} ${y0}`;
+      }
+      const paso = -Math.ceil(W / lon) * lon;
+      return `<path class="e-onda ${c}" style="--paso:${paso}px" d="${d}"/>`;
+    }).join('');
+  }
+
+  function pintarEsperaRot(animar) {
+    const e = cfg.espera || {};
+    const l = (e.rotativo || []).filter(Boolean);
+    const caja = $('.e-rot');
+    caja.style.display = l.length ? '' : 'none';
+    if (!l.length) return;
+    const d = l[esperaRot.i % l.length];
+    const cont = $('.e-rot-in');
+    const pintar = () => {
+      cont.innerHTML = `<div class="e-rot-ante">${neg(d.antetitulo)}</div>` +
+        (d.lineas || []).map((x) => `<div class="e-rot-l" data-fit>${neg(x)}</div>`).join('');
+      ajustarTexto(cont);
+      cont.classList.remove('sale', 'entra');
+      if (animar) { void cont.offsetWidth; cont.classList.add('entra'); }
+    };
+    if (animar) { cont.classList.add('sale'); setTimeout(pintar, 320); } else pintar();
+  }
+
+  function programarEspera() {
+    clearTimeout(esperaRot.t);
+    const e = cfg.espera || {};
+    const l = (e.rotativo || []).filter(Boolean);
+    if (l.length < 2) return;
+    esperaRot.t = setTimeout(() => {
+      esperaRot.i = (esperaRot.i + 1) % l.length;
+      pintarEsperaRot(true);
+      programarEspera();
+    }, Math.max(4, Number(e.cada) || 8) * 1000);
+  }
+
+  function textosEspera() {
+    const e = cfg.espera || {};
+    $('.e-lbl').textContent = e.etiqueta || 'Conectamos en directo en';
+    $('.e-ev-ante').innerHTML = neg(e.antetitulo);
+    $('.e-ev-tit').innerHTML = neg(e.titulo);
+    $('.e-ev-sub').innerHTML = neg(e.subtitulo);
+    const iconos = [ICONO_PIN, ICONO_CAL, ICONO_RELOJ];
+    $('.e-datos').innerHTML = (e.datos || []).map((x, k) => `<span>${iconos[k % 3]}${neg(x)}</span>`).join('');
+    ajustarTexto($('.e-info'));
+    cargarLogoInvitado(false);
+    construirOndas();
+    const firma = JSON.stringify([e.rotativo, e.cada]);
+    if (firma !== esperaRot.firma) {
+      esperaRot.firma = firma;
+      esperaRot.i = 0;
+      pintarEsperaRot(false);
+      programarEspera();
+    }
+  }
+
+  const digitos = [];
+  function pintarCuentaEspera(t) {
+    const e = cfg.espera || {};
+    const objetivo = e.cuenta_hasta === 'inicio' ? Date.parse(cfg.inicio) : momentoPrevia();
+    const r = Math.max(0, Math.ceil((objetivo - t) / 1000));
+    const h = Math.min(99, Math.floor(r / 3600)), m = Math.floor((r % 3600) / 60), s = r % 60;
+    const txt = [h, m, s].map((n) => String(n).padStart(2, '0')).join('');
+    $('.e-cuenta').classList.toggle('final', r <= 10);
+    if (!digitos.length) lienzo.querySelectorAll('.e-dig span').forEach((el) => digitos.push(el));
+    digitos.forEach((el, k) => {
+      if (el.textContent !== txt[k]) {
+        el.textContent = txt[k];
+        el.classList.remove('cambia'); void el.offsetWidth; el.classList.add('cambia');
+      }
+    });
+    const prog = $('.e-seg-prog');
+    const C = parseFloat(prog.dataset.c);
+    const frac = s === 0 ? 0 : (60 - s) / 60;
+    prog.classList.toggle('sin-trans', s === 59 || s === 0);
+    prog.style.strokeDashoffset = String(C * (1 - frac));
+    $('.e-reloj b').textContent = fmtHora.format(new Date(t));
+  }
+
   /* ---------- Fases ---------- */
   function textosFijos() {
     $('.pes-etiqueta').textContent = cfg.etiqueta || 'Declaración a los medios';
@@ -191,12 +304,18 @@
 
   function cambiarFase(f) {
     const antes = lienzo.dataset.fase;
-    const visibleAntes = antes === 'previa' || antes === 'directo';
+    const conTicker = (x) => VISIBLE(x) || x === 'espera';
     lienzo.dataset.fase = f;
-    if (f === 'previa' || f === 'directo') {
+    if (conTicker(f)) pintarTicker(f, conTicker(antes));
+    if (f === 'espera') {
+      textosEspera();
+    } else {
+      clearTimeout(esperaRot.t);
+      esperaRot.firma = '';
+    }
+    if (VISIBLE(f)) {
       textosFijos();
-      pintarTicker(f, visibleAntes);
-      iniciarRotacion(f, visibleAntes);
+      iniciarRotacion(f, VISIBLE(antes));
     } else {
       clearTimeout(rot.t);
       rot.fase = null;
@@ -209,6 +328,7 @@
     if (f !== lienzo.dataset.fase) cambiarFase(f);
     const t = ahora();
     $('.reloj').textContent = fmtHora.format(new Date(t));
+    if (f === 'espera') pintarCuentaEspera(t);
     if (f === 'previa') {
       const r = Math.max(0, Math.ceil((Date.parse(cfg.inicio) - t) / 1000));
       const h = Math.floor(r / 3600), m = Math.floor((r % 3600) / 60), s = r % 60;
@@ -224,9 +344,10 @@
     cfg = nueva;
     if (primera) prepararHoraSimulada(cfg);
     const f = lienzo.dataset.fase;
-    if (f === 'previa' || f === 'directo') {
+    if (VISIBLE(f) || f === 'espera') pintarTicker(f, true);
+    if (f === 'espera') textosEspera();
+    if (VISIBLE(f)) {
       textosFijos();
-      pintarTicker(f, true);
       if (firmaFase(f) !== rot.firma) {
         const l = lista(f);
         const fijo = fijoDe(f);
@@ -241,6 +362,7 @@
 
   async function leerConfig() {
     if (!RUTA_CONFIG) return;
+    if (cfg && logoFallido) cargarLogoInvitado(true);
     try {
       const r = await fetch(RUTA_CONFIG + '?t=' + Date.now(), { cache: 'no-store' });
       if (!r.ok) return;
@@ -252,6 +374,13 @@
   }
 
   /* ---------- Arranque ---------- */
+  const prog = $('.e-seg-prog');
+  if (prog) {
+    const C = 2 * Math.PI * parseFloat(prog.getAttribute('r'));
+    prog.dataset.c = String(C);
+    prog.style.strokeDasharray = String(C);
+    prog.style.strokeDashoffset = String(C);
+  }
   const listo = document.fonts && document.fonts.ready
     ? Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 2500))])
     : Promise.resolve();
