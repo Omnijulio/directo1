@@ -61,7 +61,7 @@ def pagina(clase, nombre, s, r_seg):
     <div class="cuenta pieza"><div class="cuenta-txt"><span class="cuenta-lbl">Comienza en</span><span class="cuenta-pie"></span></div><span class="cuenta-num">--:--</span></div>
     <div class="pestanas pieza"><span class="pes pes-osc">{MIC.format(s=s)}<span class="pes-etiqueta"></span></span><span class="pes pes-acento">{PIN.format(s=s)}<span class="pes-lugar"></span></span></div>
     <img class="skyline pieza" src="assets/burgos-skyline.svg" alt="">
-    <div class="tarjeta pieza"><div class="slot"></div></div>
+    <div class="tarjeta pieza"><div class="slot"></div><div class="t-logo"><img alt="Logotipo del partido"></div></div>
   </div>
   <div class="ticker pieza"><div class="ticker-lbl"></div><div class="ticker-vent"><div class="ticker-cinta"></div></div></div>
   <div class="prueba">Vista previa · hora simulada <span class="prueba-hora"></span></div>

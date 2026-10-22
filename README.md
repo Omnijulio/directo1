@@ -58,6 +58,12 @@ Funcionamiento automático (hora de Madrid, `config-vox-burgos.json`):
 - **A las 14:00** (`hasta`) vuelve a ocultarse.
 - Faldón de claves «Elecciones 29N» con texto en movimiento en ambas fases.
 
+Logo del partido: `logo_partido` (`assets/vox.png`, recibido de la emisora y con el fondo blanco eliminado). Aparece en la espera junto a Santiago Abascal y dentro del faldón en los rótulos con `"logo": true`.
+
+Tamaño del texto: algunos móviles (como el que usa PRISM) agrandan el texto de las páginas. La plantilla mide ese agrandamiento al cargar y cada 10 s y lo compensa (`--k`), y además encaja cada texto en su caja reduciéndolo si hace falta. Si aun así algo se viera grande o pequeño, `?letra=90` (50–150) ajusta todo el texto en ese porcentaje.
+
+En vertical, el faldón de claves va pegado al borde inferior (1850–1920 px) y el rótulo justo encima.
+
 Controles por URL: `?escena=espera|previa|directo|oculto` fuerza la fase sin distintivo; `?fijo=0` deja fijo el rótulo indicado; `?ahora=11:50` simula la hora (con distintivo rojo «Vista previa»); `?demo=1` añade un fondo de muestra; `?guias=1` marca en vertical las zonas que tapan las apps.
 
 Datos verificados el 22/10/2026: Santiago Abascal, presidente nacional de Vox; Iñaki (Ignacio) Sicilia Doménech, presidente de Vox en Burgos (convocatoria, El Español, El Debate); Eugenia Landaluce Miranda, cabeza de lista de Vox al Congreso por Burgos para el 29N (El Correo de Burgos, El Debate, Burgos Noticias, Noticias Burgos). Burgos elige 4 diputados; en 2023, 2 PP y 2 PSOE (Última Hora, Diario de Castilla y León). Agenda: Ponferrada (20/10), A Coruña (21/10), Burgos 12:00 y Segovia 19:00 (22/10) según EFE, El Español y El Bierzo Digital. Informan: Julio García, Hugo Cuñado y David Orcajo.

@@ -1,10 +1,11 @@
 {
-  "version": 2,
+  "version": 3,
   "evento": "Declaración de Santiago Abascal (Vox) · Plaza Mayor de Burgos · 22/10/2026",
   "escena": "auto",
   "inicio": "2026-10-22T12:00:00+02:00",
   "previa_minutos": 15,
   "hasta": "2026-10-22T14:00:00+02:00",
+  "logo_partido": "assets/vox.png",
   "espera": {
     "visible": true,
     "cuenta_hasta": "previa",
@@ -55,7 +56,8 @@
       "antetitulo": "En breve · 12:00 h",
       "titulo": "Declaración de Santiago Abascal",
       "subtitulo": "Presidente nacional de Vox · Plaza Mayor de Burgos",
-      "dura": 14
+      "dura": 14,
+      "logo": true
     },
     {
       "tipo": "duo",
@@ -85,14 +87,16 @@
       "antetitulo": "",
       "titulo": "Santiago Abascal",
       "subtitulo": "Presidente nacional de Vox",
-      "dura": 16
+      "dura": 16,
+      "logo": true
     },
     {
       "tipo": "rotulo",
       "antetitulo": "Precampaña · Elecciones generales 29N",
       "titulo": "Abascal comparece en la Plaza Mayor",
       "subtitulo": "Declaración a los medios durante su visita a Burgos",
-      "dura": 10
+      "dura": 10,
+      "logo": true
     },
     {
       "tipo": "duo",

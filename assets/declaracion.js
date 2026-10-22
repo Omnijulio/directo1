@@ -61,24 +61,70 @@
   const ICONO_RELOJ = '<svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>';
   const ICONO_MIC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="11.5" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg>';
 
+  /* Algunos móviles (tamaño de letra del sistema, autoajuste de Android) agrandan el texto
+     de las páginas. Se mide comparando el ancho real de un texto con el que da el lienzo de
+     dibujo (que no se agranda) y se compensa con --k en todos los tamaños de letra. */
+  let inflado = 1;
+  function medirInflado() {
+    lienzo.style.setProperty('--k', '1');
+    const sonda = document.createElement('span');
+    sonda.className = 'sonda';
+    sonda.textContent = 'MMMMMMMMMM';
+    lienzo.appendChild(sonda);
+    const dom = sonda.offsetWidth;
+    sonda.remove();
+    const ctx = document.createElement('canvas').getContext('2d');
+    ctx.font = '900 100px Inter, sans-serif';
+    const ref = ctx.measureText('MMMMMMMMMM').width;
+    const k = dom / ref;
+    inflado = isFinite(k) && k > 1.03 && k < 3 ? k : 1;
+    const letra = parseFloat(qs.get('letra'));
+    const extra = letra >= 50 && letra <= 150 ? letra / 100 : 1;
+    lienzo.style.setProperty('--k', String(extra / inflado));
+    body.dataset.inflado = inflado.toFixed(3);
+  }
+
   /* Reduce el cuerpo hasta que el texto quepa: a lo ancho y, si el estilo permite
-     saltos de línea (--lineas en CSS), en ese número máximo de líneas. */
+     saltos de línea (--lineas en CSS), en ese número máximo de líneas.
+     Se parte del tamaño CSS real (sin el agrandamiento del navegador) para no realimentarlo. */
+  function tamBase(el) {
+    el.style.fontSize = '';
+    const c0 = parseFloat(getComputedStyle(el).fontSize);
+    el.style.fontSize = c0 + 'px';
+    const c1 = parseFloat(getComputedStyle(el).fontSize);
+    const k = c0 > 0 && c1 > 0 ? c1 / c0 : 1;
+    const t = c0 / (k > 1.01 ? k : 1);
+    el.style.fontSize = t + 'px';
+    return t;
+  }
   function ajustarTexto(raiz) {
     raiz.querySelectorAll('[data-fit]').forEach((el) => {
-      el.style.fontSize = '';
+      let t = tamBase(el);
       const cs = getComputedStyle(el);
-      let t = parseFloat(cs.fontSize);
       const lineas = parseInt(cs.getPropertyValue('--lineas'), 10) || 1;
-      const alto = parseFloat(cs.lineHeight) / t || 1.2;
-      const min = t * 0.62;
-      const sobra = () => el.scrollWidth > el.clientWidth + 1 ||
-        (lineas > 1 && el.offsetHeight > lineas * alto * t + 2);
+      const min = t * 0.4;
+      const sobra = () => {
+        if (el.scrollWidth > el.clientWidth + 1) return true;
+        if (lineas < 2) return false;
+        const lh = parseFloat(getComputedStyle(el).lineHeight) || parseFloat(getComputedStyle(el).fontSize) * 1.1;
+        return el.offsetHeight > lineas * lh + 2;
+      };
       let n = 0;
-      while (sobra() && t > min && n++ < 80) {
+      while (sobra() && t > min && n++ < 120) {
         t -= 1;
         el.style.fontSize = t + 'px';
       }
     });
+  }
+  /* Si el bloque completo no cabe en su caja, reduce todos sus textos a la vez. */
+  function ajustarAlto(contenido, caja, margen) {
+    const disponible = () => caja.clientHeight - (margen || 0);
+    let n = 0;
+    while (contenido.offsetHeight > disponible() && n++ < 14) {
+      contenido.querySelectorAll('[data-fit]').forEach((el) => {
+        el.style.fontSize = (parseFloat(el.style.fontSize || getComputedStyle(el).fontSize) * 0.95) + 'px';
+      });
+    }
   }
 
   function htmlRotulo(d) {
@@ -126,7 +172,10 @@
     const pintar = () => {
       slot.innerHTML = htmlRotulo(d);
       slot.dataset.tipo = d.tipo || 'rotulo';
+      const tarjeta = $('.tarjeta');
+      tarjeta.classList.toggle('con-logo', !!d.logo && logoListo);
       ajustarTexto(slot);
+      ajustarAlto(slot, tarjeta, 12);
       slot.classList.remove('sale', 'entra');
       if (animar) { void slot.offsetWidth; slot.classList.add('entra'); }
     };
@@ -186,16 +235,37 @@
   const esperaRot = { i: 0, t: null, firma: '' };
   let logoFallido = false;
 
+  let logoListo = false;
+  /* Vuelve a encajar los textos visibles (p. ej. cuando aparece el logo y queda menos ancho). */
+  function reajustar() {
+    const f = lienzo.dataset.fase;
+    if (f === 'previa' || f === 'directo') {
+      const slot = $('.slot');
+      ajustarTexto(slot);
+      ajustarAlto(slot, $('.tarjeta'), 12);
+    }
+    if (f === 'espera') ajustarTexto($('.e-info'));
+  }
+  function rutaLogo() { return (cfg.espera && cfg.espera.logo_invitado) || cfg.logo_partido || ''; }
   function cargarLogoInvitado(reintento) {
-    const e = cfg.espera || {};
-    const img = $('.e-inv img');
-    const caja = $('.e-evento');
-    if (!e.logo_invitado) { caja.classList.add('sin-logo'); return; }
-    const base = e.logo_invitado;
-    img.onload = () => { logoFallido = false; caja.classList.remove('sin-logo'); };
-    img.onerror = () => { logoFallido = true; caja.classList.add('sin-logo'); };
+    const base = rutaLogo();
+    const imgs = [$('.e-inv img'), $('.t-logo img')].filter(Boolean);
+    const aplicar = (ok) => {
+      logoListo = ok;
+      logoFallido = !ok && !!base;
+      $('.e-evento').classList.toggle('sin-logo', !ok);
+      const l = rot.fase ? lista(rot.fase)[rot.i] : null;
+      $('.tarjeta').classList.toggle('con-logo', ok && !!(l && l.logo));
+      reajustar();
+    };
+    imgs.forEach((im) => { im.onload = reajustar; });
+    if (!base) { aplicar(false); return; }
     const destino = reintento ? base + (base.includes('?') ? '&' : '?') + 'r=' + Date.now() : base;
-    if (reintento || img.dataset.base !== base) { img.dataset.base = base; img.src = destino; }
+    if (!reintento && imgs[0].dataset.base === base) return;
+    const prueba = new Image();
+    prueba.onload = () => { imgs.forEach((im) => { im.src = destino; im.dataset.base = base; }); aplicar(true); };
+    prueba.onerror = () => { imgs.forEach((im) => { im.dataset.base = base; }); aplicar(false); };
+    prueba.src = destino;
   }
 
   function construirOndas() {
@@ -229,6 +299,7 @@
       cont.innerHTML = `<div class="e-rot-ante">${neg(d.antetitulo)}</div>` +
         (d.lineas || []).map((x) => `<div class="e-rot-l" data-fit>${neg(x)}</div>`).join('');
       ajustarTexto(cont);
+      ajustarAlto(cont, $('.e-rot'), 16);
       cont.classList.remove('sale', 'entra');
       if (animar) { void cont.offsetWidth; cont.classList.add('entra'); }
     };
@@ -256,7 +327,6 @@
     const iconos = [ICONO_PIN, ICONO_CAL, ICONO_RELOJ];
     $('.e-datos').innerHTML = (e.datos || []).map((x, k) => `<span>${iconos[k % 3]}${neg(x)}</span>`).join('');
     ajustarTexto($('.e-info'));
-    cargarLogoInvitado(false);
     construirOndas();
     const firma = JSON.stringify([e.rotativo, e.cada]);
     if (firma !== esperaRot.firma) {
@@ -343,6 +413,7 @@
     const primera = !cfg;
     cfg = nueva;
     if (primera) prepararHoraSimulada(cfg);
+    cargarLogoInvitado(false);
     const f = lienzo.dataset.fase;
     if (VISIBLE(f) || f === 'espera') pintarTicker(f, true);
     if (f === 'espera') textosEspera();
@@ -360,8 +431,19 @@
     tic();
   }
 
+  function repintar() {
+    const f = lienzo.dataset.fase;
+    if (VISIBLE(f) && rot.fase) { const l = lista(rot.fase); if (l[rot.i]) mostrar(l[rot.i], false); }
+    if (f === 'espera') { ajustarTexto($('.e-info')); pintarEsperaRot(false); }
+  }
+
   async function leerConfig() {
     if (!RUTA_CONFIG) return;
+    if (qs.get('medir') !== '0') {
+      const antes = inflado;
+      medirInflado();
+      if (Math.abs(inflado - antes) > 0.02) repintar();
+    }
     if (cfg && logoFallido) cargarLogoInvitado(true);
     try {
       const r = await fetch(RUTA_CONFIG + '?t=' + Date.now(), { cache: 'no-store' });
@@ -384,7 +466,10 @@
   const listo = document.fonts && document.fonts.ready
     ? Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 2500))])
     : Promise.resolve();
+  const sim = parseFloat(qs.get('inflar'));
+  if (sim > 0.5 && sim < 3) { lienzo.style.setProperty('--sim', String(sim)); body.classList.add('simulada'); }
   listo.then(() => {
+    if (qs.get('medir') !== '0') medirInflado();
     try { aplicarConfig(JSON.parse(document.getElementById('defecto').textContent)); } catch (e) { /* sin copia local */ }
     leerConfig();
     setInterval(tic, 250);

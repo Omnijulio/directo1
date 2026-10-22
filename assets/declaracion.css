@@ -13,7 +13,10 @@
   --filete:inset 0 0 0 1px rgba(245,239,228,.10);
   --curva:cubic-bezier(.2,.8,.2,1);
 }
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:transparent}
+/* --k compensa el agrandamiento de texto de algunos móviles (lo mide declaracion.js); --sim solo para pruebas */
+.sonda{position:absolute;left:0;top:0;visibility:hidden;white-space:nowrap;font-family:"Inter",sans-serif;font-weight:900;line-height:1;font-size:calc(100px*var(--sim,1))}
 #lienzo{position:absolute;left:0;top:0;transform-origin:0 0;overflow:hidden;
   font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--tinta);
   -webkit-font-smoothing:antialiased;font-variant-numeric:lining-nums tabular-nums}
@@ -82,7 +85,10 @@ body.v #lienzo{width:1080px;height:1920px}
 @keyframes cinta{to{transform:translateX(-50%)}}
 
 /* ---------- Contenido rotativo de la tarjeta ---------- */
-.slot{position:relative;width:100%}
+.slot{position:relative;flex:1;min-width:0}
+.t-logo{flex:none;display:none;align-items:center;border-left:2px solid var(--marfil2)}
+.t-logo img{height:100%;width:auto;display:block}
+.tarjeta.con-logo .t-logo{display:flex}
 .slot.sale{opacity:0;transform:translateY(-10px);transition:opacity .3s ease,transform .3s ease}
 .slot.entra{animation:entra .5s var(--curva)}
 @keyframes entra{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
@@ -103,7 +109,7 @@ body.v #lienzo{width:1080px;height:1920px}
 
 /* ---------- Distintivo de vista previa ---------- */
 .prueba{display:none;position:absolute;left:50%;transform:translateX(-50%);background:#D9302B;color:#fff;
-  font:900 16px/1 "Inter",sans-serif;letter-spacing:.18em;text-transform:uppercase;padding:12px 20px;border-radius:8px;
+  font-family:"Inter",sans-serif;font-weight:900;font-size:calc(16px*var(--k,1)*var(--sim,1));line-height:1;letter-spacing:.18em;text-transform:uppercase;padding:12px 20px;border-radius:8px;
   box-shadow:var(--sombra);white-space:nowrap;z-index:9}
 .simulada .prueba{display:block}
 body.h .prueba{top:20px}
@@ -115,7 +121,7 @@ body.v .prueba{top:60px}
   radial-gradient(ellipse at 50% 38%,rgba(255,236,206,.55),transparent 60%),
   linear-gradient(180deg,#9fb3c6 0%,#c7b394 52%,#9b8566 100%)}
 .demo .demo-fondo::after{content:"SEÑAL DE CÁMARA · MUESTRA";position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);
-  font:900 28px "Inter",sans-serif;letter-spacing:.3em;color:rgba(15,23,38,.28)}
+  font-family:"Inter",sans-serif;font-weight:900;font-size:calc(28px*var(--k,1)*var(--sim,1));letter-spacing:.3em;color:rgba(15,23,38,.28)}
 .guias #lienzo::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:8;
   background:linear-gradient(180deg,rgba(217,48,43,.22) 0,rgba(217,48,43,.22) 140px,transparent 140px,transparent 1600px,rgba(217,48,43,.22) 1600px)}
 
@@ -123,13 +129,13 @@ body.v .prueba{top:60px}
 body.h .mosca{left:48px;top:40px;width:112px;height:112px}
 body.h .estado{right:48px;top:70px;height:52px;padding:0 22px;gap:14px;border-radius:26px}
 body.h .punto{width:12px;height:12px}
-body.h .estado-txt{font-size:15px}
+body.h .estado-txt{font-size:calc(15px*var(--k,1)*var(--sim,1))}
 body.h .estado-sep{margin:14px 0}
-body.h .reloj{font-size:25px}
+body.h .reloj{font-size:calc(25px*var(--k,1)*var(--sim,1))}
 
 body.h .faldon{left:48px;top:826px;width:1400px;height:178px}
 body.h .pestanas{top:0;height:42px}
-body.h .pes{height:42px;padding:0 18px;gap:10px;font-size:14px;letter-spacing:.2em}
+body.h .pes{height:42px;padding:0 18px;gap:10px;font-size:calc(14px*var(--k,1)*var(--sim,1));letter-spacing:.2em}
 body.h .pes-osc{border-radius:10px 0 0 0}
 body.h .pes-acento{border-radius:0 10px 0 0}
 body.h .skyline{left:912px;top:-34px;width:196px}
@@ -138,25 +144,25 @@ body.h [data-fase="previa"] .tarjeta{border-radius:0 0 0 14px}
 body.h .tarjeta::before{width:10px}
 body.h .cuenta{left:1120px;top:42px;width:280px;height:136px;box-sizing:border-box;border-radius:0 14px 14px 0;
   flex-direction:column;justify-content:center;padding:0 30px;gap:6px}
-body.h .cuenta-lbl{font-size:13px}
-body.h .cuenta-num{font-size:64px}
-body.h .cuenta-pie{font-size:15px}
+body.h .cuenta-lbl{font-size:calc(13px*var(--k,1)*var(--sim,1))}
+body.h .cuenta-num{font-size:calc(64px*var(--k,1)*var(--sim,1))}
+body.h .cuenta-pie{font-size:calc(15px*var(--k,1)*var(--sim,1))}
 body.h .cuenta-txt{display:contents}
 body.h .cuenta-pie{order:3}
 
 body.h .ticker{top:1020px;height:60px}
-body.h .ticker-lbl{padding:0 40px 0 48px;font-size:16px;letter-spacing:.2em}
-body.h .ticker-cinta{font-size:23px}
+body.h .ticker-lbl{padding:0 40px 0 48px;font-size:calc(16px*var(--k,1)*var(--sim,1));letter-spacing:.2em}
+body.h .ticker-cinta{font-size:calc(23px*var(--k,1)*var(--sim,1))}
 body.h .sep-t{width:8px;height:8px;margin:0 34px}
 
-body.h .r-ante{font-size:15px;letter-spacing:.2em;margin-bottom:6px}
-body.h .r-tit{font-size:52px}
-body.h .r-sub{font-size:24px;margin-top:7px}
+body.h .r-ante{font-size:calc(15px*var(--k,1)*var(--sim,1));letter-spacing:.2em;margin-bottom:6px}
+body.h .r-tit{font-size:calc(52px*var(--k,1)*var(--sim,1))}
+body.h .r-sub{font-size:calc(24px*var(--k,1)*var(--sim,1));margin-top:7px}
 body.h .duo{grid-template-columns:1fr 1fr;column-gap:44px;margin-top:2px}
 body.h .persona+.persona{border-left:2px solid var(--marfil2);padding-left:44px}
-body.h .p-nom{font-size:38px}
-body.h .p-car{font-size:20px;margin-top:5px}
-body.h .nombres{font-size:42px}
+body.h .p-nom{font-size:calc(38px*var(--k,1)*var(--sim,1))}
+body.h .p-car{font-size:calc(20px*var(--k,1)*var(--sim,1));margin-top:5px}
+body.h .nombres{font-size:calc(42px*var(--k,1)*var(--sim,1))}
 body.h .mic{width:58px;height:58px;margin-right:26px}
 body.h .mic svg{width:28px;height:28px}
 
@@ -165,19 +171,19 @@ body.h .mic svg{width:28px;height:28px}
 body.v .mosca{left:44px;top:150px;width:132px;height:132px}
 body.v .estado{right:44px;top:188px;height:58px;padding:0 24px;gap:16px;border-radius:29px}
 body.v .punto{width:14px;height:14px}
-body.v .estado-txt{font-size:17px}
+body.v .estado-txt{font-size:calc(17px*var(--k,1)*var(--sim,1))}
 body.v .estado-sep{margin:15px 0}
-body.v .reloj{font-size:29px}
+body.v .reloj{font-size:calc(29px*var(--k,1)*var(--sim,1))}
 
-body.v .faldon{left:40px;top:1032px;width:1000px;height:456px}
+body.v .faldon{left:40px;top:1374px;width:1000px;height:456px}
 body.v .cuenta{right:0;top:0;height:124px;box-sizing:border-box;border-radius:16px;
   flex-direction:row;align-items:center;gap:26px;padding:0 30px 0 32px}
 body.v .cuenta-txt{gap:8px}
-body.v .cuenta-lbl{font-size:16px}
-body.v .cuenta-pie{font-size:18px}
-body.v .cuenta-num{font-size:76px}
+body.v .cuenta-lbl{font-size:calc(16px*var(--k,1)*var(--sim,1))}
+body.v .cuenta-pie{font-size:calc(18px*var(--k,1)*var(--sim,1))}
+body.v .cuenta-num{font-size:calc(76px*var(--k,1)*var(--sim,1))}
 body.v .pestanas{top:154px;height:48px}
-body.v .pes{height:48px;padding:0 20px;gap:11px;font-size:16px;letter-spacing:.19em}
+body.v .pes{height:48px;padding:0 20px;gap:11px;font-size:calc(16px*var(--k,1)*var(--sim,1));letter-spacing:.19em}
 body.v .pes-osc{border-radius:12px 0 0 0}
 body.v .pes-acento{border-radius:0 12px 0 0}
 body.v .skyline{right:22px;top:128px;width:196px}
@@ -185,19 +191,19 @@ body.v .tarjeta{top:202px;width:1000px;height:254px;border-radius:0 16px 16px 16
   padding:0 40px 0 54px;box-sizing:border-box}
 body.v .tarjeta::before{width:12px}
 
-body.v .ticker{top:1508px;height:70px}
-body.v .ticker-lbl{padding:0 36px 0 40px;font-size:18px;letter-spacing:.18em}
-body.v .ticker-cinta{font-size:27px}
+body.v .ticker{top:1850px;height:70px}
+body.v .ticker-lbl{padding:0 36px 0 40px;font-size:calc(18px*var(--k,1)*var(--sim,1));letter-spacing:.18em}
+body.v .ticker-cinta{font-size:calc(27px*var(--k,1)*var(--sim,1))}
 body.v .sep-t{width:9px;height:9px;margin:0 32px}
 
-body.v .r-ante{font-size:18px;letter-spacing:.19em;margin-bottom:10px}
-body.v .r-tit{font-size:64px;white-space:normal;text-wrap:balance;--lineas:2}
-body.v .r-sub{font-size:29px;margin-top:12px}
+body.v .r-ante{font-size:calc(18px*var(--k,1)*var(--sim,1));letter-spacing:.19em;margin-bottom:10px}
+body.v .r-tit{font-size:calc(64px*var(--k,1)*var(--sim,1));white-space:normal;text-wrap:balance;--lineas:2}
+body.v .r-sub{font-size:calc(29px*var(--k,1)*var(--sim,1));margin-top:12px}
 body.v .duo{grid-template-columns:1fr;row-gap:16px}
 body.v .persona+.persona{border-top:2px solid var(--marfil2);padding-top:16px}
-body.v .p-nom{font-size:46px}
-body.v .p-car{font-size:24px;margin-top:5px}
-body.v .nombres{font-size:46px}
+body.v .p-nom{font-size:calc(46px*var(--k,1)*var(--sim,1))}
+body.v .p-car{font-size:calc(24px*var(--k,1)*var(--sim,1));margin-top:5px}
+body.v .nombres{font-size:calc(46px*var(--k,1)*var(--sim,1))}
 body.v .mic{width:64px;height:64px;margin-right:26px}
 body.v .mic svg{width:30px;height:30px}
 
@@ -264,8 +270,8 @@ body.v .mic svg{width:30px;height:30px}
 @keyframes late{50%{opacity:.35}}
 .e-filete{background:linear-gradient(90deg,var(--naranja) 0,var(--naranja) 90px,rgba(245,239,228,.16) 90px)}
 .e-evento{display:flex;align-items:center}
-.e-inv{flex:none;display:flex;align-items:center;justify-content:center;background:#fff;box-shadow:0 14px 36px rgba(0,0,0,.4)}
-.e-inv img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+.e-inv{flex:none;display:flex;align-items:center;border-right:2px solid rgba(245,239,228,.16)}
+.e-inv img{height:100%;width:auto;display:block;filter:drop-shadow(0 8px 22px rgba(0,0,0,.35))}
 .e-evento.sin-logo .e-inv{display:none}
 .e-ev-ante{font-weight:900;text-transform:uppercase;color:var(--naranja);white-space:nowrap}
 .e-ev-tit{font-weight:900;line-height:1.04;letter-spacing:-.01em;white-space:nowrap;overflow:hidden}
@@ -293,50 +299,53 @@ body.h .e-skyline{left:50%;bottom:0;width:1100px;margin-left:-550px;opacity:.05}
 body.h .e-logo{left:200px;top:180px;width:600px;height:600px}
 body.h .e-seg{left:-34px;top:-34px;width:668px;height:668px}
 body.h .e-info{left:960px;top:150px;width:880px}
-body.h .e-lbl{font-size:22px;letter-spacing:.24em;margin-bottom:10px}
-body.h .e-dig{font-size:150px}
-body.h .e-dos{font-size:120px;margin:12px 10px 0}
-body.h .e-u{font-size:15px;letter-spacing:.3em;margin-top:8px}
+body.h .e-lbl{font-size:calc(22px*var(--k,1)*var(--sim,1));letter-spacing:.24em;margin-bottom:10px}
+body.h .e-dig{font-size:calc(150px*var(--k,1)*var(--sim,1))}
+body.h .e-dos{font-size:calc(120px*var(--k,1)*var(--sim,1));margin:12px 10px 0}
+body.h .e-u{font-size:calc(15px*var(--k,1)*var(--sim,1));letter-spacing:.3em;margin-top:8px}
 body.h .e-filete{height:3px;margin:34px 0 34px}
 body.h .e-evento{gap:30px}
-body.h .e-inv{width:132px;height:132px;border-radius:24px;padding:18px;box-sizing:border-box}
-body.h .e-ev-ante{font-size:17px;letter-spacing:.2em;margin-bottom:8px}
-body.h .e-ev-tit{font-size:66px}
-body.h .e-ev-sub{font-size:27px;margin-top:6px}
-body.h .e-datos{font-size:22px;gap:12px 30px;margin-top:30px}
+body.h .e-inv{height:92px;padding-right:32px}
+body.h .e-ev-ante{font-size:calc(17px*var(--k,1)*var(--sim,1));letter-spacing:.2em;margin-bottom:8px}
+body.h .e-ev-tit{font-size:calc(66px*var(--k,1)*var(--sim,1))}
+body.h .e-ev-sub{font-size:calc(27px*var(--k,1)*var(--sim,1));margin-top:6px}
+body.h .e-datos{font-size:calc(22px*var(--k,1)*var(--sim,1));gap:12px 30px;margin-top:30px}
 body.h .e-datos span{gap:10px}
 body.h .e-rot{margin-top:30px;height:116px;border-radius:14px;padding:0 30px 0 38px;display:flex;align-items:center}
 body.h .e-rot::before{width:6px}
-body.h .e-rot-ante{font-size:15px;letter-spacing:.22em;margin-bottom:6px}
-body.h .e-rot-l{font-size:23px;line-height:1.38}
+body.h .e-rot-ante{font-size:calc(15px*var(--k,1)*var(--sim,1));letter-spacing:.22em;margin-bottom:6px}
+body.h .e-rot-l{font-size:calc(23px*var(--k,1)*var(--sim,1));line-height:1.38}
 body.h .e-reloj{right:48px;top:50px;height:52px;padding:0 22px;gap:14px;border-radius:26px}
-body.h .e-reloj b{font-size:25px}
-body.h .e-reloj em{font-size:14px;letter-spacing:.22em}
+body.h .e-reloj b{font-size:calc(25px*var(--k,1)*var(--sim,1))}
+body.h .e-reloj em{font-size:calc(14px*var(--k,1)*var(--sim,1));letter-spacing:.22em}
 
 /* Vertical */
 body.v .e-m1{width:1200px;height:1200px;left:-400px;top:-120px}
 body.v .e-m2{width:1200px;height:1200px;right:-480px;top:900px}
-body.v .e-ondas{top:560px;width:1080px;height:200px}
+body.v .e-ondas{top:640px;width:1080px;height:210px}
 body.v .e-skyline{left:0;bottom:0;width:1080px;opacity:.06}
-body.v .e-logo{left:270px;top:214px;width:540px;height:540px}
-body.v .e-seg{left:-30px;top:-30px;width:600px;height:600px}
-body.v .e-info{left:40px;top:812px;width:1000px;align-items:center;text-align:center}
-body.v .e-lbl{font-size:22px;letter-spacing:.24em;margin-bottom:8px}
-body.v .e-dig{font-size:148px}
-body.v .e-dos{font-size:116px;margin:12px 8px 0}
-body.v .e-u{font-size:16px;letter-spacing:.3em;margin-top:8px}
+body.v .e-logo{left:250px;top:250px;width:580px;height:580px}
+body.v .e-seg{left:-32px;top:-32px;width:644px;height:644px}
+body.v .e-info{left:40px;top:950px;width:1000px;align-items:center;text-align:center}
+body.v .e-lbl{font-size:calc(22px*var(--k,1)*var(--sim,1));letter-spacing:.24em;margin-bottom:8px}
+body.v .e-dig{font-size:calc(148px*var(--k,1)*var(--sim,1))}
+body.v .e-dos{font-size:calc(116px*var(--k,1)*var(--sim,1));margin:12px 8px 0}
+body.v .e-u{font-size:calc(16px*var(--k,1)*var(--sim,1));letter-spacing:.3em;margin-top:8px}
 body.v .e-filete{width:100%;height:3px;margin:28px 0 30px;background:linear-gradient(90deg,rgba(245,239,228,.16) 0,rgba(245,239,228,.16) calc(50% - 45px),var(--naranja) calc(50% - 45px),var(--naranja) calc(50% + 45px),rgba(245,239,228,.16) calc(50% + 45px))}
 body.v .e-evento{gap:28px;text-align:left;max-width:1000px}
-body.v .e-inv{width:126px;height:126px;border-radius:22px;padding:16px;box-sizing:border-box}
-body.v .e-ev-ante{font-size:17px;letter-spacing:.18em;margin-bottom:8px}
-body.v .e-ev-tit{font-size:62px}
-body.v .e-ev-sub{font-size:27px;margin-top:6px}
-body.v .e-datos{font-size:23px;gap:10px 28px;margin-top:28px;justify-content:center}
+body.v .e-inv{height:88px;padding-right:28px}
+body.v .e-ev-ante{font-size:calc(17px*var(--k,1)*var(--sim,1));letter-spacing:.18em;margin-bottom:8px}
+body.v .e-ev-tit{font-size:calc(62px*var(--k,1)*var(--sim,1))}
+body.v .e-ev-sub{font-size:calc(27px*var(--k,1)*var(--sim,1));margin-top:6px}
+body.v .e-datos{font-size:calc(23px*var(--k,1)*var(--sim,1));gap:10px 28px;margin-top:28px;justify-content:center}
 body.v .e-datos span{gap:10px}
 body.v .e-rot{margin-top:28px;width:100%;box-sizing:border-box;height:150px;border-radius:16px;padding:0 30px 0 38px;display:flex;align-items:center;text-align:left}
 body.v .e-rot::before{width:6px}
-body.v .e-rot-ante{font-size:16px;letter-spacing:.22em;margin-bottom:6px}
-body.v .e-rot-l{font-size:25px;line-height:1.4}
+body.v .e-rot-ante{font-size:calc(16px*var(--k,1)*var(--sim,1));letter-spacing:.22em;margin-bottom:6px}
+body.v .e-rot-l{font-size:calc(25px*var(--k,1)*var(--sim,1));line-height:1.4}
 body.v .e-reloj{right:44px;top:150px;height:54px;padding:0 22px;gap:14px;border-radius:27px}
-body.v .e-reloj b{font-size:27px}
-body.v .e-reloj em{font-size:15px;letter-spacing:.22em}
+body.v .e-reloj b{font-size:calc(27px*var(--k,1)*var(--sim,1))}
+body.v .e-reloj em{font-size:calc(15px*var(--k,1)*var(--sim,1));letter-spacing:.22em}
+
+body.h .t-logo{height:60px;padding-left:34px;margin-left:30px}
+body.v .t-logo{height:66px;padding-left:28px;margin-left:24px}
