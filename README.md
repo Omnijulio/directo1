@@ -42,6 +42,26 @@ y medallón con tracería de rosetón.
 
 Previsualizar otro momento del programa: añadir `?ahora=2026-10-16T22:40:00%2B02:00&demo=1` a la URL.
 
+## Declaración de Santiago Abascal (Vox) · Plaza Mayor de Burgos · 22/10/2026
+
+Dos layouts independientes con fondo transparente, sin tocar la página principal:
+
+| Formato | URL para PRISM (widget Web) |
+|---|---|
+| Horizontal 1920 × 1080 | https://omnijulio.github.io/directo1/vox-burgos.html |
+| Vertical 1080 × 1920 | https://omnijulio.github.io/directo1/vox-burgos-vertical.html |
+
+Funcionamiento automático (hora de Madrid, `config-vox-burgos.json`):
+- **Hasta las 11:45**: no se ve nada.
+- **11:45–12:00**: «EN BREVE» + hora, faldón «Declaración a los medios · Plaza Mayor · Burgos», cuenta atrás y rotativos (Abascal → acompañantes → informan).
+- **Desde las 12:00**: «EN DIRECTO» con punto rojo + hora y rotativos (Santiago Abascal · Presidente nacional de Vox → titular → acompañantes → informan).
+- **A las 14:00** (`hasta`) vuelve a ocultarse.
+- Faldón de claves «Elecciones 29N» con texto en movimiento en ambas fases.
+
+Controles por URL: `?escena=previa|directo|oculto` fuerza la fase sin distintivo; `?fijo=0` deja fijo el rótulo indicado; `?ahora=11:50` simula la hora (con distintivo rojo «Vista previa»); `?demo=1` añade un fondo de muestra; `?guias=1` marca en vertical las zonas que tapan las apps.
+
+Datos verificados el 22/10/2026: Santiago Abascal, presidente nacional de Vox; Iñaki (Ignacio) Sicilia Doménech, presidente de Vox en Burgos (convocatoria, El Español, El Debate); Eugenia Landaluce Miranda, cabeza de lista de Vox al Congreso por Burgos para el 29N (El Correo de Burgos, El Debate, Burgos Noticias, Noticias Burgos). Burgos elige 4 diputados; en 2023, 2 PP y 2 PSOE (Última Hora, Diario de Castilla y León). Agenda: Ponferrada (20/10), A Coruña (21/10), Burgos 12:00 y Segovia 19:00 (22/10) según EFE, El Español y El Bierzo Digital. Informan: Julio García, Hugo Cuñado y David Orcajo.
+
 ## Plantillas guardadas
 - `plantillas/rueda-entrenador-baloncesto.json`: declaraciones de entrenadores de baloncesto de Burgos (escudos, marcador final y rótulo con escudo).
 
