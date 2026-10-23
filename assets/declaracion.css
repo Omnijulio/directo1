@@ -352,3 +352,16 @@ body.v .e-reloj em{font-size:calc(15px*var(--k,1)*var(--sim,1));letter-spacing:.
 
 body.h .t-logo{height:60px;padding-left:34px;margin-left:30px}
 body.v .t-logo{height:66px;padding-left:28px;margin-left:24px}
+
+/* =================== ESCALA GLOBAL (config «escala», p. ej. 0.7 = un 30 % más pequeño) ===================
+   Cada pieza se reduce desde su esquina, conservando los márgenes de seguridad. El faldón baja
+   lo necesario para seguir pegado al faldón de claves, que se reduce desde el borde inferior. */
+body.h{--th:60px;--tg:16px;--eo:1000px 480px}
+body.v{--th:70px;--tg:20px;--eo:540px 930px}
+.e-contenido{position:absolute;inset:0}
+.escalado .mosca{transform-origin:0 0;scale:var(--e)}
+.escalado .estado{transform-origin:100% 0;scale:var(--e)}
+.escalado .faldon{transform-origin:0 100%;scale:var(--e);translate:0 calc((var(--th) + var(--tg)) * (1 - var(--e)))}
+.escalado .ticker{right:auto;width:calc(100% / var(--e));transform-origin:0 100%;scale:var(--e)}
+.escalado .e-contenido{transform-origin:var(--eo);scale:var(--e)}
+.escalado .e-reloj{transform-origin:100% 0;scale:var(--e)}

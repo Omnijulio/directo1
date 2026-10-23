@@ -1,10 +1,11 @@
 {
-  "version": 1,
+  "version": 2,
   "evento": "XXIII Concurso Nacional de Corales Antonio José · Fórum Evolución Burgos · 24/10/2026",
   "escena": "auto",
   "inicio": "2026-10-24T19:30:00+02:00",
   "previa_minutos": 15,
   "hasta": "2026-10-24T23:30:00+02:00",
+  "escala": 0.7,
   "espera": {
     "visible": true,
     "cuenta_hasta": "previa",
@@ -12,7 +13,11 @@
     "antetitulo": "XXIII Concurso Nacional de Corales",
     "titulo": "Antonio José",
     "subtitulo": "Concierto-concurso y entrega de premios",
-    "datos": ["Fórum Evolución Burgos", "Sábado, 24 de octubre", "19:30 h"],
+    "datos": [
+      "Fórum Evolución Burgos",
+      "Sábado, 24 de octubre",
+      "19:30 h"
+    ],
     "rotativo": [
       {
         "antetitulo": "Corales a concurso",
@@ -44,7 +49,9 @@
     "previa": "En breve",
     "directo": "En directo"
   },
-  "informan": ["Julio García"],
+  "informan": [
+    "Julio García"
+  ],
   "fijo_previa": null,
   "fijo_directo": null,
   "previa": [
@@ -59,8 +66,14 @@
       "tipo": "duo",
       "antetitulo": "Corales a concurso",
       "personas": [
-        { "nombre": "Coro Joven de Santander", "cargo": "Santander (Cantabria)" },
-        { "nombre": "Ensamble Vocal Gijón", "cargo": "Gijón (Asturias)" }
+        {
+          "nombre": "Coro Joven de Santander",
+          "cargo": "Santander (Cantabria)"
+        },
+        {
+          "nombre": "Ensamble Vocal Gijón",
+          "cargo": "Gijón (Asturias)"
+        }
       ],
       "dura": 9
     },
@@ -68,8 +81,14 @@
       "tipo": "duo",
       "antetitulo": "Corales a concurso",
       "personas": [
-        { "nombre": "Oñatiko Ganbara Abesbatza", "cargo": "Oñate (Guipúzcoa)" },
-        { "nombre": "Patnia Coral de Cámara", "cargo": "San Javier (Murcia)" }
+        {
+          "nombre": "Oñatiko Ganbara Abesbatza",
+          "cargo": "Oñate (Guipúzcoa)"
+        },
+        {
+          "nombre": "Patnia Coral de Cámara",
+          "cargo": "San Javier (Murcia)"
+        }
       ],
       "dura": 9
     },
@@ -77,8 +96,14 @@
       "tipo": "duo",
       "antetitulo": "Coral invitada · Dirección artística",
       "personas": [
-        { "nombre": "Orfeón Burgalés Juvenil", "cargo": "Directora: Ana Ayala Francés" },
-        { "nombre": "Juan Gabriel Martínez Martín", "cargo": "Director artístico del concurso" }
+        {
+          "nombre": "Orfeón Burgalés Juvenil",
+          "cargo": "Directora: Ana Ayala Francés"
+        },
+        {
+          "nombre": "Juan Gabriel Martínez Martín",
+          "cargo": "Director artístico del concurso"
+        }
       ],
       "dura": 10
     },
@@ -101,8 +126,14 @@
       "tipo": "duo",
       "antetitulo": "Corales a concurso",
       "personas": [
-        { "nombre": "Coro Joven de Santander", "cargo": "Santander (Cantabria)" },
-        { "nombre": "Ensamble Vocal Gijón", "cargo": "Gijón (Asturias)" }
+        {
+          "nombre": "Coro Joven de Santander",
+          "cargo": "Santander (Cantabria)"
+        },
+        {
+          "nombre": "Ensamble Vocal Gijón",
+          "cargo": "Gijón (Asturias)"
+        }
       ],
       "dura": 10
     },
@@ -110,8 +141,14 @@
       "tipo": "duo",
       "antetitulo": "Corales a concurso",
       "personas": [
-        { "nombre": "Oñatiko Ganbara Abesbatza", "cargo": "Oñate (Guipúzcoa)" },
-        { "nombre": "Patnia Coral de Cámara", "cargo": "San Javier (Murcia)" }
+        {
+          "nombre": "Oñatiko Ganbara Abesbatza",
+          "cargo": "Oñate (Guipúzcoa)"
+        },
+        {
+          "nombre": "Patnia Coral de Cámara",
+          "cargo": "San Javier (Murcia)"
+        }
       ],
       "dura": 10
     },
@@ -126,8 +163,14 @@
       "tipo": "duo",
       "antetitulo": "Coral invitada · Dirección artística",
       "personas": [
-        { "nombre": "Orfeón Burgalés Juvenil", "cargo": "Directora: Ana Ayala Francés" },
-        { "nombre": "Juan Gabriel Martínez Martín", "cargo": "Director artístico del concurso" }
+        {
+          "nombre": "Orfeón Burgalés Juvenil",
+          "cargo": "Directora: Ana Ayala Francés"
+        },
+        {
+          "nombre": "Juan Gabriel Martínez Martín",
+          "cargo": "Director artístico del concurso"
+        }
       ],
       "dura": 10
     },

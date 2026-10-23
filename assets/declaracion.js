@@ -8,6 +8,7 @@
      ?escena=oculto|espera|previa|directo  fuerza una fase (sin distintivo)
      ?ahora=11:50 o ?ahora=2026-10-22T11:50:00%2B02:00  hora simulada (con distintivo «Vista previa»)
      ?fijo=N  deja fijo el rótulo N (empieza en 0) de la fase actual
+     ?escala=0.7  reduce todo el grafismo (por defecto, el valor «escala» de la configuración)
      ?demo=1  fondo de muestra · ?guias=1 zonas ocupadas por las apps (vertical) */
 (() => {
   'use strict';
@@ -420,9 +421,18 @@
     if (simulada) $('.prueba-hora').textContent = fmtHoraSeg.format(new Date(t));
   }
 
+  function aplicarEscala() {
+    const q = parseFloat(qs.get('escala'));
+    let e = q > 0.3 && q <= 1.5 ? q : Number(cfg.escala) || 1;
+    if (!(e > 0.3 && e <= 1.5)) e = 1;
+    lienzo.style.setProperty('--e', String(e));
+    lienzo.classList.toggle('escalado', e !== 1);
+  }
+
   function aplicarConfig(nueva) {
     const primera = !cfg;
     cfg = nueva;
+    aplicarEscala();
     if (primera) prepararHoraSimulada(cfg);
     cargarLogoInvitado(false);
     const f = lienzo.dataset.fase;

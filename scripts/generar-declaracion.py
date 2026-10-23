@@ -42,6 +42,7 @@ def pagina(clase, nombre, s, r_seg):
     <svg class="e-ondas" preserveAspectRatio="none"></svg>
     <img class="e-skyline" src="assets/burgos-skyline.svg" alt="">
     <div class="e-reloj"><em>Burgos</em><b>--:--</b></div>
+    <div class="e-contenido">
     <div class="e-logo">
       <span class="e-anillo"></span><span class="e-anillo"></span><span class="e-anillo"></span>
       <svg class="e-seg" viewBox="0 0 100 100"><circle class="e-seg-pista" cx="50" cy="50" r="{r_seg}" stroke-width="1.1"/><circle class="e-seg-prog" cx="50" cy="50" r="{r_seg}" stroke-width="1.1"/></svg>
@@ -63,6 +64,7 @@ def pagina(clase, nombre, s, r_seg):
       </div>
       <div class="e-datos"></div>
       <div class="e-rot"><div class="e-rot-in"></div></div>
+    </div>
     </div>
   </div>
   <img class="mosca pieza" src="assets/radio-evolucion-hd.png" alt="Radio Evolución Burgos · 104.1 FM">
