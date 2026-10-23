@@ -1,13 +1,23 @@
 """Genera las páginas horizontal y vertical de una declaración en directo
 con la configuración incrustada como copia de seguridad.
-Uso: python3 scripts/generar-declaracion.py config-vox-burgos.json vox-burgos "Abascal en Burgos"
+Uso: python3 scripts/generar-declaracion.py config-vox-burgos.json vox-burgos "Abascal en Burgos" [h|v|hv]
+El cuarto argumento elige los formatos (por defecto, los dos).
 """
-import json, sys
+import hashlib, json, sys
 
 cfg_path, base, titulo = sys.argv[1], sys.argv[2], sys.argv[3]
+formatos = sys.argv[4] if len(sys.argv) > 4 else 'hv'
 cfg = json.load(open(cfg_path, encoding='utf-8'))
 datos = json.dumps(cfg, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
-v = cfg.get('version', 1)
+
+
+def huella(ruta):
+    # La URL de CSS y JS cambia con su contenido: ningún navegador usa una copia antigua.
+    return hashlib.sha1(open(ruta, 'rb').read()).hexdigest()[:10]
+
+
+VCSS = huella('assets/declaracion.css')
+VJS = huella('assets/declaracion.js')
 
 MIC = '<svg width="{s}" height="{s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="11.5" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg>'
 PIN = '<svg width="{s}" height="{s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.5s-7-6.3-7-11.7a7 7 0 0 1 14 0c0 5.4-7 11.7-7 11.7z"/><circle cx="12" cy="9.8" r="2.6"/></svg>'
@@ -21,7 +31,7 @@ def pagina(clase, nombre, s, r_seg):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{titulo} · {nombre}</title>
 <link rel="stylesheet" href="assets/directos-fonts.css?v=10">
-<link rel="stylesheet" href="assets/declaracion.css?v={v}">
+<link rel="stylesheet" href="assets/declaracion.css?v={VCSS}">
 </head>
 <body class="{clase}" data-config="{cfg_path}">
 <div id="lienzo" data-fase="cargando">
@@ -67,12 +77,17 @@ def pagina(clase, nombre, s, r_seg):
   <div class="prueba">Vista previa · hora simulada <span class="prueba-hora"></span></div>
 </div>
 <script id="defecto" type="application/json">{datos}</script>
-<script src="assets/declaracion.js?v={v}"></script>
+<script src="assets/declaracion.js?v={VJS}"></script>
 </body>
 </html>
 '''
 
 
-open(f'{base}.html', 'w', encoding='utf-8').write(pagina('h', 'Horizontal', 18, 49))
-open(f'{base}-vertical.html', 'w', encoding='utf-8').write(pagina('v', 'Vertical', 20, 49))
-print('generadas', f'{base}.html', f'{base}-vertical.html')
+hechas = []
+if 'h' in formatos:
+    open(f'{base}.html', 'w', encoding='utf-8').write(pagina('h', 'Horizontal', 18, 49))
+    hechas.append(f'{base}.html')
+if 'v' in formatos:
+    open(f'{base}-vertical.html', 'w', encoding='utf-8').write(pagina('v', 'Vertical', 20, 49))
+    hechas.append(f'{base}-vertical.html')
+print('generadas', *hechas)

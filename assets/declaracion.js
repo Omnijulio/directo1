@@ -116,6 +116,15 @@
       }
     });
   }
+  /* En un rótulo doble, los dos nombres (y los dos cargos) llevan el mismo tamaño. */
+  function igualar(raiz) {
+    ['.p-nom', '.p-car'].forEach((sel) => {
+      const els = [...raiz.querySelectorAll(sel)];
+      if (els.length < 2) return;
+      const min = Math.min(...els.map((e) => parseFloat(e.style.fontSize || getComputedStyle(e).fontSize)));
+      els.forEach((e) => { e.style.fontSize = min + 'px'; });
+    });
+  }
   /* Si el bloque completo no cabe en su caja, reduce todos sus textos a la vez. */
   function ajustarAlto(contenido, caja, margen) {
     const disponible = () => caja.clientHeight - (margen || 0);
@@ -175,6 +184,7 @@
       const tarjeta = $('.tarjeta');
       tarjeta.classList.toggle('con-logo', !!d.logo && logoListo);
       ajustarTexto(slot);
+      igualar(slot);
       ajustarAlto(slot, tarjeta, 12);
       slot.classList.remove('sale', 'entra');
       if (animar) { void slot.offsetWidth; slot.classList.add('entra'); }
@@ -242,6 +252,7 @@
     if (f === 'previa' || f === 'directo') {
       const slot = $('.slot');
       ajustarTexto(slot);
+      igualar(slot);
       ajustarAlto(slot, $('.tarjeta'), 12);
     }
     if (f === 'espera') ajustarTexto($('.e-info'));

@@ -19,7 +19,10 @@ html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:t
 .sonda{position:absolute;left:0;top:0;visibility:hidden;white-space:nowrap;font-family:"Inter",sans-serif;font-weight:900;line-height:1;font-size:calc(100px*var(--sim,1))}
 #lienzo{position:absolute;left:0;top:0;transform-origin:0 0;overflow:hidden;
   font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--tinta);
-  -webkit-font-smoothing:antialiased;font-variant-numeric:lining-nums tabular-nums}
+  -webkit-font-smoothing:antialiased;font-variant-numeric:lining-nums proportional-nums}
+/* Cifras de ancho fijo solo en relojes y cuentas atrás (en Inter, tabular-nums también ensancha el guion) */
+.reloj,.cuenta-num,.e-dig,.e-reloj b,.prueba-hora{font-variant-numeric:lining-nums tabular-nums}
+.r-tit,.p-nom,.nombres,.e-ev-tit{word-spacing:.05em}
 body.h #lienzo{width:1920px;height:1080px}
 body.v #lienzo{width:1080px;height:1920px}
 
@@ -258,7 +261,7 @@ body.v .mic svg{width:30px;height:30px}
 /* Bloque de información */
 .e-info{position:absolute;display:flex;flex-direction:column}
 .e-lbl{font-weight:900;text-transform:uppercase;color:var(--naranja);white-space:nowrap}
-.e-cuenta{display:flex;align-items:flex-start;font-variant-numeric:tabular-nums}
+.e-cuenta{display:flex;align-items:flex-start}
 .e-grupo{display:flex;flex-direction:column;align-items:center}
 .e-dig{display:flex;font-weight:900;line-height:1;letter-spacing:-.01em;color:var(--marfil)}
 .e-dig span{display:inline-block;width:.62em;text-align:center}

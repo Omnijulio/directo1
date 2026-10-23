@@ -68,6 +68,16 @@ Controles por URL: `?escena=espera|previa|directo|oculto` fuerza la fase sin dis
 
 Datos verificados el 22/10/2026: Santiago Abascal, presidente nacional de Vox; Iñaki (Ignacio) Sicilia Doménech, presidente de Vox en Burgos (convocatoria, El Español, El Debate); Eugenia Landaluce Miranda, cabeza de lista de Vox al Congreso por Burgos para el 29N (El Correo de Burgos, El Debate, Burgos Noticias, Noticias Burgos). Burgos elige 4 diputados; en 2023, 2 PP y 2 PSOE (Última Hora, Diario de Castilla y León). Agenda: Ponferrada (20/10), A Coruña (21/10), Burgos 12:00 y Segovia 19:00 (22/10) según EFE, El Español y El Bierzo Digital. Informan: Julio García, Hugo Cuñado y David Orcajo.
 
+## XXIII Concurso Nacional de Corales Antonio José · Fórum Evolución · 24/10/2026
+
+Solo horizontal (1920 × 1080): https://omnijulio.github.io/directo1/corales-antonio-jose.html · contenido en `config-corales-antonio-jose.json` · se regenera con `python3 scripts/generar-declaracion.py config-corales-antonio-jose.json corales-antonio-jose "Corales Antonio José" h`.
+
+- **Hasta las 19:15**: pantalla de espera con cuenta atrás, logo grande, «XXIII Concurso Nacional de Corales · Antonio José» y rotativo (corales a concurso, coral invitada, informa).
+- **19:15–19:30**: «EN BREVE», faldón «Concierto-concurso · Fórum Evolución · Burgos», cuenta atrás de 15 minutos y rotativos.
+- **Desde las 19:30**: «EN DIRECTO» y rotativos (concurso, corales a concurso ×2, obra obligatoria, coral invitada y dirección artística, informa Julio García). Se oculta a las 23:30.
+
+Datos (nota de prensa del Ayuntamiento y El Correo de Burgos, 21/10/2026): Coro Joven de Santander (Santander, Cantabria), Ensamble Vocal Gijón (Gijón, Asturias), Oñatiko Ganbara Abesbatza (Oñate, Guipúzcoa) y Patnia Coral de Cámara (San Javier, Murcia); coral invitada Orfeón Burgalés Juvenil, directora Ana Ayala Francés; director artístico Juan Gabriel Martínez Martín; obra obligatoria «Aquel galán que allí viene» (Colección de cuatro canciones populares burgalesas). 90 aniversario del asesinato de Antonio José (Burgos, 1902 – Estépar, 1936).
+
 ## Plantillas guardadas
 - `plantillas/rueda-entrenador-baloncesto.json`: declaraciones de entrenadores de baloncesto de Burgos (escudos, marcador final y rótulo con escudo).
 
