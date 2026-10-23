@@ -74,6 +74,7 @@ Solo horizontal (1920 × 1080): https://omnijulio.github.io/directo1/corales-ant
 
 - **Hasta las 19:15**: pantalla de espera con cuenta atrás, logo grande, «XXIII Concurso Nacional de Corales · Antonio José» y rotativo (corales a concurso, coral invitada, informa).
 - **19:15–19:30**: «EN BREVE», faldón «Concierto-concurso · Fórum Evolución · Burgos», cuenta atrás de 15 minutos y rotativos.
+- **Tamaño**: `"escala": 0.7` en la configuración reduce todo el grafismo un 30 % (cada pieza desde su esquina; el contenido de la espera, desde el centro). `?escala=0.8` permite probar otro valor sin publicar.
 - **Desde las 19:30**: «EN DIRECTO» y rotativos (concurso, corales a concurso ×2, obra obligatoria, coral invitada y dirección artística, informa Julio García). Se oculta a las 23:30.
 
 Datos (nota de prensa del Ayuntamiento y El Correo de Burgos, 21/10/2026): Coro Joven de Santander (Santander, Cantabria), Ensamble Vocal Gijón (Gijón, Asturias), Oñatiko Ganbara Abesbatza (Oñate, Guipúzcoa) y Patnia Coral de Cámara (San Javier, Murcia); coral invitada Orfeón Burgalés Juvenil, directora Ana Ayala Francés; director artístico Juan Gabriel Martínez Martín; obra obligatoria «Aquel galán que allí viene» (Colección de cuatro canciones populares burgalesas). 90 aniversario del asesinato de Antonio José (Burgos, 1902 – Estépar, 1936).
