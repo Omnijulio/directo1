@@ -8,7 +8,8 @@
 <style>
 /* Animación vertical 1080×1920, fondo transparente, 10 s.
    El cantor es la mosca de Radio Evolución: abre el faldón-bocadillo y presenta las corales.
-   ?demo=1 fondo de muestra · ?pausa=N segundos entre repeticiones · ?render=1 / ?gif=1 para exportar */
+   ?coral=1…5 una sola coral (5 = coral invitada) · ?demo=1 fondo de muestra · ?pausa=N segundos entre repeticiones
+   ?render=1 / ?gif=1 para exportar */
 :root{
   --tinta:#0F1726; --marfil:#F5EFE4; --marfil2:#E9E0CF; --pizarra:#5B6576; --naranja:#EE6A2A; --celeste:#56BED8;
   --curva:cubic-bezier(.2,.8,.2,1);
@@ -115,6 +116,18 @@ html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:t
   14%{opacity:1;transform:none}
   87%{opacity:1;transform:none;animation-timing-function:ease-in}
   100%{opacity:0;transform:translateY(-14px)}}
+/* Una sola coral: entra al abrirse el bocadillo y se queda hasta el cierre */
+.uno .coral{animation:coral-uno 7.6s linear var(--d) both}
+@keyframes coral-uno{
+  0%{opacity:0;transform:translateY(24px);animation-timing-function:cubic-bezier(.2,.8,.2,1)}
+  4%{opacity:1;transform:none}
+  97%{opacity:1;transform:none;animation-timing-function:ease-in}
+  100%{opacity:0;transform:translateY(-14px)}}
+.uno .c-nom{margin-top:0}
+.uno .c-lugar{margin-top:14px;font-size:32px}
+.c-extra{margin-top:8px;font-weight:600;font-size:25px;color:var(--pizarra);white-space:nowrap}
+.c-extra b{font-weight:900;color:var(--tinta)}
+.medida{position:absolute;left:52px;right:34px;visibility:hidden;pointer-events:none}
 .c-ante{display:flex;align-items:center;gap:16px;font-weight:900;font-size:17px;letter-spacing:.2em;text-transform:uppercase;color:var(--naranja)}
 .puntos{display:flex;gap:7px}
 .puntos i{width:9px;height:9px;border-radius:50%;background:var(--marfil2)}
@@ -177,7 +190,7 @@ html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:t
   <span class="nota c" style="--d:2.66s;--n:3;--dx:54px;--rot:22deg"><svg viewBox="0 0 40 52"><ellipse cx="12" cy="42" rx="11" ry="8" transform="rotate(-20 12 42)"/><rect x="19" y="6" width="5" height="37"/><path d="M24 6 C34 10 38 18 34 28 C33 20 29 16 24 15 Z"/></svg></span>
 
   <div class="pestanas">
-    <span class="pes pes-osc"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 17.5a3 3 0 1 1-2-2.83V4.5l12-2.5v12.5a3 3 0 1 1-2-2.83V6.4l-8 1.67z"/></svg>A concurso</span>
+    <span class="pes pes-osc"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 17.5a3 3 0 1 1-2-2.83V4.5l12-2.5v12.5a3 3 0 1 1-2-2.83V6.4l-8 1.67z"/></svg><span id="pes-tipo">A concurso</span></span>
     <span class="pes pes-acento"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.5s-7-6.3-7-11.7a7 7 0 0 1 14 0c0 5.4-7 11.7-7 11.7z"/><circle cx="12" cy="9.8" r="2.6"/></svg>Fórum Evolución · Burgos</span>
   </div>
   <img class="skyline" src="assets/burgos-skyline.svg" alt="">
@@ -203,13 +216,27 @@ html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:t
     ['Oñatiko Ganbara Abesbatza', 'Oñate (Guipúzcoa)'],
     ['Patnia Coral de Cámara', 'San Javier (Murcia)']
   ];
+  /* Coral invitada (fuera de concurso), según la misma nota. */
+  const INVITADA = ['Orfeón Burgalés Juvenil', 'Burgos', 'Directora: <b>Ana Ayala Francés</b>'];
   const INICIO = 1.55, TURNO = 1.9, DURACION = 10000;
   const qs = new URLSearchParams(location.search);
   const body = document.body;
   ['demo', 'render', 'gif', 'oscuro'].forEach((k) => { if (qs.get(k) === '1') body.classList.add(k); });
   const lienzo = document.getElementById('lienzo');
+  const sola = parseInt(qs.get('coral'), 10);
+  const TODAS = [...CORALES, INVITADA];
 
   const PIN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.5s-7-6.3-7-11.7a7 7 0 0 1 14 0c0 5.4-7 11.7-7 11.7z"/><circle cx="12" cy="9.8" r="2.6"/></svg>';
+  if (sola >= 1 && sola <= TODAS.length) {
+    /* Una animación por coral: nombre, procedencia y, en la invitada, su directora. */
+    body.classList.add('uno');
+    const [nombre, lugar, extra] = TODAS[sola - 1];
+    document.getElementById('pes-tipo').textContent = sola === TODAS.length ? 'Coral invitada' : 'A concurso';
+    document.getElementById('bocadillo').innerHTML =
+      `<div class="coral" style="--d:${INICIO}s"><div class="c-nom">${nombre}</div>` +
+      `<div class="c-lugar">${PIN}${lugar}</div>${extra ? `<div class="c-extra">${extra}</div>` : ''}</div>` +
+      TODAS.map(([n]) => `<div class="c-nom medida">${n}</div>`).join('');
+  } else
   document.getElementById('bocadillo').innerHTML = CORALES.map(([nombre, lugar], i) =>
     `<div class="coral" style="--d:${(INICIO + TURNO * i).toFixed(2)}s">` +
       `<div class="c-ante">Coral ${i + 1} de ${CORALES.length}<span class="puntos">${CORALES.map((_, k) => `<i class="${k === i ? 'si' : ''}"></i>`).join('')}</span></div>` +

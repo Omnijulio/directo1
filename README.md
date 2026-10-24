@@ -83,6 +83,8 @@ Datos (nota de prensa del Ayuntamiento y El Correo de Burgos, 21/10/2026): Coro 
 
 `corales-cantor-vertical.html` (1080 × 1920, fondo transparente, 10 s en bucle): la mosca de Radio Evolución hace de cantor, abre el faldón-bocadillo y presenta las cuatro corales con su procedencia. URL para el widget Web de PRISM en vertical: https://omnijulio.github.io/directo1/corales-cantor-vertical.html · `?pausa=20` espera 20 s entre repeticiones · `?demo=1` fondo de muestra · `?render=1` (y `&gif=1`, sin sombras) para exportar fotograma a fotograma con `window.__ir(ms)`.
 
+`?coral=1…5` muestra una sola coral (1 Coro Joven de Santander, 2 Ensamble Vocal Gijón, 3 Oñatiko Ganbara Abesbatza, 4 Patnia Coral de Cámara, 5 Orfeón Burgalés Juvenil, coral invitada, con su directora). Descargas para el móvil (WebM sin fondo y MP4 con fondo verde de cada una): https://omnijulio.github.io/directo1/descargas-corales.html
+
 Exportado a 25 fps (250 fotogramas): PNG animado (APNG, transparencia completa), GIF (transparencia de 1 bit, sin sombras) y MOV ProRes 4444 con canal alfa para edición.
 
 ## Plantillas guardadas

@@ -12,21 +12,64 @@ body{margin:0;background:var(--tinta);color:var(--marfil);font-family:"Inter",sy
 main{max-width:520px;margin:0 auto}
 img.logo{width:84px;height:84px;border-radius:50%;display:block;margin-bottom:18px}
 h1{font-weight:900;font-size:26px;line-height:1.15;margin:0 0 6px}
-p.sub{color:var(--gris);font-weight:600;font-size:15px;margin:0 0 26px}
-a.boton{display:block;background:var(--marfil);color:var(--tinta);text-decoration:none;border-radius:14px;padding:16px 18px;margin-bottom:14px;border-left:8px solid var(--naranja)}
-a.boton b{display:block;font-weight:900;font-size:18px}
-a.boton span{display:block;font-weight:600;font-size:14px;color:#5B6576;margin-top:4px}
-video{width:100%;border-radius:14px;margin:8px 0 26px;background:repeating-conic-gradient(#2b3440 0 25%,#232a33 0 50%) 0 0/24px 24px}
+p.sub{color:var(--gris);font-weight:600;font-size:15px;margin:0 0 22px}
+.ficha{background:#172238;border-radius:18px;padding:14px 14px 6px;margin-bottom:22px}
+.ficha video{width:100%;height:190px;object-fit:cover;object-position:50% 100%;border-radius:12px;display:block;
+  background:repeating-conic-gradient(#2b3440 0 25%,#232a33 0 50%) 0 0/24px 24px}
+h2{font-weight:900;font-size:21px;margin:14px 2px 2px}
+.ficha>p{color:var(--gris);font-weight:600;font-size:14px;margin:0 2px 12px}
+a.boton{display:block;background:var(--marfil);color:var(--tinta);text-decoration:none;border-radius:12px;padding:13px 16px;margin-bottom:10px;border-left:8px solid var(--naranja)}
+a.boton b{display:block;font-weight:900;font-size:17px}
+a.boton span{display:block;font-weight:600;font-size:13px;color:#5B6576;margin-top:3px}
+p.prism{font-size:12px;color:var(--gris);margin:4px 2px 10px;word-break:break-all}
+code{color:var(--marfil)}
+h3{font-weight:900;font-size:18px;margin:30px 0 10px}
 </style>
 </head>
 <body>
 <main>
   <img class="logo" src="assets/radio-evolucion-hd.png" alt="Radio Evolución Burgos">
-  <h1>Corales a concurso · animación vertical</h1>
-  <p class="sub">1080 × 1920 · 10 segundos · XXIII Concurso Nacional de Corales Antonio José</p>
-  <video src="descargas/corales-cantor-vertical.webm" autoplay loop muted playsinline></video>
-  <a class="boton" href="descargas/corales-cantor-vertical-fondo-verde.mp4" download><b>MP4 con fondo verde</b><span>Para apps de edición del móvil: añadir como superposición y quitar el verde con croma.</span></a>
-  <a class="boton" href="descargas/corales-cantor-vertical.webm" download><b>WebM sin fondo</b><span>Transparencia real. Funciona en navegadores y editores de escritorio.</span></a>
+  <h1>Corales a concurso · animaciones verticales</h1>
+  <p class="sub">1080 × 1920 · 10 segundos cada una · XXIII Concurso Nacional de Corales Antonio José</p>
+
+  <section class="ficha">
+    <video src="descargas/coral-coro-joven-de-santander.webm" autoplay loop muted playsinline preload="auto"></video>
+    <h2>Coro Joven de Santander</h2><p>Santander (Cantabria) · A concurso</p>
+    <a class="boton" href="descargas/coral-coro-joven-de-santander-fondo-verde.mp4" download><b>MP4 con fondo verde</b><span>Vídeo normal para la galería del móvil.</span></a>
+    <a class="boton" href="descargas/coral-coro-joven-de-santander.webm" download><b>WebM sin fondo</b><span>Transparencia real (navegadores y editores de escritorio).</span></a>
+    <p class="prism">PRISM (widget Web): <code>omnijulio.github.io/directo1/corales-cantor-vertical.html?coral=1</code></p>
+  </section>
+  <section class="ficha">
+    <video src="descargas/coral-ensamble-vocal-gijon.webm" autoplay loop muted playsinline preload="auto"></video>
+    <h2>Ensamble Vocal Gijón</h2><p>Gijón (Asturias) · A concurso</p>
+    <a class="boton" href="descargas/coral-ensamble-vocal-gijon-fondo-verde.mp4" download><b>MP4 con fondo verde</b><span>Vídeo normal para la galería del móvil.</span></a>
+    <a class="boton" href="descargas/coral-ensamble-vocal-gijon.webm" download><b>WebM sin fondo</b><span>Transparencia real (navegadores y editores de escritorio).</span></a>
+    <p class="prism">PRISM (widget Web): <code>omnijulio.github.io/directo1/corales-cantor-vertical.html?coral=2</code></p>
+  </section>
+  <section class="ficha">
+    <video src="descargas/coral-onatiko-ganbara-abesbatza.webm" autoplay loop muted playsinline preload="auto"></video>
+    <h2>Oñatiko Ganbara Abesbatza</h2><p>Oñate (Guipúzcoa) · A concurso</p>
+    <a class="boton" href="descargas/coral-onatiko-ganbara-abesbatza-fondo-verde.mp4" download><b>MP4 con fondo verde</b><span>Vídeo normal para la galería del móvil.</span></a>
+    <a class="boton" href="descargas/coral-onatiko-ganbara-abesbatza.webm" download><b>WebM sin fondo</b><span>Transparencia real (navegadores y editores de escritorio).</span></a>
+    <p class="prism">PRISM (widget Web): <code>omnijulio.github.io/directo1/corales-cantor-vertical.html?coral=3</code></p>
+  </section>
+  <section class="ficha">
+    <video src="descargas/coral-patnia-coral-de-camara.webm" autoplay loop muted playsinline preload="auto"></video>
+    <h2>Patnia Coral de Cámara</h2><p>San Javier (Murcia) · A concurso</p>
+    <a class="boton" href="descargas/coral-patnia-coral-de-camara-fondo-verde.mp4" download><b>MP4 con fondo verde</b><span>Vídeo normal para la galería del móvil.</span></a>
+    <a class="boton" href="descargas/coral-patnia-coral-de-camara.webm" download><b>WebM sin fondo</b><span>Transparencia real (navegadores y editores de escritorio).</span></a>
+    <p class="prism">PRISM (widget Web): <code>omnijulio.github.io/directo1/corales-cantor-vertical.html?coral=4</code></p>
+  </section>
+  <section class="ficha">
+    <video src="descargas/coral-invitada-orfeon-burgales-juvenil.webm" autoplay loop muted playsinline preload="auto"></video>
+    <h2>Orfeón Burgalés Juvenil</h2><p>Burgos · Coral invitada · Directora: Ana Ayala Francés</p>
+    <a class="boton" href="descargas/coral-invitada-orfeon-burgales-juvenil-fondo-verde.mp4" download><b>MP4 con fondo verde</b><span>Vídeo normal para la galería del móvil.</span></a>
+    <a class="boton" href="descargas/coral-invitada-orfeon-burgales-juvenil.webm" download><b>WebM sin fondo</b><span>Transparencia real (navegadores y editores de escritorio).</span></a>
+    <p class="prism">PRISM (widget Web): <code>omnijulio.github.io/directo1/corales-cantor-vertical.html?coral=5</code></p>
+  </section>
+  <h3>Las cuatro corales en una sola animación</h3>
+  <a class="boton" href="descargas/corales-cantor-vertical-fondo-verde.mp4" download><b>MP4 con fondo verde</b><span>Las cuatro corales a concurso seguidas.</span></a>
+  <a class="boton" href="descargas/corales-cantor-vertical.webm" download><b>WebM sin fondo</b><span>Transparencia real.</span></a>
   <a class="boton" href="descargas/corales-cantor-vertical.gif" download><b>GIF sin fondo</b><span>Para el widget de imagen de PRISM.</span></a>
 </main>
 </body>
