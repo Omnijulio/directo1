@@ -79,6 +79,10 @@ Solo horizontal (1920 × 1080): https://omnijulio.github.io/directo1/corales-ant
 
 Datos (nota de prensa del Ayuntamiento y El Correo de Burgos, 21/10/2026): Coro Joven de Santander (Santander, Cantabria), Ensamble Vocal Gijón (Gijón, Asturias), Oñatiko Ganbara Abesbatza (Oñate, Guipúzcoa) y Patnia Coral de Cámara (San Javier, Murcia); coral invitada Orfeón Burgalés Juvenil, directora Ana Ayala Francés; director artístico Juan Gabriel Martínez Martín; obra obligatoria «Aquel galán que allí viene» (Colección de cuatro canciones populares burgalesas). 90 aniversario del asesinato de Antonio José (Burgos, 1902 – Estépar, 1936).
 
+## Corales Antonio José · 2 cámaras (24/10/2026)
+
+https://omnijulio.github.io/directo1/corales-2camaras.html (`config-corales-2camaras.json`, `"camaras": 2`). Marco opaco con dos huecos 16:9 de 960 × 540: **cámara 1 en x 0, y 270** y **cámara 2 en x 960, y 270** (cada una ocupa media anchura del lienzo, centradas en vertical). Franja superior: logo, «XXIII Concurso Nacional de Corales · Antonio José · Fórum Evolución · Burgos · Sábado, 24 de octubre» y «EN DIRECTO» con la hora. Franja inferior: faldón con rotativos, cuenta atrás en la previa y claves. Misma espera y mismos horarios que la página de una cámara. `?camaras=2` activa el marco en cualquier página de declaración.
+
 ## Corales a concurso · animación vertical del cantor (24/10/2026)
 
 `corales-cantor-vertical.html` (1080 × 1920, fondo transparente, 10 s en bucle): la mosca de Radio Evolución hace de cantor, abre el faldón-bocadillo y presenta las cuatro corales con su procedencia. URL para el widget Web de PRISM en vertical: https://omnijulio.github.io/directo1/corales-cantor-vertical.html · `?pausa=20` espera 20 s entre repeticiones · `?demo=1` fondo de muestra · `?render=1` (y `&gif=1`, sin sombras) para exportar fotograma a fotograma con `window.__ir(ms)`.

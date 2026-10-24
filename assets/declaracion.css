@@ -365,3 +365,38 @@ body.v{--th:70px;--tg:20px;--eo:540px 930px}
 .escalado .ticker{right:auto;width:calc(100% / var(--e));transform-origin:0 100%;scale:var(--e)}
 .escalado .e-contenido{transform-origin:var(--eo);scale:var(--e)}
 .escalado .e-reloj{transform-origin:100% 0;scale:var(--e)}
+
+/* =================== DOS CÁMARAS (config «camaras»: 2) ===================
+   Marco opaco que deja ver solo dos huecos 16:9. Horizontal: 960×540 cada uno, de lado a lado,
+   entre y=270 y y=810 (cámara 1 en x=0, cámara 2 en x=960). La información va en las franjas. */
+.marco,.marco-lineas,.cabecera{display:none}
+.dos-camaras .marco,.dos-camaras .marco-lineas,.dos-camaras .cabecera{display:block}
+.marco{position:absolute;inset:0;z-index:0;pointer-events:none}
+.marco-fondo{position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 120% at 18% 0%,rgba(238,106,42,.20),transparent 60%),
+    radial-gradient(ellipse 60% 120% at 85% 100%,rgba(86,190,216,.14),transparent 60%),
+    radial-gradient(rgba(245,239,228,.07) 1.2px,transparent 1.3px) 0 0/34px 34px,
+    linear-gradient(180deg,#152038 0%,#0F1726 100%)}
+body.h .dos-camaras .marco{
+  -webkit-mask:linear-gradient(#000 0 0) 0 0/100% 270px no-repeat,linear-gradient(#000 0 0) 0 100%/100% 270px no-repeat;
+          mask:linear-gradient(#000 0 0) 0 0/100% 270px no-repeat,linear-gradient(#000 0 0) 0 100%/100% 270px no-repeat}
+.marco-lineas{position:absolute;inset:0;z-index:1;pointer-events:none}
+.marco-lineas i{position:absolute;display:block}
+body.h .ml-s{left:0;right:0;top:267px;height:3px;background:var(--naranja)}
+body.h .ml-i{left:0;right:0;top:810px;height:3px;background:var(--naranja)}
+body.h .ml-c{left:958px;width:4px;top:270px;height:540px;background:var(--tinta)}
+.dos-camaras .skyline{display:none}
+
+/* Franja superior: logo, título del evento y hora */
+body.h .dos-camaras .mosca{left:48px;top:62px;width:146px;height:146px}
+body.h .dos-camaras .estado{top:109px}
+.cabecera{position:absolute;z-index:2;color:var(--marfil)}
+body.h .cabecera{left:228px;top:66px;width:1180px}
+.cb-ante{font-weight:900;text-transform:uppercase;color:var(--naranja);white-space:nowrap;overflow:hidden}
+.cb-tit{font-weight:900;letter-spacing:-.01em;word-spacing:.05em;line-height:1.04;white-space:nowrap;overflow:hidden}
+.cb-sub{font-weight:600;color:var(--gris);white-space:nowrap;overflow:hidden}
+body.h .cb-ante{font-size:calc(19px*var(--k,1)*var(--sim,1));letter-spacing:.22em}
+body.h .cb-tit{font-size:calc(70px*var(--k,1)*var(--sim,1));margin-top:6px}
+body.h .cb-sub{font-size:calc(26px*var(--k,1)*var(--sim,1));margin-top:8px}
+.dos-camaras .ticker{box-shadow:none;background:#0B111D}
+.dos-camaras .tarjeta,.dos-camaras .cuenta,.dos-camaras .estado,.dos-camaras .mosca{box-shadow:0 10px 26px rgba(0,0,0,.35)}

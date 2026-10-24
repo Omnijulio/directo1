@@ -36,6 +36,9 @@ def pagina(clase, nombre, s, r_seg):
 <body class="{clase}" data-config="{cfg_path}">
 <div id="lienzo" data-fase="cargando">
   <div class="demo-fondo"></div>
+  <div class="marco pieza"><div class="marco-fondo"></div></div>
+  <div class="marco-lineas pieza"><i class="ml-s"></i><i class="ml-i"></i><i class="ml-c"></i></div>
+  <div class="cabecera pieza"><div class="cb-ante" data-fit></div><div class="cb-tit" data-fit></div><div class="cb-sub" data-fit></div></div>
   <div class="espera" aria-hidden="true">
     <div class="e-mancha e-m1"></div><div class="e-mancha e-m2"></div>
     <div class="e-rejilla"></div>

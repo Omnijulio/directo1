@@ -421,6 +421,18 @@
     if (simulada) $('.prueba-hora').textContent = fmtHoraSeg.format(new Date(t));
   }
 
+  /* Dos cámaras: marco opaco con dos huecos 16:9 y cabecera con el título del evento. */
+  function aplicarCamaras() {
+    const dos = Number(qs.get('camaras') || cfg.camaras) === 2;
+    lienzo.classList.toggle('dos-camaras', dos);
+    if (!dos) return;
+    const cb = cfg.cabecera || {};
+    $('.cb-ante').innerHTML = neg(cb.antetitulo);
+    $('.cb-tit').innerHTML = neg(cb.titulo);
+    $('.cb-sub').innerHTML = neg(cb.subtitulo);
+    ajustarTexto($('.cabecera'));
+  }
+
   function aplicarEscala() {
     const q = parseFloat(qs.get('escala'));
     let e = q > 0.3 && q <= 1.5 ? q : Number(cfg.escala) || 1;
@@ -433,6 +445,7 @@
     const primera = !cfg;
     cfg = nueva;
     aplicarEscala();
+    aplicarCamaras();
     if (primera) prepararHoraSimulada(cfg);
     cargarLogoInvitado(false);
     const f = lienzo.dataset.fase;
