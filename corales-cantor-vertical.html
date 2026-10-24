@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Corales a concurso · Cantor vertical</title>
+<link rel="stylesheet" href="assets/directos-fonts.css?v=10">
+<style>
+/* Animación vertical 1080×1920, fondo transparente, 10 s.
+   El cantor es la mosca de Radio Evolución: abre el faldón-bocadillo y presenta las corales.
+   ?demo=1 fondo de muestra · ?pausa=N segundos entre repeticiones · ?render=1 / ?gif=1 para exportar */
+:root{
+  --tinta:#0F1726; --marfil:#F5EFE4; --marfil2:#E9E0CF; --pizarra:#5B6576; --naranja:#EE6A2A; --celeste:#56BED8;
+  --curva:cubic-bezier(.2,.8,.2,1);
+}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:transparent}
+#lienzo{position:absolute;left:0;top:0;width:1080px;height:1920px;transform-origin:0 0;overflow:hidden;
+  font-family:"Inter",system-ui,sans-serif;color:var(--tinta);-webkit-font-smoothing:antialiased}
+.demo #lienzo{background:radial-gradient(ellipse at 50% 35%,rgba(255,236,206,.55),transparent 60%),linear-gradient(180deg,#9fb3c6 0%,#c7b394 52%,#9b8566 100%)}
+.demo.oscuro #lienzo{background:linear-gradient(180deg,#232a33 0%,#151a20 100%)}
+
+/* ---------- Faldón inferior ---------- */
+.base{position:absolute;left:0;right:0;top:1850px;height:70px;display:flex;background:var(--tinta);z-index:5;
+  animation:base-in .45s var(--curva) 0s both, base-out .4s ease-in 9.55s forwards}
+.base-lbl{flex:none;display:flex;align-items:center;padding:0 38px 0 40px;background:var(--naranja);color:var(--tinta);
+  font-weight:900;font-size:18px;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap;
+  clip-path:polygon(0 0,calc(100% - 18px) 0,100% 50%,calc(100% - 18px) 100%,0 100%)}
+.base-txt{flex:1;min-width:0;display:flex;align-items:center;padding:0 30px 0 24px;color:var(--marfil);
+  font-weight:600;font-size:28px;white-space:nowrap;overflow:hidden}
+.base-txt strong{color:var(--naranja);font-weight:900;margin-left:.28em}
+@keyframes base-in{from{transform:translateY(100%)}to{transform:none}}
+@keyframes base-out{to{transform:translateY(100%)}}
+
+/* ---------- Cantor (la mosca de Radio Evolución) ---------- */
+.pj{position:absolute;left:44px;top:1550px;width:240px;height:300px;z-index:4;transform-origin:50% 100%;
+  animation:pj-in .8s 0.22s both, pj-out .55s 9.15s forwards}
+@keyframes pj-in{
+  0%{transform:translateY(400px)}
+  55%{transform:translateY(-40px) scale(.97,1.04);animation-timing-function:ease-in}
+  74%{transform:translateY(3px) scale(1.07,.9);animation-timing-function:ease-out}
+  88%{transform:translateY(-8px) scale(.98,1.02)}
+  100%{transform:none}}
+@keyframes pj-out{
+  0%{transform:none}
+  35%{transform:translateY(-6px) rotate(-11deg);animation-timing-function:ease-in}
+  55%{transform:translateY(-22px) rotate(-4deg)}
+  100%{transform:translateY(400px) rotate(6deg)}}
+.pj-cuerpo{position:absolute;inset:0;transform-origin:50% 100%;animation:canta .46s ease-in-out 1.5s 16 both}
+@keyframes canta{0%,100%{transform:none}50%{transform:translateY(-9px) scale(1.012,1.03) rotate(-1.5deg)}}
+.pj svg{position:absolute;left:0;top:0;width:240px;height:300px;overflow:visible}
+.pj-logo{position:absolute;left:22px;top:14px;width:196px;height:196px;border-radius:50%;
+  filter:drop-shadow(0 10px 18px rgba(5,9,18,.38))}
+.extremidad{fill:none;stroke:var(--naranja);stroke-width:11;stroke-linecap:round;stroke-linejoin:round}
+.guante{fill:var(--marfil);stroke:var(--tinta);stroke-width:3}
+.zapato{fill:var(--tinta);stroke:var(--marfil);stroke-width:3}
+.pajarita{fill:var(--tinta);stroke:var(--marfil);stroke-width:2.5;stroke-linejoin:round}
+.carpeta{fill:var(--tinta);stroke:var(--marfil);stroke-width:3;stroke-linejoin:round}
+.brazo-d{transform-box:view-box;transform-origin:212px 138px;
+  animation:abre .5s var(--curva) .86s both, presenta .92s ease-in-out 1.42s 8 forwards, baja .35s ease-in 9.05s forwards}
+@keyframes abre{from{transform:none}to{transform:rotate(-80deg)}}
+@keyframes presenta{0%,100%{transform:rotate(-80deg)}50%{transform:rotate(-62deg)}}
+@keyframes baja{from{transform:rotate(-80deg)}to{transform:none}}
+.brazo-i{transform-box:view-box;transform-origin:30px 140px;animation:mece .92s ease-in-out 1.42s 8 both}
+@keyframes mece{0%,100%{transform:none}50%{transform:rotate(5deg)}}
+
+/* Ondas y notas */
+.onda{position:absolute;left:66px;top:1564px;width:196px;height:196px;border-radius:50%;z-index:2;
+  border:4px solid var(--naranja);opacity:0;animation:onda 1.2s ease-out 1.6s 6 both}
+.onda.o2{border-color:var(--celeste);animation-delay:2.2s;animation-iteration-count:5}
+@keyframes onda{0%{opacity:0;transform:scale(1)}12%{opacity:.75}100%{opacity:0;transform:scale(1.75)}}
+.nota{position:absolute;left:214px;top:1574px;width:40px;height:52px;z-index:3;opacity:0;
+  animation:nota 1.6s ease-out var(--d) var(--n) both}
+.nota svg{width:100%;height:100%;overflow:visible}
+.nota path,.nota ellipse,.nota rect{fill:var(--naranja);stroke:var(--marfil);stroke-width:2.5;paint-order:stroke}
+.nota.c path,.nota.c ellipse,.nota.c rect{fill:var(--marfil);stroke:var(--tinta)}
+@keyframes nota{
+  0%{opacity:0;transform:translate(0,0) rotate(0) scale(.55)}
+  14%{opacity:1}
+  70%{opacity:1}
+  100%{opacity:0;transform:translate(var(--dx),-200px) rotate(var(--rot)) scale(1)}}
+
+/* ---------- Faldón-bocadillo ---------- */
+.bo-sombra{position:absolute;left:300px;top:1612px;width:740px;height:212px;z-index:3;
+  filter:drop-shadow(0 14px 26px rgba(5,9,18,.42))}
+.bocadillo{position:absolute;inset:0;background:var(--marfil);border-radius:0 18px 18px 18px;overflow:hidden;
+  clip-path:inset(0 100% 0 0 round 0 18px 18px 18px);
+  animation:bo-abre .62s var(--curva) 1.0s both, bo-cierra .38s ease-in 9.1s forwards}
+.bocadillo::before{content:"";position:absolute;left:0;top:0;bottom:0;width:12px;background:var(--naranja)}
+@keyframes bo-abre{from{clip-path:inset(0 100% 0 0 round 0 18px 18px 18px)}to{clip-path:inset(0 0 0 0 round 0 18px 18px 18px)}}
+@keyframes bo-cierra{from{clip-path:inset(0 0 0 0 round 0 18px 18px 18px)}to{clip-path:inset(0 100% 0 0 round 0 18px 18px 18px)}}
+.cola{position:absolute;left:262px;top:1636px;width:44px;height:64px;z-index:3;transform-origin:100% 50%;
+  background:var(--naranja);clip-path:polygon(100% 0,100% 100%,0 62%);
+  animation:cola-in .24s var(--curva) .94s both, cola-out .2s ease-in 9.42s forwards}
+@keyframes cola-in{from{transform:scaleX(0)}to{transform:none}}
+@keyframes cola-out{to{transform:scaleX(0)}}
+
+.pestanas{position:absolute;left:300px;top:1568px;height:44px;display:flex;z-index:3;
+  animation:sube .4s var(--curva) 1.32s both, baja-pes .3s ease-in 9.05s forwards}
+.pes{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 18px;font-weight:900;font-size:15px;
+  letter-spacing:.17em;text-transform:uppercase;white-space:nowrap}
+.pes svg{flex:none;width:17px;height:17px}
+.pes-osc{background:var(--tinta);color:var(--marfil);border-radius:11px 0 0 0}
+.pes-acento{background:var(--naranja);color:var(--tinta);border-radius:0 11px 0 0}
+.skyline{position:absolute;left:902px;top:1556px;width:134px;z-index:3;
+  animation:sube .4s var(--curva) 1.52s both, baja-pes .3s ease-in 9.05s forwards}
+@keyframes sube{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes baja-pes{to{opacity:0;transform:translateY(10px)}}
+
+/* Corales: una por turno */
+.coral{position:absolute;left:52px;right:34px;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center;
+  opacity:0;animation:coral 1.9s linear var(--d) both}
+@keyframes coral{
+  0%{opacity:0;transform:translateY(24px);animation-timing-function:cubic-bezier(.2,.8,.2,1)}
+  14%{opacity:1;transform:none}
+  87%{opacity:1;transform:none;animation-timing-function:ease-in}
+  100%{opacity:0;transform:translateY(-14px)}}
+.c-ante{display:flex;align-items:center;gap:16px;font-weight:900;font-size:17px;letter-spacing:.2em;text-transform:uppercase;color:var(--naranja)}
+.puntos{display:flex;gap:7px}
+.puntos i{width:9px;height:9px;border-radius:50%;background:var(--marfil2)}
+.puntos i.si{background:var(--naranja)}
+.c-nom{margin-top:10px;font-weight:900;font-size:56px;line-height:1.06;letter-spacing:-.01em;word-spacing:.05em;
+  white-space:nowrap;overflow:hidden}
+.c-lugar{display:flex;align-items:center;gap:10px;margin-top:10px;font-weight:600;font-size:30px;color:var(--pizarra);white-space:nowrap}
+.c-lugar svg{flex:none;width:28px;height:28px;color:var(--naranja)}
+
+/* Versión GIF: sin sombras ni transparencias parciales */
+.gif .pj-logo,.gif .bo-sombra{filter:none}
+.gif .onda{display:none}
+.render *,.render *::before{animation-play-state:paused!important}
+</style>
+</head>
+<body>
+<div id="lienzo">
+  <span class="onda"></span><span class="onda o2"></span>
+
+  <div class="pj">
+    <div class="pj-cuerpo">
+      <svg viewBox="0 0 240 300" aria-hidden="true">
+        <!-- piernas -->
+        <path class="extremidad" d="M100 196 C98 228 96 252 94 276"/>
+        <path class="extremidad" d="M140 196 C142 228 144 252 146 276"/>
+        <ellipse class="zapato" cx="86" cy="284" rx="22" ry="11"/>
+        <ellipse class="zapato" cx="154" cy="284" rx="22" ry="11"/>
+      </svg>
+      <img class="pj-logo" src="assets/radio-evolucion-hd.png" alt="Radio Evolución Burgos · 104.1 FM">
+      <svg viewBox="0 0 240 300" aria-hidden="true">
+        <!-- pajarita -->
+        <path class="pajarita" d="M120 210 L98 198 L98 222 Z M120 210 L142 198 L142 222 Z"/>
+        <circle class="pajarita" cx="120" cy="210" r="6"/>
+        <!-- brazo izquierdo con la carpeta de coro -->
+        <g class="brazo-i">
+          <path class="extremidad" d="M30 140 C16 156 20 176 36 190"/>
+          <g transform="rotate(-8 12 196)">
+            <rect class="carpeta" x="-18" y="160" width="58" height="72" rx="5"/>
+            <path d="M-8 180 H30 M-8 189 H30 M-8 198 H30 M-8 207 H30" stroke="#F5EFE4" stroke-width="2" fill="none" opacity=".85"/>
+            <ellipse cx="2" cy="207" rx="5.5" ry="4" fill="#EE6A2A" transform="rotate(-20 2 207)"/>
+            <rect x="6" y="186" width="2.6" height="21" fill="#EE6A2A"/>
+            <ellipse cx="18" cy="198" rx="5.5" ry="4" fill="#EE6A2A" transform="rotate(-20 18 198)"/>
+            <rect x="22" y="177" width="2.6" height="21" fill="#EE6A2A"/>
+            <rect x="6" y="177" width="18.6" height="4" fill="#EE6A2A" transform="skewY(-25)" transform-origin="6 186"/>
+          </g>
+          <circle class="guante" cx="38" cy="192" r="11"/>
+        </g>
+        <!-- brazo derecho: abre el faldón y presenta -->
+        <g class="brazo-d">
+          <path class="extremidad" d="M212 138 C228 158 234 176 232 198"/>
+          <circle class="guante" cx="232" cy="200" r="12"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <span class="nota" style="--d:1.70s;--n:4;--dx:-46px;--rot:-18deg"><svg viewBox="0 0 40 52"><ellipse cx="12" cy="42" rx="11" ry="8" transform="rotate(-20 12 42)"/><rect x="19" y="6" width="5" height="37"/><path d="M24 6 C34 10 38 18 34 28 C33 20 29 16 24 15 Z"/></svg></span>
+  <span class="nota c" style="--d:2.02s;--n:4;--dx:30px;--rot:16deg"><svg viewBox="0 0 40 52"><ellipse cx="12" cy="42" rx="11" ry="8" transform="rotate(-20 12 42)"/><rect x="19" y="6" width="5" height="37"/><path d="M24 6 C34 10 38 18 34 28 C33 20 29 16 24 15 Z"/></svg></span>
+  <span class="nota" style="--d:2.34s;--n:4;--dx:-12px;--rot:-8deg"><svg viewBox="0 0 40 52"><ellipse cx="12" cy="42" rx="11" ry="8" transform="rotate(-20 12 42)"/><rect x="19" y="6" width="5" height="37"/><path d="M24 6 C34 10 38 18 34 28 C33 20 29 16 24 15 Z"/></svg></span>
+  <span class="nota c" style="--d:2.66s;--n:3;--dx:54px;--rot:22deg"><svg viewBox="0 0 40 52"><ellipse cx="12" cy="42" rx="11" ry="8" transform="rotate(-20 12 42)"/><rect x="19" y="6" width="5" height="37"/><path d="M24 6 C34 10 38 18 34 28 C33 20 29 16 24 15 Z"/></svg></span>
+
+  <div class="pestanas">
+    <span class="pes pes-osc"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 17.5a3 3 0 1 1-2-2.83V4.5l12-2.5v12.5a3 3 0 1 1-2-2.83V6.4l-8 1.67z"/></svg>A concurso</span>
+    <span class="pes pes-acento"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.5s-7-6.3-7-11.7a7 7 0 0 1 14 0c0 5.4-7 11.7-7 11.7z"/><circle cx="12" cy="9.8" r="2.6"/></svg>Fórum Evolución · Burgos</span>
+  </div>
+  <img class="skyline" src="assets/burgos-skyline.svg" alt="">
+
+  <span class="cola"></span>
+  <div class="bo-sombra">
+    <div class="bocadillo" id="bocadillo"></div>
+  </div>
+
+  <div class="base">
+    <div class="base-lbl">XXIII edición</div>
+    <div class="base-txt">Concurso Nacional de Corales<strong>Antonio José</strong></div>
+  </div>
+</div>
+
+<script>
+(() => {
+  'use strict';
+  /* Corales y procedencia según la nota de prensa del Ayuntamiento de Burgos (21/10/2026). */
+  const CORALES = [
+    ['Coro Joven de Santander', 'Santander (Cantabria)'],
+    ['Ensamble Vocal Gijón', 'Gijón (Asturias)'],
+    ['Oñatiko Ganbara Abesbatza', 'Oñate (Guipúzcoa)'],
+    ['Patnia Coral de Cámara', 'San Javier (Murcia)']
+  ];
+  const INICIO = 1.55, TURNO = 1.9, DURACION = 10000;
+  const qs = new URLSearchParams(location.search);
+  const body = document.body;
+  ['demo', 'render', 'gif', 'oscuro'].forEach((k) => { if (qs.get(k) === '1') body.classList.add(k); });
+  const lienzo = document.getElementById('lienzo');
+
+  const PIN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.5s-7-6.3-7-11.7a7 7 0 0 1 14 0c0 5.4-7 11.7-7 11.7z"/><circle cx="12" cy="9.8" r="2.6"/></svg>';
+  document.getElementById('bocadillo').innerHTML = CORALES.map(([nombre, lugar], i) =>
+    `<div class="coral" style="--d:${(INICIO + TURNO * i).toFixed(2)}s">` +
+      `<div class="c-ante">Coral ${i + 1} de ${CORALES.length}<span class="puntos">${CORALES.map((_, k) => `<i class="${k === i ? 'si' : ''}"></i>`).join('')}</span></div>` +
+      `<div class="c-nom">${nombre}</div>` +
+      `<div class="c-lugar">${PIN}${lugar}</div>` +
+    `</div>`).join('');
+
+  function escalar() {
+    const s = Math.min(innerWidth / 1080, innerHeight / 1920);
+    lienzo.style.transform = `translate(${(innerWidth - 1080 * s) / 2}px,${(innerHeight - 1920 * s) / 2}px) scale(${s})`;
+  }
+  addEventListener('resize', escalar);
+  escalar();
+
+  /* Todos los nombres con el mismo cuerpo, el mayor que quepa en el bocadillo. */
+  function encajar() {
+    const els = [...document.querySelectorAll('.c-nom')];
+    els.forEach((e) => { e.style.fontSize = ''; });
+    let t = parseFloat(getComputedStyle(els[0]).fontSize);
+    const cabe = () => els.every((e) => e.scrollWidth <= e.clientWidth + 1);
+    let n = 0;
+    while (!cabe() && t > 24 && n++ < 80) { t -= 1; els.forEach((e) => { e.style.fontSize = t + 'px'; }); }
+    const b = document.querySelector('.base-txt');
+    let tb = parseFloat(getComputedStyle(b).fontSize);
+    while (b.scrollWidth > b.clientWidth + 1 && tb > 16) { tb -= 1; b.style.fontSize = tb + 'px'; }
+  }
+
+  const animaciones = () => document.getAnimations();
+  /* Exportación fotograma a fotograma */
+  window.__ir = (ms) => { animaciones().forEach((a) => { a.pause(); a.currentTime = ms; }); };
+
+  const pausa = Math.max(0, parseFloat(qs.get('pausa')) || 0) * 1000;
+  function ciclo() {
+    animaciones().forEach((a) => { a.currentTime = 0; a.play(); });
+    setTimeout(ciclo, DURACION + pausa);
+  }
+
+  const listo = document.fonts && document.fonts.ready
+    ? Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 2500))]) : Promise.resolve();
+  const imagenes = Promise.all([...document.images].map((im) => im.complete ? 0 : new Promise((r) => { im.onload = im.onerror = r; })));
+  Promise.all([listo, imagenes]).then(() => {
+    encajar();
+    if (body.classList.contains('render')) window.__ir(0); else ciclo();
+    window.__listo = true;
+  });
+})();
+</script>
+</body>
+</html>

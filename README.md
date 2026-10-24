@@ -79,6 +79,12 @@ Solo horizontal (1920 × 1080): https://omnijulio.github.io/directo1/corales-ant
 
 Datos (nota de prensa del Ayuntamiento y El Correo de Burgos, 21/10/2026): Coro Joven de Santander (Santander, Cantabria), Ensamble Vocal Gijón (Gijón, Asturias), Oñatiko Ganbara Abesbatza (Oñate, Guipúzcoa) y Patnia Coral de Cámara (San Javier, Murcia); coral invitada Orfeón Burgalés Juvenil, directora Ana Ayala Francés; director artístico Juan Gabriel Martínez Martín; obra obligatoria «Aquel galán que allí viene» (Colección de cuatro canciones populares burgalesas). 90 aniversario del asesinato de Antonio José (Burgos, 1902 – Estépar, 1936).
 
+## Corales a concurso · animación vertical del cantor (24/10/2026)
+
+`corales-cantor-vertical.html` (1080 × 1920, fondo transparente, 10 s en bucle): la mosca de Radio Evolución hace de cantor, abre el faldón-bocadillo y presenta las cuatro corales con su procedencia. URL para el widget Web de PRISM en vertical: https://omnijulio.github.io/directo1/corales-cantor-vertical.html · `?pausa=20` espera 20 s entre repeticiones · `?demo=1` fondo de muestra · `?render=1` (y `&gif=1`, sin sombras) para exportar fotograma a fotograma con `window.__ir(ms)`.
+
+Exportado a 25 fps (250 fotogramas): PNG animado (APNG, transparencia completa), GIF (transparencia de 1 bit, sin sombras) y MOV ProRes 4444 con canal alfa para edición.
+
 ## Plantillas guardadas
 - `plantillas/rueda-entrenador-baloncesto.json`: declaraciones de entrenadores de baloncesto de Burgos (escudos, marcador final y rótulo con escudo).
 
