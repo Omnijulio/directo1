@@ -91,6 +91,24 @@ https://omnijulio.github.io/directo1/corales-2camaras.html (`config-corales-2cam
 
 Exportado a 25 fps (250 fotogramas): PNG animado (APNG, transparencia completa), GIF (transparencia de 1 bit, sin sombras) y MOV ProRes 4444 con canal alfa para edición.
 
+## Agradecimiento al Ayuntamiento de Madrid · Teatro Principal · 26/10/2026
+
+Acto institucional en el Salón Rojo del Teatro Principal, lunes 26/10/2026 a las 13:00 (hora de invierno: las horas llevan `+01:00`).
+
+| Formato | URL para PRISM (widget Web) | Configuración |
+|---|---|---|
+| Horizontal 1920 × 1080 (escala 0,7, como Corales) | https://omnijulio.github.io/directo1/agradecimiento-madrid.html | `config-agradecimiento-madrid.json` |
+| Vertical 1080 × 1920 (escala 1, como Vox) | https://omnijulio.github.io/directo1/agradecimiento-madrid-vertical.html | `config-agradecimiento-madrid-vertical.json` |
+
+Los dos JSON tienen el mismo contenido salvo `escala`: cualquier corrección de texto hay que hacerla en ambos. Se regeneran con `python3 scripts/generar-declaracion.py config-agradecimiento-madrid.json agradecimiento-madrid "Gracias, Madrid" h` y `python3 scripts/generar-declaracion.py config-agradecimiento-madrid-vertical.json agradecimiento-madrid "Gracias, Madrid" v`.
+
+- **Hasta las 12:45**: espera con cuenta atrás, «Acto institucional de agradecimiento · Burgos da las gracias a Madrid» y rotativo (presiden el acto, la cesión, escúchalo en el 104.1 FM).
+- **12:45–13:00**: «EN BREVE», cuenta atrás y rotativos (acto → Cristina Ayala y José Luis Martínez-Almeida → 40 autobuses cedidos por Madrid).
+- **Desde las 13:00**: «EN DIRECTO» y rotativos (titular → Cristina Ayala → José Luis Martínez-Almeida → la cesión → presiden el acto). `?fijo=1` deja fijo a la alcaldesa y `?fijo=2` al alcalde de Madrid. Se oculta a las 15:00.
+- Faldón de claves «Autobuses urbanos». No hay atención a medios (nota del Ayuntamiento).
+
+Datos verificados el 26/10/2026: **Cristina Ayala Santamaría**, alcaldesa de Burgos (PP); **José Luis Martínez-Almeida Navasqüés**, alcalde de Madrid (con guion, como lo escribe el Ayuntamiento de Madrid; la nota de prensa lo pone sin guion). Incendio de las cocheras municipales de la carretera de Poza en la madrugada del martes 21/04/2026 (aviso a las 2:12): 39 autobuses calcinados, la mitad de la flota (El Correo de Burgos, BurgosNoticias, Infobae). Madrid cedió gratis 40 autobuses de GNC de la EMT por seis meses (madrid.es, Diario de Castilla y León, 24/04/2026); la Junta de Gobierno de Burgos aprobó el 22/10/2026 una prórroga de nueve meses con opción de compra a 15.150 € sin IVA por autobús (El Correo de Burgos, BurgosNoticias, BURGOSconecta).
+
 ## Plantillas guardadas
 - `plantillas/rueda-entrenador-baloncesto.json`: declaraciones de entrenadores de baloncesto de Burgos (escudos, marcador final y rótulo con escudo).
 

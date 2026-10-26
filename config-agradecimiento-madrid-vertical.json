@@ -1,0 +1,152 @@
+{
+  "version": 1,
+  "evento": "Acto institucional de agradecimiento al Ayuntamiento de Madrid · Salón Rojo del Teatro Principal · 26/10/2026 · vertical",
+  "escena": "auto",
+  "inicio": "2026-10-26T13:00:00+01:00",
+  "previa_minutos": 15,
+  "hasta": "2026-10-26T15:00:00+01:00",
+  "escala": 1,
+  "espera": {
+    "visible": true,
+    "cuenta_hasta": "previa",
+    "etiqueta": "Conectamos en directo en",
+    "antetitulo": "Acto institucional de agradecimiento",
+    "titulo": "Burgos da las gracias a Madrid",
+    "subtitulo": "Por la cesión de 40 autobuses urbanos tras el incendio de las cocheras",
+    "datos": [
+      "Salón Rojo del Teatro Principal",
+      "Lunes, 26 de octubre",
+      "13:00 h"
+    ],
+    "rotativo": [
+      {
+        "antetitulo": "Presiden el acto",
+        "lineas": [
+          "**Cristina Ayala** · Alcaldesa de Burgos",
+          "**José Luis Martínez-Almeida** · Alcalde de Madrid"
+        ]
+      },
+      {
+        "antetitulo": "La cesión",
+        "lineas": [
+          "**40 autobuses** de la **EMT de Madrid**, cedidos de forma gratuita",
+          "Tras el incendio de las cocheras del **21 de abril**"
+        ]
+      },
+      {
+        "antetitulo": "Escúchalo en directo",
+        "lineas": [
+          "**Radio Evolución Burgos**",
+          "**104.1 FM** · **radioevolucion.es**"
+        ]
+      }
+    ],
+    "cada": 8
+  },
+  "etiqueta": "Acto institucional",
+  "lugar": "Teatro Principal · Burgos",
+  "estado": {
+    "previa": "En breve",
+    "directo": "En directo"
+  },
+  "informan": [],
+  "fijo_previa": null,
+  "fijo_directo": null,
+  "previa": [
+    {
+      "tipo": "rotulo",
+      "antetitulo": "En breve · 13:00 h · Salón Rojo del Teatro Principal",
+      "titulo": "Agradecimiento al Ayuntamiento de Madrid",
+      "subtitulo": "Reconocimiento por la cesión de 40 autobuses urbanos",
+      "dura": 14
+    },
+    {
+      "tipo": "duo",
+      "antetitulo": "Presiden el acto",
+      "personas": [
+        {
+          "nombre": "Cristina Ayala",
+          "cargo": "Alcaldesa de Burgos"
+        },
+        {
+          "nombre": "José Luis Martínez-Almeida",
+          "cargo": "Alcalde de Madrid"
+        }
+      ],
+      "dura": 10
+    },
+    {
+      "tipo": "rotulo",
+      "antetitulo": "Tras el incendio de las cocheras · 21 de abril",
+      "titulo": "40 autobuses cedidos por Madrid",
+      "subtitulo": "Empresa Municipal de Transportes (EMT) de Madrid · Cesión gratuita",
+      "dura": 10
+    }
+  ],
+  "directo": [
+    {
+      "tipo": "rotulo",
+      "antetitulo": "Acto institucional · Salón Rojo del Teatro Principal",
+      "titulo": "Burgos da las gracias a Madrid",
+      "subtitulo": "Reconocimiento por la cesión de 40 autobuses urbanos tras el incendio de las cocheras",
+      "dura": 16
+    },
+    {
+      "tipo": "rotulo",
+      "antetitulo": "",
+      "titulo": "Cristina Ayala",
+      "subtitulo": "Alcaldesa de Burgos",
+      "dura": 12
+    },
+    {
+      "tipo": "rotulo",
+      "antetitulo": "",
+      "titulo": "José Luis Martínez-Almeida",
+      "subtitulo": "Alcalde de Madrid",
+      "dura": 12
+    },
+    {
+      "tipo": "rotulo",
+      "antetitulo": "La cesión",
+      "titulo": "40 autobuses de la EMT de Madrid",
+      "subtitulo": "Gratis durante seis meses y prorrogada nueve más, con opción de compra",
+      "dura": 10
+    },
+    {
+      "tipo": "duo",
+      "antetitulo": "Presiden el acto",
+      "personas": [
+        {
+          "nombre": "Cristina Ayala",
+          "cargo": "Alcaldesa de Burgos"
+        },
+        {
+          "nombre": "José Luis Martínez-Almeida",
+          "cargo": "Alcalde de Madrid"
+        }
+      ],
+      "dura": 10
+    }
+  ],
+  "ticker": {
+    "titulo": "Autobuses urbanos",
+    "previa": [
+      "**Acto institucional de agradecimiento al Ayuntamiento de Madrid** a las **13:00 h** en el **Salón Rojo del Teatro Principal**",
+      "Lo presiden la alcaldesa de Burgos, **Cristina Ayala**, y el alcalde de Madrid, **José Luis Martínez-Almeida**",
+      "Burgos reconoce la cesión de **40 autobuses urbanos** de la **EMT de Madrid** tras el incendio de las cocheras del **21 de abril**",
+      "El fuego calcinó **39 autobuses**, la mitad de la flota municipal",
+      "La cesión, gratuita durante **seis meses**, se ha prorrogado **nueve meses** más con **opción de compra**",
+      "Asisten autoridades, representantes institucionales y trabajadores del **Servicio Municipalizado de Movilidad y Transportes**",
+      "Escúchanos en el **104.1 FM** y en **radioevolucion.es**"
+    ],
+    "directo": [
+      "**Burgos da las gracias a Madrid** desde el **Salón Rojo del Teatro Principal**",
+      "Presiden el acto la alcaldesa de Burgos, **Cristina Ayala**, y el alcalde de Madrid, **José Luis Martínez-Almeida**",
+      "Reconocimiento por la cesión de **40 autobuses urbanos** de la **EMT de Madrid** tras el incendio de las cocheras del **21 de abril**",
+      "El fuego calcinó **39 autobuses**, la mitad de la flota municipal",
+      "La cesión, gratuita durante **seis meses**, se ha prorrogado **nueve meses** más con **opción de compra**",
+      "Asisten autoridades, representantes institucionales y trabajadores del **Servicio Municipalizado de Movilidad y Transportes**",
+      "Escúchanos en el **104.1 FM** y en **radioevolucion.es**"
+    ]
+  }
+}
