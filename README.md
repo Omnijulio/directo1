@@ -3,9 +3,17 @@
 Gráfico horizontal (1920×1080, fondo transparente) para el widget **Web** de PRISM.
 URL fija: https://omnijulio.github.io/directo1/
 
-## Emisión de baloncesto activa · 17/10/2026
+## Emisión de baloncesto activa · 28/10/2026
 
-El marcador de https://omnijulio.github.io/directo1/baloncesto.html está conectado a **San Pablo Burgos–Monbus Obradoiro**, ACB 105404, identificado en Flashscore como `42mhERFs`. Enlace fijo de este partido para PRISM: https://omnijulio.github.io/directo1/baloncesto.html?partido=105404.
+El enlace general `baloncesto.html` y `marcador.html` selecciona **San Pablo Burgos–Rigas Zelli**, jornada 5 de BKT EuroCup, 28/10/2026 a las 20:30 (Madrid), Coliseum Burgos. Enlace fijo para PRISM: https://omnijulio.github.io/directo1/baloncesto.html?partido=20260065.
+
+Identificación: Flashscore `6cIEmLOb`; EuroCup `U2026`, partido `65`, códigos de equipo `BGS` y `RIG`. Se consultan cada 10 segundos `https://live.euroleague.net/api/Header`, `Boxscore` y `PlayByPlay`, con parámetros `gamecode=65` y `seasoncode=U2026`. El reloj utiliza `RemainingPartialTime`; `GameTime` es otro dato y no se usa como cuenta atrás. La ficha v2 del calendario no se utiliza como tanteo en directo, porque puede seguir en 0–0 mientras el partido ya está en juego.
+
+Se mantienen el tamaño del marcador, los escudos de 106 px, la ocultación de las siglas al cargar los PNG, las luces de faltas, las animaciones de avisos y los comentaristas **Iñaqui García** y **Diego Arce**. Los avisos usan incrementos observados en las estadísticas de cada jugador. Los tiempos muertos se reconocen por `TOUT` y `TOUT_TV`; `TO` significa pérdida de balón. Cada respuesta valida temporada, fecha y equipos. No se inventan puntos ni se reproduce el historial al reconectar.
+
+## Partido ACB anterior · 17/10/2026
+
+El marcador anterior corresponde a **San Pablo Burgos–Monbus Obradoiro**, ACB 105404, identificado en Flashscore como `42mhERFs`. Enlace fijo de este partido para PRISM: https://omnijulio.github.io/directo1/baloncesto.html?partido=105404.
 
 La conexión utiliza directamente los endpoints públicos de ACB Live para cabecera, reloj, faltas del cuarto, estadísticas y jugadas, con consulta cada 10 segundos. No utiliza el token temporal FEB para este encuentro. La API ACB devuelve puntuaciones nulas en la previa; solo con estado previo y cuarto 0 se muestra el 0–0 inicial. Durante el juego, una puntuación ausente produce un aviso de conexión y nunca se convierte en cero. Los avisos de jugadores se calculan a partir de incrementos observados en sus estadísticas y no reproducen el historial al cargar o tras una desconexión prolongada.
 
@@ -175,3 +183,4 @@ Nombres verificados en las fuentes de ambos clubes el 16/10/2026:
 - Tizona: https://www.cbtizona.es/actualidad/denis-pombar-continuara-al-frente-del-club-baloncesto-tizona/
 
 Pruebas de selección de turnos: `node --test tests/postpartido.test.cjs`.
+

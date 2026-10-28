@@ -5,7 +5,7 @@ const acb=require('../assets/marcador-acb-core.js');
 const config=require('../config-baloncesto.json');
 const pre=require('./fixtures/acb-previa.json');
 const final=require('./fixtures/acb-final.json');
-const game=core.selectGame(config),clone=value=>JSON.parse(JSON.stringify(value));
+const game=core.selectGame(config,"105404"),clone=value=>JSON.parse(JSON.stringify(value));
 function live(){const h=clone(pre.header);Object.assign(h,{matchStatus:'STARTED',currentQuarter:1,timeLeft:'08:12',currentHomeScore:0,currentAwayScore:0});return h;}
 function plays(lines){return {homeTeam:pre.header.teams.home,awayTeam:pre.header.teams.away,plays:lines};}
 
@@ -76,3 +76,4 @@ test('una primera carga o una reconexión prolongada no reproduce estadísticas 
   const restored=acb.createStatsTracker(tracker.save());s.home.players[0].pts=20;assert.deepEqual(restored.take(s,200001),[]);
   s.home.players[0].pts=22;assert.equal(restored.take(s,210001)[0].metrics[0].amount,2);
 });
+

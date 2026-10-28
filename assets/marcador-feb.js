@@ -1,6 +1,6 @@
 (function () {
   "use strict";
-  const core = window.FEBScore, acb = window.ACBScore, $ = id => document.getElementById(id);
+  const core = window.FEBScore, acb = window.ACBScore, eurocup = window.EuroCupScore, $ = id => document.getElementById(id);
   const params = new URLSearchParams(location.search);
   const RAW_ROOT = "https://raw.githubusercontent.com/Omnijulio/directo1/main/";
   const API = "https://intrafeb.feb.es/LiveStats.API/api/v1/KeyFacts/";
@@ -129,7 +129,7 @@
   function restoreSession() {
     let saved;
     try { saved = JSON.parse(sessionStorage.getItem("feb-" + game.partido)); } catch (_) {}
-    tracker = game.proveedor === "acb" ? acb.createStatsTracker(saved && saved.tracker) : core.createEventTracker(saved && saved.tracker);
+    tracker = ["acb","eurocup"].includes(game.proveedor) ? acb.createStatsTracker(saved && saved.tracker) : core.createEventTracker(saved && saved.tracker);
     if (saved && saved.state && Date.now() - saved.lastGood < 900000 && saved.lastGood <= Date.now() &&
         saved.state.home.id === String(game.local.id) && saved.state.away.id === String(game.visitante.id)) {
       state = saved.state; lastGood = saved.lastGood; failed = true;
@@ -191,12 +191,17 @@
     pending = true;
     const requestGeneration = generation, startedAt = Date.now();
     try {
-      if (game.proveedor === "acb") {
-        const id = encodeURIComponent(game.partido), suffix = "?matchId=" + id + "&t=" + Date.now();
-        const header = await getJSON(ACB_API + "MatchHeader/match-header" + suffix, ACB_HEADERS);
+      if (["acb","eurocup"].includes(game.proveedor)) {
+        const european = game.proveedor === "eurocup";
+        const normalize = european ? eurocup.normalize : acb.normalize;
+        if (european && (!/^U\d{4}$/.test(game.temporada) || !/^\d{1,5}$/.test(String(game.codigo_partido)))) throw new Error("Partido EuroCup no válido");
+        const suffix = european ? "?gamecode=" + encodeURIComponent(game.codigo_partido) + "&seasoncode=" + game.temporada + "&t=" + Date.now() : "?matchId=" + encodeURIComponent(game.partido) + "&t=" + Date.now();
+        const endpoint = european ? "https://live.euroleague.net/api/" : ACB_API;
+        const headers = european ? undefined : ACB_HEADERS;
+        const header = await getJSON(endpoint + (european ? "Header" : "MatchHeader/match-header") + suffix, headers);
         if (requestGeneration !== generation) return;
         // El tanteo y el reloj se muestran sin esperar a las estadísticas secundarias.
-        const nextState = acb.normalize(header, null, null, game);
+        const nextState = normalize(header, null, null, game);
         if (state && !stale()) {
           for (const side of ["home","away"]) { nextState[side].stats=state[side].stats; nextState[side].players=state[side].players; }
           if (state.activity && state.activity.kind === "timeout" && nextState.phase === "live" &&
@@ -205,14 +210,14 @@
         }
         state = nextState; lastGood = Date.now(); failed = false; render();
         const [boxResult, playsResult] = await Promise.allSettled([
-          getJSON(ACB_API + "Result/boxscores" + suffix, ACB_HEADERS),
-          header.availableContent && header.availableContent.playbyplay ? getJSON(ACB_API + "PlayByPlay/play-by-play" + suffix, ACB_HEADERS) : Promise.resolve(null)
+          getJSON(endpoint + (european ? "Boxscore" : "Result/boxscores") + suffix, headers),
+          european || header.availableContent && header.availableContent.playbyplay ? getJSON(endpoint + (european ? "PlayByPlay" : "PlayByPlay/play-by-play") + suffix, headers) : Promise.resolve(null)
         ]);
         if (requestGeneration !== generation) return;
         const box = boxResult.status === "fulfilled" ? boxResult.value : null;
         const plays = playsResult.status === "fulfilled" ? playsResult.value : null;
-        state = acb.normalize(header, box, plays, game);
-        const fresh = box && box.teamBoxscores && box.teamBoxscores.length ? tracker.take(state,Date.now()) : [];
+        state = normalize(header, box, plays, game);
+        const fresh = box && (european ? box.Stats && box.Stats.length : box.teamBoxscores && box.teamBoxscores.length) ? tracker.take(state,Date.now()) : [];
         if (eventsEnabled()) enqueue(fresh);
         saveSession(); return;
       }
@@ -238,7 +243,7 @@
     } catch (_) {
       if (requestGeneration !== generation) return;
       failed = true;
-      if (game.proveedor !== "acb" && (!state || state.snapshot)) state = core.snapshotState(bootstrap, game, Date.now());
+      if (!["acb","eurocup"].includes(game.proveedor) && (!state || state.snapshot)) state = core.snapshotState(bootstrap, game, Date.now());
     } finally {
       pending = false;
       if (requestGeneration === generation) render();
@@ -268,7 +273,7 @@
     const activity = state && state.activity || {kind:phase,label:phase === "live" ? "EN JUEGO" : ""};
     $("scorebug").dataset.activity = isStale ? "stale" : activity.kind;
     write("play-state", isStale ? "RECONECTANDO" : activity.label);
-    $("scorebug").dataset.source = previewMode ? "simulation" : state ? game.proveedor === "acb" ? "acb-api" : state.snapshot ? "feb-ficha" : "feb-api" : "pending";
+    $("scorebug").dataset.source = previewMode ? "simulation" : state ? ["acb","eurocup"].includes(game.proveedor) ? game.proveedor + "-api" : state.snapshot ? "feb-ficha" : "feb-api" : "pending";
     $("scorebug").dataset.received = lastGood ? new Date(lastGood).toISOString() : "";
     setScore("score-home", state && state.home.score); setScore("score-away", state && state.away.score);
     renderFouls("home", state && state.home); renderFouls("away", state && state.away);
@@ -461,3 +466,4 @@
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => {fitNarrators();fitTicker();});
   setInterval(render, 1000); setInterval(tick, 250); setInterval(loadConfig, 5000); loadConfig();
 })();
+

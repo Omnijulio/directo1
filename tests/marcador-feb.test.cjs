@@ -12,7 +12,7 @@ function response(home='0',away='0') {
 }
 
 test('cada partido FEB se selecciona por URL sin sustituir la emisión activa', () => {
-  assert.equal(core.selectGame(config,null).partido,105404);
+  assert.equal(core.selectGame(config,null).partido,20260065);
   const practice=core.selectGame(config,'2538980');
   assert.equal(practice.partido,2538980);
   assert.equal(practice.local.id,'1009930');assert.equal(practice.visitante.id,'1009924');
@@ -21,10 +21,10 @@ test('cada partido FEB se selecciona por URL sin sustituir la emisión activa', 
   assert.equal(core.selectGame(config,'9999999'),null);
   assert.equal(core.selectGame(config,'https://example.org'),null);
 });
-test('el enlace general usa San Pablo–Obradoiro sin alterar los enlaces explícitos FEB', () => {
-  assert.equal(core.selectGame(config,null,Date.parse('2026-10-17T20:00:00+02:00')).partido,105404);
-  assert.equal(core.selectGame(config,null,Date.parse('2026-10-17T21:00:00+02:00')).partido,105404);
-  assert.equal(core.selectGame(config,null,Date.parse('2026-10-17T22:30:00+02:00')).partido,105404);
+test('el enlace general usa San Pablo–Rigas Zelli sin alterar los enlaces anteriores', () => {
+  assert.equal(core.selectGame(config,null,Date.parse('2026-10-28T20:00:00+01:00')).partido,20260065);
+  assert.equal(core.selectGame(config,null,Date.parse('2026-10-28T21:00:00+01:00')).partido,20260065);
+  assert.equal(core.selectGame(config,null,Date.parse('2026-10-28T22:30:00+01:00')).partido,20260065);
   assert.equal(core.selectGame(config,'2535753',Date.parse('2026-10-16T17:15:00+02:00')).partido,2535753);
   assert.equal(core.selectGame(config,'2538980',Date.parse('2026-10-16T21:00:00+02:00')).partido,2538980);
 });
@@ -261,3 +261,4 @@ test('la banda corrida usa estadísticas oficiales y nunca inventa datos pendien
   raw.HEADER.status='1';raw.HEADER.statusText='SCHEDULED';
   assert.deepEqual(core.tickerLines(core.normalize(raw,game)),[]);
 });
+

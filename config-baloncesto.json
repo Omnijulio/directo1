@@ -1,5 +1,5 @@
 {
-  "version": 12,
+  "version": 13,
   "narradores": [
     "Iñaqui García",
     "Diego Arce"
@@ -80,7 +80,7 @@
     }
   ],
   "narracion_fija": true,
-  "activo": 105404,
+  "activo": 20260065,
   "partidos": [
     {
       "partido": 105404,
@@ -112,6 +112,40 @@
         "siglas": "OBR",
         "color": "#4A96C4",
         "escudo": "https://static.acb.com/img/www/clubes2026/202627MonbusObradoiroLogoPositivoOK.png"
+      }
+    },
+    {
+      "partido": 20260065,
+      "proveedor": "eurocup",
+      "codigo_partido": 65,
+      "temporada": "U2026",
+      "referencia_flashscore": "6cIEmLOb",
+      "fuente": "https://live.euroleague.net/api/Header?gamecode=65&seasoncode=U2026",
+      "inicio": "2026-10-28T20:30:00+01:00",
+      "competicion": "BKT EuroCup",
+      "jornada": "Jornada 5",
+      "pabellon": "Coliseum · Burgos",
+      "actualizar_segundos": 10,
+      "estadisticas": true,
+      "comparar_cada_segundos": 60,
+      "comparar_durante_segundos": 7,
+      "aviso_jugador_segundos": 4,
+      "avisos_jugadores": true,
+      "local": {
+        "id": "BGS",
+        "nombre": "Recoletas Salud San Pablo Burgos",
+        "corto": "San Pablo Burgos",
+        "siglas": "BUR",
+        "color": "#00669E",
+        "escudo": "https://media-cdn.cortextech.io/1dU3kpCqReRp93/1BSdBWIjCgOCxM/40c97670-177e-4c74-9f5f-76b528a0da86.png"
+      },
+      "visitante": {
+        "id": "RIG",
+        "nombre": "Rigas Zelli",
+        "corto": "Rigas Zelli",
+        "siglas": "RIG",
+        "color": "#ED64A6",
+        "escudo": "https://media-cdn.cortextech.io/1dU3kpCqReRp93/1BSdBWIjCgOCpC/0ab8fe2a-5972-48c5-bdff-f5159ca0abe7.png"
       }
     }
   ]
