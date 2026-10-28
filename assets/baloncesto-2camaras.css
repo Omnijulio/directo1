@@ -1,0 +1,17 @@
+/* Canvas 1920 × 1080. Los huecos conservan exactamente la proporción 16:9. */
+.dual-camera #layout-backdrop{position:absolute;inset:0;width:1920px;height:1080px;pointer-events:none}
+.dual-camera #camera-windows{position:absolute;inset:0;pointer-events:none}
+.dual-camera .camera-frame{position:absolute;top:278px;width:900px;height:508px;border:2px solid #f5efe47a;background:transparent;box-shadow:0 14px 36px #0004}
+.dual-camera .camera-frame-left{left:38px}
+.dual-camera .camera-frame-right{left:982px}
+.dual-camera .camera-hole{width:100%;height:100%;background:transparent;aspect-ratio:16/9}
+/* La capa opaca está recortada en el SVG; nada pinta dentro de las cámaras. */
+.dual-camera #demo{background:transparent}
+.dual-camera .camera-preview{position:absolute;top:280px;width:896px;height:504px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background-color:#192538;background-image:linear-gradient(45deg,#ffffff05 25%,transparent 25%,transparent 75%,#ffffff05 75%),linear-gradient(45deg,#ffffff05 25%,transparent 25%,transparent 75%,#ffffff05 75%);background-size:48px 48px;background-position:0 0,24px 24px;color:#f5efe4a8}
+.dual-camera .camera-preview-left{left:40px}
+.dual-camera .camera-preview-right{left:984px}
+.dual-camera .camera-preview strong{font:700 30px/1.2 var(--font);letter-spacing:5px}
+.dual-camera .camera-preview span{font:500 17px/1.4 var(--font);letter-spacing:2px;color:#f5efe46b}
+.dual-camera #location{text-shadow:none}
+.dual-camera #scorebug{box-shadow:0 10px 28px #0005}
+.dual-camera #test-label{top:154px}

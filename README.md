@@ -3,6 +3,22 @@
 Gráfico horizontal (1920×1080, fondo transparente) para el widget **Web** de PRISM.
 URL fija: https://omnijulio.github.io/directo1/
 
+## Layout de baloncesto con dos cámaras
+
+Página independiente: https://omnijulio.github.io/directo1/baloncesto-2camaras.html. Enlace fijo del San Pablo–Rigas Zelli: https://omnijulio.github.io/directo1/baloncesto-2camaras.html?partido=20260065.
+
+Canvas de **1920 × 1080**, dos ventanas realmente transparentes de **896 × 504 (16:9)**. El fondo azul oscuro se recorta mediante una máscara SVG; no se aplica croma ni se dibuja un relleno dentro de las ventanas. La fuente Web va **encima** de las dos cámaras en la escena de PRISM.
+
+| Fuente | X | Y | Anchura | Altura |
+|---|---:|---:|---:|---:|
+| Cámara izquierda | 40 | 280 | 896 | 504 |
+| Cámara derecha | 984 | 280 | 896 | 504 |
+| Layout Web | 0 | 0 | 1920 | 1080 |
+
+Las coordenadas corresponden al borde superior izquierdo de cada imagen. Ajustar una fuente 16:9 completa a esas medidas conserva su proporción. El borde del layout queda fuera del área de cámara. Marcador arriba; comentaristas, ubicación, avisos y ticker debajo de las ventanas. Se comparten todos los lectores, escudos y animaciones de `baloncesto.html`; el marcador de una sola cámara sigue disponible.
+
+Añadir `&demo=1` al enlace fijo muestra dos paneles de encuadre con su número y tamaño, sin modificar los datos reales del partido. No usar `demo=1` en la fuente de emisión. El configurador `?config=1` y los parámetros de partido, estadísticas, avisos y narradores funcionan también en esta página.
+
 ## Emisión de baloncesto activa · 28/10/2026
 
 El enlace general `baloncesto.html` y `marcador.html` selecciona **San Pablo Burgos–Rigas Zelli**, jornada 5 de BKT EuroCup, 28/10/2026 a las 20:30 (Madrid), Coliseum Burgos. Enlace fijo para PRISM: https://omnijulio.github.io/directo1/baloncesto.html?partido=20260065.

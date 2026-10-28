@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Baloncesto · Dos cámaras · Radio Evolución Burgos</title>
+<link rel="stylesheet" href="assets/directos-fonts.css?v=13">
+<link rel="stylesheet" href="assets/marcador-feb.css?v=13">
+<link rel="stylesheet" href="assets/baloncesto-2camaras.css?v=1">
+<script defer src="assets/marcador-feb-core.js?v=13"></script>
+<script defer src="assets/marcador-acb-core.js?v=1"></script>
+<script defer src="assets/marcador-eurocup-core.js?v=1"></script>
+<script defer src="assets/marcador-feb.js?v=13"></script>
+</head>
+<body class="dual-camera">
+<main id="stage">
+  <div id="demo" aria-hidden="true"><div class="camera-preview camera-preview-left"><strong>CÁMARA 1</strong><span>16:9 · 896 × 504</span></div><div class="camera-preview camera-preview-right"><strong>CÁMARA 2</strong><span>16:9 · 896 × 504</span></div></div>
+  <svg id="layout-backdrop" viewBox="0 0 1920 1080" width="1920" height="1080" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="dual-camera-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#182338"/><stop offset=".5" stop-color="#0e1727"/><stop offset="1" stop-color="#080e19"/></linearGradient>
+      <mask id="dual-camera-cutouts" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080" style="mask-type:luminance">
+        <rect width="1920" height="1080" fill="#fff"/>
+        <rect id="camera-cutout-1" x="40" y="280" width="896" height="504" fill="#000"/>
+        <rect id="camera-cutout-2" x="984" y="280" width="896" height="504" fill="#000"/>
+      </mask>
+    </defs>
+    <g mask="url(#dual-camera-cutouts)">
+      <rect width="1920" height="1080" fill="url(#dual-camera-bg)"/>
+      <path d="M1280 -240C1860 -240 2150 210 2040 620M1350 -185C1870 -185 2080 220 1980 580" fill="none" stroke="#f5efe4" stroke-width="2" opacity=".035"/>
+      <path d="M-180 840C220 680 670 900 880 1160" fill="none" stroke="#f07a2a" stroke-width="2" opacity=".08"/>
+    </g>
+  </svg>
+  <div id="camera-windows" aria-label="Dos ventanas de cámara en formato horizontal 16:9">
+    <div class="camera-frame camera-frame-left"><div id="camera-1" class="camera-hole" role="img" aria-label="Ventana transparente de cámara 1: x 40, y 280, 896 por 504 píxeles"></div></div>
+    <div class="camera-frame camera-frame-right"><div id="camera-2" class="camera-hole" role="img" aria-label="Ventana transparente de cámara 2: x 984, y 280, 896 por 504 píxeles"></div></div>
+  </div>
+  <div id="brand" aria-label="Radio Evolución Burgos">
+    <span class="brand-seal"><img id="brand-logo" src="assets/radio-evolucion.png" alt="Radio Evolución Burgos"></span>
+  </div>
+  <section id="scorebug" data-phase="unknown" aria-label="Marcador conectando">
+    <div class="score-main">
+      <div class="score-team home">
+        <div class="team-main"><div class="team-emblem"><span id="score-home-fallback">BUR</span><img id="score-home-logo" alt="Escudo de San Pablo Burgos" hidden></div><div id="score-home" class="score-value">—</div></div>
+        <div id="home-fouls" class="foul-lights" role="img" aria-label="Faltas del cuarto sin dato"><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="score-time"><div id="score-clock">—</div><div id="score-period"></div><div id="play-lights" aria-hidden="true"><i style="--lamp:0"></i><i style="--lamp:1"></i><i style="--lamp:2"></i><i style="--lamp:3"></i><i style="--lamp:4"></i><i style="--lamp:5"></i></div><div id="play-state" role="status"></div></div>
+      <div class="score-team away">
+        <div class="team-main"><div class="team-emblem"><span id="score-away-fallback">RIG</span><img id="score-away-logo" alt="Escudo de Rigas Zelli" hidden></div><div id="score-away" class="score-value">—</div></div>
+        <div id="away-fouls" class="foul-lights" role="img" aria-label="Faltas del cuarto sin dato"><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+    </div>
+    <div id="score-status" class="score-status" role="status">CONECTANDO</div>
+  </section>
+  <section id="commentators" aria-label="Comentaristas del partido"><span class="commentator-logo"><img id="commentator-logo" src="assets/radio-evolucion.png" alt="Radio Evolución"></span><div class="commentator-copy"><div class="commentator-role">NARRACIÓN</div><div id="commentator-list"></div></div></section>
+  <aside id="flash" hidden aria-live="polite" aria-atomic="true"></aside>
+  <div id="location"><svg width="12" height="15" viewBox="0 0 12 15" aria-hidden="true"><path d="M6 14s5-5.5 5-8A5 5 0 0 0 1 6c0 2.5 5 8 5 8Z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="6" cy="6" r="1.5" fill="currentColor"/></svg><span id="venue">Coliseum · Burgos</span></div>
+  <section id="ticker" aria-label="Estadísticas del partido">
+    <div class="ticker-heading"><strong>ESTADÍSTICAS</strong><span id="ticker-source">ACTUALIZANDO</span></div>
+    <div class="ticker-viewport"><div id="ticker-track"></div></div>
+  </section>
+  <span id="test-label" hidden>PRUEBA · DATOS FICTICIOS</span>
+</main>
+<form id="cfg" hidden>
+  <h1>Marcador de baloncesto para PRISM</h1>
+  <p>Usa este enlace en un widget Web de 1920 × 1080. Las dos ventanas de cámara son transparentes. Coloca las cámaras debajo de esta fuente Web.</p>
+  <label for="cfg-game">Partido</label><select id="cfg-game"><option value="">Partido activo</option><option value="2538980">UCAM Murcia CAR – Obradoiro</option></select>
+  <label><input id="cfg-stats" type="checkbox" checked> Banda de estadísticas y comparativas</label>
+  <label><input id="cfg-events" type="checkbox" checked> Avisos de nuevas estadísticas de jugadores</label>
+  <label><input id="cfg-credits" type="checkbox" checked> Faldón fijo de los comentaristas</label>
+  <label for="cfg-url">Enlace para PRISM</label><textarea id="cfg-url" readonly></textarea>
+  <div class="config-actions"><button id="cfg-copy" type="button">Copiar enlace</button><a id="cfg-preview" target="_blank" rel="noopener">Vista de encuadre</a></div>
+  <p id="cfg-result" role="status"></p>
+</form>
+</body>
+</html>
+
+
