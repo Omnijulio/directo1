@@ -27,10 +27,12 @@ test('asocia estadísticas por equipo aunque cambie el orden y elimina espacios 
   b.Stats[0].PlayersStats[0].Team='JLM';assert.throws(()=>normalize(fixture.header,b),/otro/);
 });
 test('las luces usan las faltas oficiales del cuarto y conservan el cuarto naranja y el bonus rojo',()=>{
-  const h=copy(fixture.header);h.FoultsA='4';h.FoultsB='5';const s=normalize(h);
+  const h=copy(fixture.header),p=plays([{PLAYTYPE:'BP',NUMBEROFPLAY:0},
+    ...Array.from({length:9},(_,i)=>({PLAYTYPE:'CM',NUMBEROFPLAY:i+1,CODETEAM:i<4?'BGS':'RIG',PLAYER_ID:'P'+i,DORSAL:String(i)}))]);
+  const s=normalize(h,null,p);
   assert.deepEqual(core.foulLights(s.home.fouls),['lit','lit','lit','orange','off']);
   assert.deepEqual(core.foulLights(s.away.fouls),Array(5).fill('red'));
-  h.Quarter='2';h.FoultsA='0';assert.equal(normalize(h,null,null).home.fouls,0);
+  h.Quarter='2';p.SecondQuarter=[{PLAYTYPE:'BP',NUMBEROFPLAY:20}];assert.equal(normalize(h,null,p).home.fouls,0);
 });
 test('TOUT y TOUT_TV son pausas; TO es una pérdida que reanuda el juego, y las sustituciones no cancelan la pausa',()=>{
   const h=copy(fixture.header),p=plays([{PLAYTYPE:'TOUT',NUMBEROFPLAY:1,MARKERTIME:'03:10'},{PLAYTYPE:'IN',NUMBEROFPLAY:2,MARKERTIME:'03:10'}]);
@@ -59,4 +61,20 @@ test('los incrementos de jugadores se anuncian con el equipo correcto y nunca se
 test('no se presenta el agregado de todas las prórrogas como parcial de una sola',()=>{
   const h=copy(fixture.header);h.Quarter='6';h.RemainingPartialTime='02:00';
   const s=normalize(h,null,null);assert.equal(s.quarter,6);assert.equal(s.quarters.length,4);
+});
+test('en el segundo cuarto las faltas acumuladas 13–12 se muestran como 9–3 y los parciales como 7–12',()=>{
+  const f=require('./fixtures/eurocup-quarter2.json'),s=euro.normalize(f.header,f.box,f.plays,game);
+  assert.deepEqual([f.header.FoultsA,f.header.FoultsB],['13','12']);
+  assert.deepEqual([s.home.fouls,s.away.fouls],[9,3]);
+  assert.deepEqual(s.quarters,[{n:1,home:21,away:17},{n:2,home:7,away:12}]);
+  assert.deepEqual(euro.normalize(f.header,null,f.plays,game).quarters,s.quarters);
+});
+test('no presenta como faltas de un cuarto el total del partido cuando faltan las jugadas',()=>{
+  const f=require('./fixtures/eurocup-quarter2.json'),s=euro.normalize(f.header,null,null,game);
+  assert.equal(s.home.fouls,null);assert.equal(s.away.fouls,null);
+});
+test('no duplica faltas ni suma técnicas del banquillo sin dorsal de jugador',()=>{
+  const f=copy(require('./fixtures/eurocup-quarter2.json'));
+  f.plays.SecondQuarter.push(copy(f.plays.SecondQuarter.at(-1)),{PLAYTYPE:'CMT1',NUMBEROFPLAY:999,CODETEAM:'RIG',PLAYER_ID:'COACH',DORSAL:''});
+  const s=euro.normalize(f.header,f.box,f.plays,game);assert.deepEqual([s.home.fouls,s.away.fouls],[9,3]);
 });

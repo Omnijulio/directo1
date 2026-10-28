@@ -204,6 +204,9 @@
         const nextState = normalize(header, null, null, game);
         if (state && !stale()) {
           for (const side of ["home","away"]) { nextState[side].stats=state[side].stats; nextState[side].players=state[side].players; }
+          if (european && Math.min(4,state.quarter) === Math.min(4,nextState.quarter)) {
+            for (const side of ["home","away"]) nextState[side].fouls=state[side].fouls;
+          }
           if (state.activity && state.activity.kind === "timeout" && nextState.phase === "live" &&
               state.clock === nextState.clock && state.quarter === nextState.quarter &&
               state.home.score === nextState.home.score && state.away.score === nextState.away.score) nextState.activity=state.activity;
