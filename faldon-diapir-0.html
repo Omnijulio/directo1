@@ -1065,8 +1065,8 @@ h1{font-size:46px;line-height:1.06;letter-spacing:.3px;font-weight:700;margin:0;
 #compact-card{position:absolute;left:64px;bottom:64px;height:136px;display:flex;align-items:center;gap:18px;padding:17px 22px;width:700px;max-width:1180px;background:#f5f1e8;border:1px solid #d2c7b6;border-top:2px solid #9c7c55;border-radius:4px;box-shadow:0 5px 18px #0004;opacity:0;transform:translateY(10px);transition:width .6s cubic-bezier(.2,.7,.3,1),opacity .5s,transform .6s;overflow:hidden}
 #compact-card.is-ready{opacity:1;transform:translateY(0)}
 .compact-emblem{flex:0 0 60px;width:60px;height:60px;object-fit:contain}
-.compact-copy{flex:none;width:max-content;white-space:nowrap;opacity:1;transform:translateY(0);transition:opacity .26s,transform .26s}
-#compact-card.is-changing .compact-copy{opacity:0;transform:translateY(5px)}
+.compact-copy{flex:none;width:max-content;white-space:nowrap;opacity:1;transform:translateY(0);transition:opacity .26s .6s,transform .26s .6s}
+#compact-card.is-changing .compact-copy{opacity:0;transform:translateY(5px);transition-delay:0s}
 .compact-label{font-family:Radio,Arial,sans-serif;font-size:13px;font-weight:700;letter-spacing:1.2px;line-height:16px;text-transform:uppercase;color:#675d4e}
 .compact-title{font-family:Formal,Georgia,serif;font-size:36px;line-height:40px;font-weight:400;margin:4px 0 0;letter-spacing:0;color:#142d40;white-space:nowrap}
 .compact-detail{font-family:Radio,Arial,sans-serif;font-size:23px;line-height:28px;font-weight:400;margin-top:4px;color:#374652;white-space:nowrap}
