@@ -1141,13 +1141,13 @@ addEventListener('keydown',e=>{const keys=['general','arturo','domingo','hector'
   const sizes={label:13,title:36,detail:23};
   for(const part of parts){
    const sizer=measure.querySelector('.compact-'+part);
-   const width=sizer.getBoundingClientRect().width;
+   const width=sizer.scrollWidth;
    const size=width>1056?sizes[part]*1056/width:sizes[part];
    sizer.style.fontSize=size+'px';
    const target=document.querySelector('#compact-'+part);
    target.style.fontSize=size+'px';target.textContent=item[part];
   }
-  card.style.width=Math.min(1180,Math.max(360,Math.ceil(measure.getBoundingClientRect().width)+124))+'px';
+  card.style.width=Math.min(1180,Math.max(360,Math.ceil(measure.scrollWidth)+124))+'px';
   card.dataset.entry=key;
  }
  function advance(){
