@@ -175,9 +175,18 @@
     if (configPending) return;
     configPending = true;
     try {
-      let config;
-      try { config = await getJSON("config-baloncesto.json?t=" + Date.now()); }
-      catch (_) { config = await getJSON(RAW_ROOT + "config-baloncesto.json?t=" + Date.now()); }
+      // Pages puede servir una copia anterior durante el despliegue. Elegir la
+      // versión más reciente evita seguir emitiendo el partido de la semana pasada.
+      const stamp = "?t=" + Date.now();
+      const copies = await Promise.allSettled([
+        getJSON("config-baloncesto.json" + stamp),
+        getJSON(RAW_ROOT + "config-baloncesto.json" + stamp)
+      ]);
+      const config = copies.filter(result => result.status === "fulfilled")
+        .map(result => result.value).filter(value => value && Number.isFinite(Number(value.version)))
+        .sort((a, b) => Number(b.version) - Number(a.version))[0];
+      if (!config) throw new Error("Configuración no disponible");
+      if (configVersion !== undefined && Number(config.version) < Number(configVersion)) return;
       if (configVersion !== undefined && config.version !== configVersion) { location.reload(); return; }
       configVersion = config.version; configure(config);
     } catch (_) {

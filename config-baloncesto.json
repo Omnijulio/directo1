@@ -1,5 +1,5 @@
 {
-  "version": 15,
+  "version": 16,
   "narradores": [
     "Iñaqui García",
     "Diego Arce"
@@ -176,10 +176,12 @@
         "id": "RTK",
         "nombre": "Rostock Seawolves",
         "corto": "Rostock Seawolves",
-        "siglas": "RTK",
+        "siglas": "ROS",
         "color": "#F07D21",
-        "escudo": "https://api.basketball-bundesliga.de/images/teams/logo/2026/551"
-      }
+        "escudo": "https://media-cdn.cortextech.io/1dU3kpCqReRp93/1BSdBWIjCgOCpC/de14cdb9-c0f7-485f-84ac-f305ace44723.png"
+      },
+      "referencia_flashscore": "Ao5qiFnl",
+      "fuente_flashscore": "https://www.flashscore.es/partido/baloncesto/rostock-SnRANHqC/san-pablo-burgos-MNsJGyjB/?mid=Ao5qiFnl"
     }
   ]
 }

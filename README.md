@@ -19,7 +19,13 @@ Las coordenadas corresponden al borde superior izquierdo de cada imagen. Ajustar
 
 Añadir `&demo=1` al enlace fijo muestra dos paneles de encuadre con su número y tamaño, sin modificar los datos reales del partido. No usar `demo=1` en la fuente de emisión. El configurador `?config=1` y los parámetros de partido, estadísticas, avisos y narradores funcionan también en esta página.
 
-## Emisión de baloncesto activa · 28/10/2026
+## Emisión de baloncesto activa · 04/11/2026
+
+Partido San Pablo Burgos–Rostock Seawolves: Flashscore `Ao5qiFnl`, EuroCup `U2026/81`, equipos `BGS` y `RTK`. Se mantiene la narración de **Iñaqui García y Diego Arce**. El enlace general y el layout de dos cámaras seleccionan el partido `20260081`; enlace fijo: https://omnijulio.github.io/directo1/baloncesto.html?partido=20260081.
+
+La conexión oficial consulta cabecera, estadísticas y jugadas de EuroCup cada 10 segundos. El escudo visitante usa la imagen oficial del calendario EuroCup. Se elige la configuración con mayor versión entre Pages y el repositorio para evitar que la caché de despliegue seleccione un encuentro anterior. No se cambia el tanteo del partido de Riga: su enlace fijo sigue siendo histórico.
+
+## Partido EuroCup anterior · 28/10/2026
 
 El enlace general `baloncesto.html` y `marcador.html` selecciona **San Pablo Burgos–Rigas Zelli**, jornada 5 de BKT EuroCup, 28/10/2026 a las 20:30 (Madrid), Coliseum Burgos. Enlace fijo para PRISM: https://omnijulio.github.io/directo1/baloncesto.html?partido=20260065.
 
