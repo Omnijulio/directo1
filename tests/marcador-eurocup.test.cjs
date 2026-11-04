@@ -1,7 +1,7 @@
 const test=require('node:test'),assert=require('node:assert/strict');
 const core=require('../assets/marcador-feb-core.js'),euro=require('../assets/marcador-eurocup-core.js');
 const config=require('../config-baloncesto.json'),fixture=require('./fixtures/eurocup-live.json');
-const game=core.selectGame(config),copy=x=>JSON.parse(JSON.stringify(x));
+const game=core.selectGame(config,'20260065'),copy=x=>JSON.parse(JSON.stringify(x));
 const normalize=(h=fixture.header,b=fixture.box,p=fixture.plays)=>euro.normalize(h,b,p,game);
 const plays=lines=>({CodeTeamA:'BGS ',CodeTeamB:'RIG ',FirstQuarter:lines});
 test('el partido EuroCup U2026/65 se corresponde con Flashscore 6cIEmLOb y conserva el reloj oficial restante',()=>{
@@ -77,4 +77,12 @@ test('no duplica faltas ni suma técnicas del banquillo sin dorsal de jugador',(
   const f=copy(require('./fixtures/eurocup-quarter2.json'));
   f.plays.SecondQuarter.push(copy(f.plays.SecondQuarter.at(-1)),{PLAYTYPE:'CMT1',NUMBEROFPLAY:999,CODETEAM:'RIG',PLAYER_ID:'COACH',DORSAL:''});
   const s=euro.normalize(f.header,f.box,f.plays,game);assert.deepEqual([s.home.fouls,s.away.fouls],[9,3]);
+});
+
+test('el enlace general pasa a San Pablo–Rostock Seawolves U2026/81 y Rigas sigue disponible por URL',()=>{
+  const next=core.selectGame(config,null);
+  assert.equal(next.partido,20260081);assert.equal(next.proveedor,'eurocup');
+  assert.equal(next.codigo_partido,81);assert.equal(next.temporada,'U2026');
+  assert.equal(next.local.id,'BGS');assert.equal(next.visitante.id,'RTK');
+  assert.equal(core.selectGame(config,'20260065').visitante.id,'RIG');
 });

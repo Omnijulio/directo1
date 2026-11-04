@@ -1,5 +1,5 @@
 {
-  "version": 14,
+  "version": 15,
   "narradores": [
     "Iñaqui García",
     "Diego Arce"
@@ -80,7 +80,7 @@
     }
   ],
   "narracion_fija": true,
-  "activo": 20260065,
+  "activo": 20260081,
   "partidos": [
     {
       "partido": 105404,
@@ -146,6 +146,39 @@
         "siglas": "RIG",
         "color": "#ED64A6",
         "escudo": "https://media-cdn.cortextech.io/1dU3kpCqReRp93/1BSdBWIjCgOCpC/0ab8fe2a-5972-48c5-bdff-f5159ca0abe7.png"
+      }
+    },
+    {
+      "partido": 20260081,
+      "proveedor": "eurocup",
+      "codigo_partido": 81,
+      "temporada": "U2026",
+      "fuente": "https://live.euroleague.net/api/Header?gamecode=81&seasoncode=U2026",
+      "inicio": "2026-11-04T20:30:00+01:00",
+      "competicion": "BKT EuroCup",
+      "jornada": "Jornada 6",
+      "pabellon": "Coliseum · Burgos",
+      "actualizar_segundos": 10,
+      "estadisticas": true,
+      "comparar_cada_segundos": 60,
+      "comparar_durante_segundos": 7,
+      "aviso_jugador_segundos": 4,
+      "avisos_jugadores": true,
+      "local": {
+        "id": "BGS",
+        "nombre": "Recoletas Salud San Pablo Burgos",
+        "corto": "San Pablo Burgos",
+        "siglas": "BUR",
+        "color": "#00669E",
+        "escudo": "https://media-cdn.cortextech.io/1dU3kpCqReRp93/1BSdBWIjCgOCxM/40c97670-177e-4c74-9f5f-76b528a0da86.png"
+      },
+      "visitante": {
+        "id": "RTK",
+        "nombre": "Rostock Seawolves",
+        "corto": "Rostock Seawolves",
+        "siglas": "RTK",
+        "color": "#F07D21",
+        "escudo": "https://api.basketball-bundesliga.de/images/teams/logo/2026/551"
       }
     }
   ]
