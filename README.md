@@ -109,6 +109,10 @@ Solo horizontal (1920 × 1080): https://omnijulio.github.io/directo1/corales-ant
 
 Datos (nota de prensa del Ayuntamiento y El Correo de Burgos, 21/10/2026): Coro Joven de Santander (Santander, Cantabria), Ensamble Vocal Gijón (Gijón, Asturias), Oñatiko Ganbara Abesbatza (Oñate, Guipúzcoa) y Patnia Coral de Cámara (San Javier, Murcia); coral invitada Orfeón Burgalés Juvenil, directora Ana Ayala Francés; director artístico Juan Gabriel Martínez Martín; obra obligatoria «Aquel galán que allí viene» (Colección de cuatro canciones populares burgalesas). 90 aniversario del asesinato de Antonio José (Burgos, 1902 – Estépar, 1936).
 
+## Faldón pequeño · Huelga general 11N en Burgos (11/11/2026)
+
+Horizontal: https://omnijulio.github.io/directo1/huelga-11n.html · Vertical: https://omnijulio.github.io/directo1/huelga-11n-vertical.html · contenido en `config-huelga-11n.json` (`titulo`, `informa`, `medio`, `directo`, `visible`), se relee cada 10 s. Plantilla reutilizable: `assets/faldon-pequeno.css/js` y `python3 scripts/generar-faldon-pequeno.py config-X.json base "Título"`. `?directo=0` quita la pestaña «En directo».
+
 ## Corales Antonio José · 2 cámaras (24/10/2026)
 
 https://omnijulio.github.io/directo1/corales-2camaras.html (`config-corales-2camaras.json`, `"camaras": 2`). Marco opaco con dos huecos 16:9 de 960 × 540: **cámara 1 en x 0, y 270** y **cámara 2 en x 960, y 270** (cada una ocupa media anchura del lienzo, centradas en vertical). Franja superior: logo, «XXIII Concurso Nacional de Corales · Antonio José · Fórum Evolución · Burgos · Sábado, 24 de octubre» y «EN DIRECTO» con la hora. Franja inferior: faldón con rotativos, cuenta atrás en la previa y claves. Misma espera y mismos horarios que la página de una cámara. `?camaras=2` activa el marco en cualquier página de declaración.

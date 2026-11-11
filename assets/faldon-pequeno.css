@@ -1,0 +1,65 @@
+/* Faldón pequeño · Radio Evolución Burgos
+   Lienzo horizontal (body.h, 1920×1080) o vertical (body.v, 1080×1920), fondo transparente. */
+:root{--tinta:#0F1726;--marfil:#F5EFE4;--marfil2:#E9E0CF;--pizarra:#5B6576;--naranja:#EE6A2A;--rojo:#D9302B;
+  --curva:cubic-bezier(.2,.8,.2,1);--sombra:0 14px 34px rgba(5,9,18,.42)}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:transparent}
+#lienzo{position:absolute;left:0;top:0;transform-origin:0 0;overflow:hidden;font-family:"Inter",system-ui,sans-serif;
+  color:var(--tinta);-webkit-font-smoothing:antialiased}
+body.h #lienzo{width:1920px;height:1080px}
+body.v #lienzo{width:1080px;height:1920px}
+.demo #lienzo{background:radial-gradient(ellipse at 50% 38%,rgba(255,236,206,.55),transparent 60%),linear-gradient(180deg,#9fb3c6 0%,#c7b394 52%,#9b8566 100%)}
+
+.faldon{position:absolute;display:flex;align-items:flex-end}
+.logo{flex:none;border-radius:50%;box-shadow:var(--sombra);position:relative;z-index:2;
+  animation:pop .55s var(--curva) .1s both}
+@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+.bloque{position:relative;min-width:0}
+.pestana{display:inline-flex;align-items:center;background:var(--tinta);color:var(--marfil);font-weight:900;
+  text-transform:uppercase;white-space:nowrap;animation:sube .4s var(--curva) .55s both}
+.pestana .punto{flex:none;border-radius:50%;background:var(--rojo);animation:pulso 1.6s ease-in-out infinite}
+@keyframes pulso{0%,100%{box-shadow:0 0 0 0 rgba(217,48,43,.55)}60%{box-shadow:0 0 0 8px rgba(217,48,43,0)}}
+.pestana .sep{flex:none;width:1px;align-self:stretch;background:rgba(245,239,228,.25)}
+.pestana .hora{letter-spacing:.02em;font-variant-numeric:tabular-nums}
+.sin-directo .pestana{display:none}
+@keyframes sube{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.tarjeta{position:relative;background:var(--marfil);box-shadow:var(--sombra);overflow:hidden;
+  animation:abre .6s var(--curva) .25s both}
+.tarjeta::before{content:"";position:absolute;left:0;top:0;bottom:0;background:var(--naranja)}
+@keyframes abre{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+.titulo{font-weight:900;line-height:1.05;letter-spacing:-.01em;word-spacing:.05em;white-space:nowrap;overflow:hidden}
+.linea{display:flex;align-items:center;font-weight:600;color:var(--pizarra);white-space:nowrap;overflow:hidden}
+.linea svg{flex:none;color:var(--naranja)}
+.linea b{font-weight:900;color:var(--tinta)}
+.linea .medio{overflow:hidden;text-overflow:clip}
+.linea i{font-style:normal;color:#B5AB99}
+
+/* Horizontal */
+body.h .faldon{left:48px;bottom:56px;max-width:1400px}
+body.h .logo{width:118px;height:118px;margin-right:-22px;margin-bottom:4px}
+body.h .pestana{height:38px;padding:0 16px 0 40px;gap:12px;font-size:14px;letter-spacing:.2em;border-radius:10px 10px 0 0}
+body.h .pestana .punto{width:10px;height:10px}
+body.h .pestana .sep{margin:10px 0}
+body.h .pestana .hora{font-size:19px}
+body.h .tarjeta{padding:16px 40px 18px 48px;border-radius:0 14px 14px 0}
+body.h .tarjeta::before{width:9px}
+body.h .titulo{font-size:48px}
+body.h .linea{font-size:21px;gap:10px;margin-top:8px}
+body.h .linea svg{width:20px;height:20px}
+
+/* Vertical: pegado al borde inferior */
+body.v .faldon{left:32px;right:32px;bottom:40px}
+body.v .logo{width:128px;height:128px;margin-right:-22px;margin-bottom:6px}
+body.v .bloque{flex:1}
+body.v .pestana{height:44px;padding:0 18px 0 40px;gap:12px;font-size:16px;letter-spacing:.19em;border-radius:11px 11px 0 0}
+body.v .pestana .punto{width:12px;height:12px}
+body.v .pestana .sep{margin:12px 0}
+body.v .pestana .hora{font-size:22px}
+body.v .tarjeta{padding:18px 30px 20px 46px;border-radius:0 16px 16px 0}
+body.v .tarjeta::before{width:10px}
+body.v .titulo{font-size:56px}
+body.v .linea{font-size:25px;gap:10px;margin-top:10px}
+body.v .linea svg{width:24px;height:24px}
+
+.oculto .faldon{display:none}
+@media (prefers-reduced-motion:reduce){.logo,.pestana,.tarjeta{animation:none}}
