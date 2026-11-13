@@ -1,0 +1,16 @@
+/* Marcador secundario: fuera de las cámaras y del marcador principal. */
+#football-scorebug{position:absolute;top:66px;right:40px;width:414px;padding:15px 18px 17px;background:var(--panel);border:1px solid #f5efe424;border-top:2px solid var(--acc);border-radius:10px;box-shadow:0 8px 22px #05091255;font-variant-numeric:tabular-nums}
+.football-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:13px}
+#football-label{font-size:10px;line-height:1.3;letter-spacing:1.4px;color:#b4c3d5;font-weight:700}
+#football-clock{font-size:16px;line-height:1;font-weight:800;white-space:nowrap;color:#8ce7bb}
+.football-line{display:grid;grid-template-columns:48px 39px 42px 20px 42px 39px 48px;gap:12px;justify-content:center;align-items:center}
+.football-crest{position:relative;display:grid;place-items:center;width:48px;height:48px;border-radius:50%;background:#fff;overflow:hidden;color:var(--ink);font-size:9px;font-weight:800}
+.football-crest img{position:absolute;inset:4px;width:40px;height:40px;object-fit:contain}
+.football-code{font-size:13px;font-weight:800;letter-spacing:.6px;text-align:center}
+.football-score{font-size:38px;font-weight:900;line-height:1;text-align:center;letter-spacing:-1px}
+.football-score.changed{animation:score-change .65s ease-out}
+.football-divider{font-size:23px;font-weight:600;text-align:center;color:#96a5b9}
+#football-scorebug[data-phase=break] #football-clock,#football-scorebug[data-phase=pregame] #football-clock,#football-scorebug[data-phase=paused] #football-clock{color:#ffd29b}
+#football-scorebug[data-stale=true] #football-label,#football-scorebug[data-stale=true] #football-clock{color:#ffd29b}
+#football-scorebug[data-phase=final] #football-clock{color:var(--ivory)}
+@media(prefers-reduced-motion:reduce){.football-score.changed{animation:none}}

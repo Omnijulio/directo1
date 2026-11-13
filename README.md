@@ -19,7 +19,19 @@ Las coordenadas corresponden al borde superior izquierdo de cada imagen. Ajustar
 
 Añadir `&demo=1` al enlace fijo muestra dos paneles de encuadre con su número y tamaño, sin modificar los datos reales del partido. No usar `demo=1` en la fuente de emisión. El configurador `?config=1` y los parámetros de partido, estadísticas, avisos y narradores funcionan también en esta página.
 
-## Emisión de baloncesto activa · 04/11/2026
+## Emisión doble · Tizona–Gran Canaria y Leganés–Burgos CF · 13/11/2026
+
+Los enlaces generales de una y dos cámaras seleccionan Tizona–Cajasiete Gran Canaria, partido FEB `2535791`, jornada 8, 20:45 (Madrid), El Plantío. Faldón: **Iñaki · “Pancho”**. Se conserva el marcador, las faltas del cuarto, el ticker y los avisos animados.
+
+Se añade arriba a la derecha un marcador secundario de Leganés–Burgos CF (20:30), identificado como ESPN `401883136`, con ambos escudos oficiales de LaLiga, tanteo y minuto publicado por ESPN. Cada marcador consulta su conexión cada 10 segundos por separado; el reloj de fútbol no se extrapola. La previa muestra la hora; descanso y final se identifican en el mismo espacio. Al fallar una conexión se conserva el último resultado con indicación de reconexión, sin convertir el error en 0–0.
+
+Enlaces fijos:
+- https://omnijulio.github.io/directo1/baloncesto.html?partido=2535791
+- https://omnijulio.github.io/directo1/baloncesto-2camaras.html?partido=2535791
+
+El segundo marcador ocupa x=1466, y=66, ancho=414 px; queda fuera de las dos cámaras, que mantienen x=40 y 984, y=280, 896×504. `&futbol=0` lo oculta. `config-baloncesto.json.futbol.acompanar_partidos` limita su aparición a este encuentro; los enlaces históricos conservan su partido. El acceso público FEB se renueva en `datos/feb-2535791.json` mediante el flujo ya instalado.
+
+## Partido EuroCup anterior · 04/11/2026
 
 Partido San Pablo Burgos–Rostock Seawolves: Flashscore `Ao5qiFnl`, EuroCup `U2026/81`, equipos `BGS` y `RTK`. Se mantiene la narración de **Iñaqui García y Diego Arce**. El enlace general y el layout de dos cámaras seleccionan el partido `20260081`; enlace fijo: https://omnijulio.github.io/directo1/baloncesto.html?partido=20260081.
 

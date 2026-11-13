@@ -6,11 +6,14 @@
 <title>Baloncesto · Dos cámaras · Radio Evolución Burgos</title>
 <link rel="stylesheet" href="assets/directos-fonts.css?v=14">
 <link rel="stylesheet" href="assets/marcador-feb.css?v=14">
+<link rel="stylesheet" href="assets/marcador-futbol.css?v=1">
 <link rel="stylesheet" href="assets/baloncesto-2camaras.css?v=1">
 <script defer src="assets/marcador-feb-core.js?v=14"></script>
 <script defer src="assets/marcador-acb-core.js?v=1"></script>
 <script defer src="assets/marcador-eurocup-core.js?v=2"></script>
-<script defer src="assets/marcador-feb.js?v=16"></script>
+<script defer src="assets/marcador-futbol-core.js?v=1"></script>
+<script defer src="assets/marcador-futbol.js?v=1"></script>
+<script defer src="assets/marcador-feb.js?v=17"></script>
 </head>
 <body class="dual-camera">
 <main id="stage">
@@ -40,20 +43,30 @@
   <section id="scorebug" data-phase="unknown" aria-label="Marcador conectando">
     <div class="score-main">
       <div class="score-team home">
-        <div class="team-main"><div class="team-emblem"><span id="score-home-fallback">BUR</span><img id="score-home-logo" alt="Escudo de San Pablo Burgos" hidden></div><div id="score-home" class="score-value">—</div></div>
+        <div class="team-main"><div class="team-emblem"><span id="score-home-fallback">TZB</span><img id="score-home-logo" alt="Escudo de Tizona Burgos" hidden></div><div id="score-home" class="score-value">—</div></div>
         <div id="home-fouls" class="foul-lights" role="img" aria-label="Faltas del cuarto sin dato"><i></i><i></i><i></i><i></i><i></i></div>
       </div>
       <div class="score-time"><div id="score-clock">—</div><div id="score-period"></div><div id="play-lights" aria-hidden="true"><i style="--lamp:0"></i><i style="--lamp:1"></i><i style="--lamp:2"></i><i style="--lamp:3"></i><i style="--lamp:4"></i><i style="--lamp:5"></i></div><div id="play-state" role="status"></div></div>
       <div class="score-team away">
-        <div class="team-main"><div class="team-emblem"><span id="score-away-fallback">ROS</span><img id="score-away-logo" alt="Escudo de Rostock Seawolves" hidden></div><div id="score-away" class="score-value">—</div></div>
+        <div class="team-main"><div class="team-emblem"><span id="score-away-fallback">GRC</span><img id="score-away-logo" alt="Escudo de Gran Canaria" hidden></div><div id="score-away" class="score-value">—</div></div>
         <div id="away-fouls" class="foul-lights" role="img" aria-label="Faltas del cuarto sin dato"><i></i><i></i><i></i><i></i><i></i></div>
       </div>
     </div>
     <div id="score-status" class="score-status" role="status">CONECTANDO</div>
   </section>
+  <section id="football-scorebug" hidden aria-label="Marcador de Leganés y Burgos CF">
+    <div class="football-heading"><span id="football-label">FÚTBOL</span><span id="football-clock">—</span></div>
+    <div class="football-line">
+      <span class="football-crest"><span id="football-home-fallback">LEG</span><img id="football-home-logo" alt="Escudo de CD Leganés" hidden></span>
+      <span id="football-home-code" class="football-code">LEG</span><strong id="football-home-score" class="football-score">—</strong>
+      <span class="football-divider">–</span>
+      <strong id="football-away-score" class="football-score">—</strong><span id="football-away-code" class="football-code">BUR</span>
+      <span class="football-crest"><span id="football-away-fallback">BUR</span><img id="football-away-logo" alt="Escudo de Burgos CF" hidden></span>
+    </div>
+  </section>
   <section id="commentators" aria-label="Comentaristas del partido"><span class="commentator-logo"><img id="commentator-logo" src="assets/radio-evolucion.png" alt="Radio Evolución"></span><div class="commentator-copy"><div class="commentator-role">NARRACIÓN</div><div id="commentator-list"></div></div></section>
   <aside id="flash" hidden aria-live="polite" aria-atomic="true"></aside>
-  <div id="location"><svg width="12" height="15" viewBox="0 0 12 15" aria-hidden="true"><path d="M6 14s5-5.5 5-8A5 5 0 0 0 1 6c0 2.5 5 8 5 8Z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="6" cy="6" r="1.5" fill="currentColor"/></svg><span id="venue">Coliseum · Burgos</span></div>
+  <div id="location"><svg width="12" height="15" viewBox="0 0 12 15" aria-hidden="true"><path d="M6 14s5-5.5 5-8A5 5 0 0 0 1 6c0 2.5 5 8 5 8Z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="6" cy="6" r="1.5" fill="currentColor"/></svg><span id="venue">El Plantío · Burgos</span></div>
   <section id="ticker" aria-label="Estadísticas del partido">
     <div class="ticker-heading"><strong>ESTADÍSTICAS</strong><span id="ticker-source">ACTUALIZANDO</span></div>
     <div class="ticker-viewport"><div id="ticker-track"></div></div>

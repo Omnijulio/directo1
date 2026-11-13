@@ -1,15 +1,15 @@
 {
-  "version": 16,
+  "version": 17,
   "narradores": [
-    "Iñaqui García",
-    "Diego Arce"
+    "Iñaki",
+    "“Pancho”"
   ],
   "feb": {
-    "partido": 2535753,
-    "fuente": "https://www.feb.es/competiciones/partido/2535753",
-    "inicio": "2026-10-16T20:45:00+02:00",
+    "partido": 2535791,
+    "fuente": "https://www.feb.es/competiciones/partido/2535791",
+    "inicio": "2026-11-13T20:45:00+01:00",
     "competicion": "Primera FEB",
-    "jornada": "Jornada 4",
+    "jornada": "Jornada 8",
     "pabellon": "El Plantío · Burgos",
     "actualizar_segundos": 10,
     "estadisticas": true,
@@ -17,23 +17,27 @@
       "id": "1008400",
       "nombre": "Grupo Ureta Tizona Burgos",
       "corto": "Tizona Burgos",
-      "siglas": "TIZ",
+      "siglas": "TZB",
       "color": "#3B89EA",
       "escudo": "https://imagenes.feb.es/Imagen.aspx?i=1008400&ti=1"
     },
     "visitante": {
-      "id": "1009837",
-      "nombre": "Alimerka Oviedo Baloncesto",
-      "corto": "Alimerka Oviedo",
-      "siglas": "OVI",
+      "id": "1008797",
+      "nombre": "Cajasiete Gran Canaria",
+      "corto": "Gran Canaria",
+      "siglas": "GRC",
       "color": "#F6C65D",
-      "escudo": "https://imagenes.feb.es/Imagen.aspx?i=1009837&ti=1"
+      "escudo": "https://imagenes.feb.es/Imagen.aspx?i=1008797&ti=1"
     },
     "comparar_cada_segundos": 60,
     "comparar_durante_segundos": 7,
     "aviso_jugador_segundos": 4,
     "avisos_jugadores": true,
-    "bootstrap": "datos/feb-bootstrap.json"
+    "bootstrap": "datos/feb-2535791.json",
+    "proveedor": "feb",
+    "fuente_referencia": "https://share.google/xGSSwE82RTthIdO8P",
+    "referencia_flashscore": "baqvSZBb",
+    "fuente_flashscore": "https://www.flashscore.es/partido/baloncesto/gran-canaria-QmfIiWgr/tizona-burgos-4GDgh3I7/?mid=baqvSZBb"
   },
   "tema": {
     "acento": "#F07A2A"
@@ -80,7 +84,7 @@
     }
   ],
   "narracion_fija": true,
-  "activo": 20260081,
+  "activo": 2535791,
   "partidos": [
     {
       "partido": 105404,
@@ -182,6 +186,63 @@
       },
       "referencia_flashscore": "Ao5qiFnl",
       "fuente_flashscore": "https://www.flashscore.es/partido/baloncesto/rostock-SnRANHqC/san-pablo-burgos-MNsJGyjB/?mid=Ao5qiFnl"
+    },
+    {
+      "partido": 2535753,
+      "fuente": "https://www.feb.es/competiciones/partido/2535753",
+      "inicio": "2026-10-16T20:45:00+02:00",
+      "competicion": "Primera FEB",
+      "jornada": "Jornada 4",
+      "pabellon": "El Plantío · Burgos",
+      "actualizar_segundos": 10,
+      "estadisticas": true,
+      "local": {
+        "id": "1008400",
+        "nombre": "Grupo Ureta Tizona Burgos",
+        "corto": "Tizona Burgos",
+        "siglas": "TIZ",
+        "color": "#3B89EA",
+        "escudo": "https://imagenes.feb.es/Imagen.aspx?i=1008400&ti=1"
+      },
+      "visitante": {
+        "id": "1009837",
+        "nombre": "Alimerka Oviedo Baloncesto",
+        "corto": "Alimerka Oviedo",
+        "siglas": "OVI",
+        "color": "#F6C65D",
+        "escudo": "https://imagenes.feb.es/Imagen.aspx?i=1009837&ti=1"
+      },
+      "comparar_cada_segundos": 60,
+      "comparar_durante_segundos": 7,
+      "aviso_jugador_segundos": 4,
+      "avisos_jugadores": true,
+      "bootstrap": "datos/feb-bootstrap.json"
     }
-  ]
+  ],
+  "futbol": {
+    "visible": true,
+    "partido": 401883136,
+    "liga": "esp.2",
+    "proveedor": "espn",
+    "inicio": "2026-11-13T20:30:00+01:00",
+    "fuente_referencia": "https://share.google/GZ2S60qJeTyedRDin",
+    "fuente": "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.2/scoreboard?dates=20261113",
+    "acompanar_partidos": [
+      2535791
+    ],
+    "local": {
+      "id": "17534",
+      "nombre": "CD Leganés",
+      "siglas": "LEG",
+      "escudo": "https://assets.laliga.com/assets/2019/06/07/medium/leganes.png"
+    },
+    "visitante": {
+      "id": "12597",
+      "nombre": "Burgos CF",
+      "siglas": "BUR",
+      "escudo": "https://assets.laliga.com/assets/2021/06/24/medium/8de24d38ab1472bbae1620d36582d7bd.png"
+    },
+    "referencia_flashscore": "Isu3IKt0",
+    "fuente_flashscore": "https://www.flashscore.es/partido/futbol/burgos-cf-vTxTEFi6/leganes-Mi0rXQg7/?mid=Isu3IKt0"
+  }
 }

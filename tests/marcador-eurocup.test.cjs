@@ -79,8 +79,8 @@ test('no duplica faltas ni suma técnicas del banquillo sin dorsal de jugador',(
   const s=euro.normalize(f.header,f.box,f.plays,game);assert.deepEqual([s.home.fouls,s.away.fouls],[9,3]);
 });
 
-test('el enlace general pasa a San Pablo–Rostock Seawolves U2026/81 y Rigas sigue disponible por URL',()=>{
-  const next=core.selectGame(config,null);
+test('San Pablo–Rostock U2026/81 y Rigas siguen disponibles por URL',()=>{
+  const next=core.selectGame(config,'20260081');
   assert.equal(next.partido,20260081);assert.equal(next.proveedor,'eurocup');
   assert.equal(next.codigo_partido,81);assert.equal(next.temporada,'U2026');
   assert.equal(next.local.id,'BGS');assert.equal(next.visitante.id,'RTK');

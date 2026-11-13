@@ -160,6 +160,7 @@
     write("venue", params.get("ubicacion") || game.pabellon);
     $("scorebug").hidden = params.get("marcador") === "0";
     $("scorebug").dataset.partido = String(game.partido);
+    window.dispatchEvent(new CustomEvent("scoreboard-config", {detail:{config,partido:game.partido}}));
     showNarrators(config);
     if (!statsEnabled() && activeFlash && activeFlash.kind === "comparison") hideFlash();
     if (changed) {
